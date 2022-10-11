@@ -1,0 +1,24 @@
+job:
+  asterix:
+    destination:
+      Filmgate:
+        dir_path: C:/mnt/filmgate/A5/io/To_Client/packages
+        title: Filmgate PACKAGE FOR A5.
+      MPC_Paris:
+        dir_path: C:/mnt/mpcparis/A5/io/To_Client/packages
+        title: MPC PARIS PACKAGE FOR A5.
+    pkg_version_padding: 4
+    pkg_version_prefix: v
+    vendor: dasein
+  test:
+    destination:
+      Filmgate_test:
+        dir_path: C:/mnt/filmgate_test/A5/io/To_Client/packages
+        title: Filmgate PACKAGE FOR A5.
+      MPC_Paris_test:
+        dir_path: C:/mnt/mpcparis_test/A5/io/To_Client/packages
+        title: MPC PARIS PACKAGE FOR A5.
+    pkg_version_padding: 2
+    pkg_version_prefix: ver
+    title: TEST PACKAGE FOR RITHIK.
+    vendor: rithik
