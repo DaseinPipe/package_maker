@@ -180,37 +180,32 @@ def test_config_setup():
 
 def global_config_setup():
     global_config = dict(
-        job=dict(
-            asterix=dict(
-                destination=dict(
-                    MPC_Paris=dict(
+        destination=dict(
+            MPC_Paris=dict(
+                job=dict(
+                    asterix=dict(
                         dir_path='C:/mnt/mpcparis/A5/io/To_Client/packages',
                         title='MPC PARIS PACKAGE FOR A5.',
                     ),
-                    Filmgate=dict(
-                        dir_path='C:/mnt/filmgate/A5/io/To_Client/packages',
-                        title='Filmgate PACKAGE FOR A5.',
+                    NOTRE_DAME=dict(
+                        dir_path='C:/mnt/mpcparis/NOTRE_DAME/io/To_Client/packages',
+                        title='MPC PARIS PACKAGE FOR NOTRE_DAME.',
                     ),
                 ),
                 vendor='dasein',
                 pkg_version_padding=4,
                 pkg_version_prefix='v',
             ),
-            test=dict(
-                destination=dict(
-                    MPC_Paris_test=dict(
-                        dir_path='C:/mnt/mpcparis_test/A5/io/To_Client/packages',
-                        title='MPC PARIS PACKAGE FOR A5.',
-                    ),
-                    Filmgate_test=dict(
-                        dir_path='/mnt/pb6/Filmgate/TRM/io/To_Client/Package/PKG-',
-                        title='Filmgate PACKAGE FOR TRM.',
+            filmgate=dict(
+                job=dict(
+                    TRM=dict(
+                        dir_path='/mnt/pb6/Filmgate/TRM/io/To_Client/Package',
+                        title='FILMGATE PACKAGE FOR TRM.',
                     ),
                 ),
-                vendor='rithik',
-                pkg_version_padding=2,
-                pkg_version_prefix='ver',
-                title='TEST PACKAGE FOR RITHIK.'
+                vendor='dasein',
+                pkg_version_padding=4,
+                pkg_version_prefix='v',
             )
         )
     )

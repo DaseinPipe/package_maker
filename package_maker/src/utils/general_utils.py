@@ -1,3 +1,9 @@
+import csv
+import os.path
+from pathlib import Path
+
+
+
 from package_maker.src.core.for_approval import *
 from package_maker.src.utils import dbHelper
 
@@ -29,6 +35,11 @@ def list_duplicates(seq):
     seen_add = seen.add
     seen_twice = set( x for x in seq if x in seen or seen_add(x) )
     return list( seen_twice )
+
+
+def fix_nulls(s):
+    for line in s:
+        yield line.replace('\0', ' ')
 
 
 def transferFile(scrFile, destFile, moveFlag=False):
@@ -96,7 +107,6 @@ def assumed_pkg_type(dept, source_filepath):
 
 def get_latest_pkg_version(pkg_dir):
 
-
     def get_existing_versions():
         first_version = '{version_prefix}{version_num}'.format(
             version_prefix=version_prefix,
@@ -116,18 +126,19 @@ def get_latest_pkg_version(pkg_dir):
         return sorted(version_list) or [first_version]
 
     GLOBAl_DATA = get_global_data()
-    version_prefix = GLOBAl_DATA['job'].get(os.environ.get('show'), {}).get(
+    version_prefix = GLOBAl_DATA['destination'].get(os.environ.get('destination'), {}).get(
         'pkg_version_prefix', global_pkg_version_prefix)
-    version_num = GLOBAl_DATA['job'].get(os.environ.get('show'), {}).get(
+    version_num = GLOBAl_DATA['destination'].get(os.environ.get('destination'), {}).get(
         'pkg_version_padding', global_pkg_version_padding)
-
+    print(get_existing_versions())
     latest_version = get_existing_versions()[-1]
-    up_version =re.sub(r'[0-9]+$',
+    up_version = re.sub(r'[0-9]+$',
                   lambda x: str(int(x.group()) + 1).zfill(len(x.group())),
                   latest_version)
     return re.split(version_prefix, up_version)[-1]
 
-def update_shot_version(item_data):
+# depricated
+def update_shot_version_depricated(item_data):
     pkg_dir = item_data['pkg_dir']
     dept = item_data['discipline']
     shot = item_data['shot']
@@ -149,7 +160,74 @@ def update_shot_version(item_data):
             msg = f"INSERT INTO {dept} (shot, client_version) VALUES ('{shot}', '{latest_version}')"
         con.execute(msg)
 
+from tempfile import NamedTemporaryFile
+import shutil
+import csv
+
+
+
+def update_shot_version(item_data):
+    pkg_dir = item_data['pkg_dir']
+    dept = item_data['discipline']
+    shot = item_data['shot']
+    csv_path = os.path.join(pkg_dir, f".package/{dept}.csv").replace('\\', '/')
+    default_client_version = 1
+    fields = ['shot', 'client_version']
+
+    csv_file = Path(csv_path)
+    csv_file.touch(exist_ok=True)
+
+    tempfile = NamedTemporaryFile(mode='w', delete=False)
+
+    with open(csv_file, 'r') as csvfile, tempfile:
+        reader = csv.DictReader(csvfile, fieldnames=fields)
+        writer = csv.DictWriter(tempfile, fieldnames=fields)
+        row_update = False
+
+
+        writer.writeheader()
+
+        for row in reader:
+
+            if row['shot'] == 'shot' and row['client_version'] == 'client_version':
+                continue
+
+            if row['shot'] == shot:
+                row_update = True
+                row['shot'], row['client_version'], = row['shot'], str(int(row['client_version']) + 1)
+            row = {'shot': row['shot'], 'client_version': row['client_version']}
+            writer.writerow(row)
+        if not row_update:
+            row = {'shot': shot, 'client_version': str(default_client_version + 1)}
+            writer.writerow(row)
+
+    shutil.move(tempfile.name, csv_file)
+
+
+
+
+
+
 def get_latest_shot_version(item_data):
+    pkg_dir = item_data['pkg_dir']
+    dept = item_data['discipline']
+    shot = item_data['shot']
+    csv_path = os.path.join(pkg_dir, f".package/{dept}.csv").replace('\\', '/')
+    default_client_version = 1
+    fields = ['shot', 'client_version']
+
+    csv_file = Path(csv_path)
+    csv_file.touch(exist_ok=True)
+    with open(csv_file, 'r') as csvfile:
+        reader = csv.DictReader(fix_nulls(csvfile), fieldnames=fields)
+        for row in reader:
+
+            if row['shot'] == shot:
+                return int(row['client_version'])
+    return default_client_version
+
+# depricated function
+def get_latest_shot_version_depricated(item_data):
     pkg_dir = item_data['pkg_dir']
     dept = item_data['discipline']
     shot = item_data['shot']
@@ -229,12 +307,10 @@ if __name__ == '__main__':
     # for source_filepath in source_filepath_list:
     #     print(assumed_pkg_type(dept, source_filepath))
     
-    # item_data = {'date': '20221008', 'discipline': 'roto', 'files': [], 'pkg_dir': 'C:/mnt/mpcparis/A5/io/To_Client/packages', 'pkg_type': 'shot', 'pkg_version_num': '0046', 'pkg_version_prefix': 'v', 'plate_version_num': '01', 'plate_version_prefix': 'master', 'shot': '080_bb_0375', 'shot_version_num': '001', 'shot_version_prefix': 'v', 'show': 'asterix', 'vendor': 'dasein'}
-    # print(get_shots(item_data))
+    item_data = {'date': '20221008', 'discipline': 'roto', 'files': [], 'pkg_dir': 'C:/mnt/mpcparis/A5/io/To_Client/packages', 'pkg_type': 'shot', 'pkg_version_num': '0046', 'pkg_version_prefix': 'v', 'plate_version_num': '01', 'plate_version_prefix': 'master', 'shot': '080_bb_0360', 'shot_version_num': '001', 'shot_version_prefix': 'v', 'show': 'asterix', 'vendor': 'dasein'}
+    # print(update_shot_version(item_data))
 
-    import random
-
-
-    print(random.choice(range(256)))
+    # pkg_dir = r'C:/mnt/mpcparis/A5/io/To_Client/packages'
+    print(get_latest_shot_version(item_data))
 
 

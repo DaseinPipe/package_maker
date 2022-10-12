@@ -67,11 +67,6 @@ class Ui_Dialog(object):
         self.frame.setFrameShadow(QFrame.Raised)
         self.gridLayout = QGridLayout(self.frame)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.destination_comboBox = QComboBox(self.frame)
-        self.destination_comboBox.setObjectName(u"destination_comboBox")
-
-        self.gridLayout.addWidget(self.destination_comboBox, 2, 1, 1, 1)
-
         self.label_2 = QLabel(self.frame)
         self.label_2.setObjectName(u"label_2")
         font1 = QFont()
@@ -80,11 +75,26 @@ class Ui_Dialog(object):
 
         self.gridLayout.addWidget(self.label_2, 2, 0, 1, 1)
 
+        self.destination_comboBox = QComboBox(self.frame)
+        self.destination_comboBox.setObjectName(u"destination_comboBox")
+
+        self.gridLayout.addWidget(self.destination_comboBox, 2, 2, 1, 1)
+
+        self.pkg_version_label = QLabel(self.frame)
+        self.pkg_version_label.setObjectName(u"pkg_version_label")
+
+        self.gridLayout.addWidget(self.pkg_version_label, 4, 0, 1, 1)
+
+        self.pkg_version_comboBox = QComboBox(self.frame)
+        self.pkg_version_comboBox.setObjectName(u"pkg_version_comboBox")
+
+        self.gridLayout.addWidget(self.pkg_version_comboBox, 4, 2, 1, 1)
+
         self.label_3 = QLabel(self.frame)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setFont(font1)
 
-        self.gridLayout.addWidget(self.label_3, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_3, 3, 0, 1, 1)
 
         self.job_comboBox = QComboBox(self.frame)
         self.job_comboBox.setObjectName(u"job_comboBox")
@@ -94,17 +104,7 @@ class Ui_Dialog(object):
         sizePolicy1.setHeightForWidth(self.job_comboBox.sizePolicy().hasHeightForWidth())
         self.job_comboBox.setSizePolicy(sizePolicy1)
 
-        self.gridLayout.addWidget(self.job_comboBox, 0, 1, 1, 1)
-
-        self.pkg_version_label = QLabel(self.frame)
-        self.pkg_version_label.setObjectName(u"pkg_version_label")
-
-        self.gridLayout.addWidget(self.pkg_version_label, 3, 0, 1, 1)
-
-        self.pkg_version_comboBox = QComboBox(self.frame)
-        self.pkg_version_comboBox.setObjectName(u"pkg_version_comboBox")
-
-        self.gridLayout.addWidget(self.pkg_version_comboBox, 3, 1, 1, 1)
+        self.gridLayout.addWidget(self.job_comboBox, 3, 2, 1, 1)
 
 
         self.gridLayout_2.addWidget(self.frame, 1, 0, 1, 1)
@@ -356,8 +356,8 @@ class Ui_Dialog(object):
         Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
         self.label.setText(QCoreApplication.translate("Dialog", u"PACKAGE MAKER", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"Destination:- ", None))
-        self.label_3.setText(QCoreApplication.translate("Dialog", u" Job :- ", None))
         self.pkg_version_label.setText(QCoreApplication.translate("Dialog", u"Version:-", None))
+        self.label_3.setText(QCoreApplication.translate("Dialog", u" Job :- ", None))
         self.selected_info_textEdit.setHtml(QCoreApplication.translate("Dialog", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"

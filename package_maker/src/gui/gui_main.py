@@ -31,6 +31,7 @@ class PackageMakerDlg(resource_main.Ui_Dialog, QDialog):
         self.abort_btn = self.main_buttonBox.button(QDialogButtonBox.Abort)
         self.apply_btn.setEnabled(False)
         self.job = UNKNOWN
+        self.destination = UNKNOWN
         self.vendor = UNKNOWN
         self.pkg_dir = UNKNOWN
         self.pkg_version_prefix = UNKNOWN
@@ -43,14 +44,10 @@ class PackageMakerDlg(resource_main.Ui_Dialog, QDialog):
     def populate_page1(self):
         self.pkg_version_comboBox.setHidden(True)
         self.pkg_version_label.setHidden(True)
-        self.destination_comboBox.setEnabled(False)
-        job_list = list(self.global_data['job'].keys())
-        job_list.insert(0, 'Select')
-        self.job_comboBox.addItems(job_list)
-        pkg_padding = int(self.global_data.get("pkg_version_padding", "4"))
-        self.pkg_version_comboBox.addItems(
-            [str(each).zfill(pkg_padding) for each in range(1, 200)]
-        )
+        self.job_comboBox.setEnabled(False)
+        destination_list = list(self.global_data['destination'].keys())
+        destination_list.insert(0, 'Select')
+        self.destination_comboBox.addItems(destination_list)
 
     def connection(self):
         self.job_comboBox.currentTextChanged.connect(self.job_exec)
@@ -99,30 +96,33 @@ class PackageMakerDlg(resource_main.Ui_Dialog, QDialog):
             pkg_dir=self.pkg_dir,
         )
 
-    def job_exec(self, state):
-        self.destination_comboBox.clear()
-        if state == 'Select':
-            self.destination_comboBox.clear()
-            self.destination_comboBox.setEnabled(False)
-            self.apply_btn.setEnabled(False)
-            return
-        os.environ['show'] = state
-        self.job = state
-        self.pkg_version_prefix = self.global_data['job'][state]['pkg_version_prefix']
-        self.vendor = self.global_data['job'][state]['vendor']
-        destination_list = list(self.global_data['job'][state]['destination'].keys())
-        destination_list.insert(0, 'Select')
-        self.destination_comboBox.addItems(destination_list)
-        self.destination_comboBox.setEnabled(True)
-
     def destination_exec(self, state):
+        self.job_comboBox.clear()
+        if state == 'Select':
+            self.job_comboBox.clear()
+            self.job_comboBox.setEnabled(False)
+            self.apply_btn.setEnabled(False)
+            return
+        os.environ['destination'] = state
+        self.destination = state
+        self.pkg_version_prefix = self.global_data['destination'][state]['pkg_version_prefix']
+        self.vendor = self.global_data['destination'][state]['vendor']
+        job_list = list(self.global_data['destination'][state]['job'].keys())
+        job_list.insert(0, 'Select')
+        self.job_comboBox.addItems(job_list)
+        self.job_comboBox.setEnabled(True)
+
+    def job_exec(self, state):
 
         if state == 'Select':
             self.apply_btn.setEnabled(False)
             return
-        self.title = self.global_data['job'][self.job]['destination'][state]['title']
-        self.pkg_dir = self.global_data['job'][self.job]['destination'][state]['dir_path']
+        os.environ['job'] = state
+        self.job = state
+        self.title = self.global_data['destination'][self.destination]['job'][state]['title']
+        self.pkg_dir = self.global_data['destination'][self.destination]['job'][state]['dir_path']
         self.global_version = general_utils.get_latest_pkg_version(self.pkg_dir)
+
         self.apply_btn.setEnabled(True)
 
     def set_shot_status(self):
