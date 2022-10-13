@@ -9,7 +9,7 @@ from package_maker.src.utils import dbHelper
 
 def is_name_matched(text, patterns):
     for pattern in patterns:
-        result = re.search(pattern, text)
+        result = re.search(pattern, text, re.IGNORECASE)
         if result:
             return True
     return False
@@ -22,12 +22,15 @@ def is_ext_matched(filepath, ext_list):
     return False
 
 
-def find_patten(text, patterns):
+def find_patten(text, patterns, get_matched_pattern=False):
     result_list = []
     for pattern in patterns:
-        result = re.search(pattern, text)
+        result = re.search(pattern, text, re.IGNORECASE)
         if result:
-            return result.group(0)
+            if get_matched_pattern:
+                return pattern
+            else:
+                return result.group(0)
     return None
 
 def list_duplicates(seq):
@@ -250,6 +253,7 @@ def get_custom_element_descs(item_data):
     dept = item_data['discipline']
     shot = item_data['shot']
     db_path = os.path.join(pkg_dir, ".package/asterix.db").replace('\\', '/')
+    return []
     with dbHelper.ConnectDB(db_path) as con:
         con.execute(f"SELECT {dept}_element_descs FROM main_db WHERE shot = '{shot}'")
         custom_element_descs = con.fetchone()
@@ -260,6 +264,22 @@ def get_custom_element_descs(item_data):
     return []
 
 def get_shots(item_data):
+    pkg_dir = item_data['pkg_dir']
+    csv_path = os.path.join(pkg_dir, f".package/shot_list.csv").replace('\\', '/')
+
+    fields = ['Shot Code']
+    csv_file = Path(csv_path)
+    csv_file.touch(exist_ok=True)
+    with open(csv_file, 'r') as csvfile:
+        reader = csv.DictReader(fix_nulls(csvfile), fieldnames=fields)
+        shot_list = []
+        for row in reader:
+            if row['Shot Code'] and row['Shot Code'] != 'Shot Code':
+                shot_list.append(row['Shot Code'])
+
+    return shot_list
+
+def get_shots_depricated(item_data):
     pkg_dir = item_data['pkg_dir']
     db_path = os.path.join(pkg_dir, ".package/asterix.db").replace('\\', '/')
 
@@ -275,10 +295,11 @@ def get_shots(item_data):
         shot_list = con.fetchall()
     return [each[0] for each in shot_list]
 
-def db_check(db_path):
-    if not os.path.exists(db_path):
-        pass
 
+def assume_shot(item_data):
+    source_file = item_data['source_file']
+    shots = get_shots(item_data)
+    return find_patten(source_file, shots)
 
 
 if __name__ == '__main__':
@@ -307,10 +328,25 @@ if __name__ == '__main__':
     # for source_filepath in source_filepath_list:
     #     print(assumed_pkg_type(dept, source_filepath))
     
-    item_data = {'date': '20221008', 'discipline': 'roto', 'files': [], 'pkg_dir': 'C:/mnt/mpcparis/A5/io/To_Client/packages', 'pkg_type': 'shot', 'pkg_version_num': '0046', 'pkg_version_prefix': 'v', 'plate_version_num': '01', 'plate_version_prefix': 'master', 'shot': '080_bb_0360', 'shot_version_num': '001', 'shot_version_prefix': 'v', 'show': 'asterix', 'vendor': 'dasein'}
+    item_data = {'date': '20221008', 'discipline': 'roto', 'files': [], 'pkg_dir': '/mnt/pb6/Filmgate/TRM/io/To_Client/Package', 'pkg_type': 'shot', 'pkg_version_num': '0046', 'pkg_version_prefix': 'v', 'plate_version_num': '01', 'plate_version_prefix': 'master', 'shot': '080_bb_0360', 'shot_version_num': '001', 'shot_version_prefix': 'v', 'show': 'asterix', 'vendor': 'dasein'}
     # print(update_shot_version(item_data))
 
-    # pkg_dir = r'C:/mnt/mpcparis/A5/io/To_Client/packages'
-    print(get_latest_shot_version(item_data))
+    # pkg_dir = r'/mnt/pb6/Filmgate/TRM/io/To_Client/Package'
+
+    filepaths = [
+        "trm_ep01-rl03_00131_compositing_v0001_1009-1073#.exr",
+        "trm_ep01-rl03_00140_compositing_v0001_1009-1129#.exr",
+        "trm_ep01-rl03_00120_compositing_v0001.1009-1037#.exr",
+        "trm_ep01-rl03_00130_compositing_v0001.1009-1165#.exr",
+        "trm_ep01-rl03_00132_compositing_v0001.1009-1150#.exr",
+        "trm_ep01-rl01_00980_mattepainting_v0003.1001#.exr",
+        "trm_ep01-rl01_00980_mattepainting_v0003.1001#.exr",
+    ]
+    for file in filepaths:
+        print(11111111)
+        item_data = item_data.copy()
+        item_data['source_file'] = file
+        print(assume_shot(item_data))
+
 
 

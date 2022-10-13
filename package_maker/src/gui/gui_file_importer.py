@@ -20,6 +20,7 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
         self.connection()
         self.set_shot_version()
         self.import_data = None
+        print(self.default_cell_color)
         horizontalHeader = self.fi_tableWidget.horizontalHeader()
         horizontalHeader.resizeSection(0, 30)
         horizontalHeader.setSectionResizeMode(1, QHeaderView.Stretch)
@@ -53,6 +54,7 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
             [str(each).zfill(plate_padding) for each in range(1, 10)]
         )
 
+
     def connection(self):
         self.fi_shot_comboBox.currentTextChanged.connect(self.set_shot_version)
         self.fi_discipline_comboBox.currentTextChanged.connect(self.refresh_all)
@@ -84,6 +86,13 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
         else:
             filename_item.setBackgroundColor(QColor('#FFFFFF'))
 
+    @property
+    def default_cell_color(self):
+
+        print(self.fi_tableWidget.styleSheet())
+        return self.fi_tableWidget.styleSheet()
+        # random_item = self.fi_tableWidget.item(0, 0)
+        # return random_item.backgroundColor().toRgb()
 
     def refresh_all(self):
         self.set_shot_version()
@@ -198,7 +207,7 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
         }
         self.close()
 
-    def fi_import(self):
+    def fi_import(self, do_dropdown_process=True):
         custom_fileDailog = custom_file_dailog.FileDialog()
         custom_fileDailog.show()
         custom_fileDailog.exec_()
@@ -226,18 +235,29 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
             self.fi_tableWidget.setItem(current_row_count, 2, filename_item)
             self.fi_tableWidget.setCellWidget(current_row_count, 3, custom_dropdown_widget)
             self.fi_tableWidget.setCellWidget(current_row_count, 4, pkg_dir_dropdown_widget)
-            discipline = self.fi_discipline_comboBox.currentText()
-            _, ext = os.path.splitext(filename)
-            if general_utils.get_custom_element_descs(self.item_data) and ext == '.exr':
-                pkg_dir_type = 'custom'
-                self.fi_tableWidget.setColumnHidden(3, False)
-                custom_dropdown_widget.setEnabled(True)
-            else:
-                pkg_dir_type = general_utils.assumed_pkg_type(discipline, file)
-            custom_dropdown_widget.setCurrentText('')
-            pkg_dir_dropdown_widget.setCurrentText(pkg_dir_type)
-            if pkg_dir_type == 'select':
-                filename_item.setBackgroundColor(QColor('#993300'))
+            if do_dropdown_process:
+                Kargs = {
+                    'filename':filename,
+                    'custom_dropdown_widget':custom_dropdown_widget,
+                    'pkg_dir_dropdown_widget':pkg_dir_dropdown_widget,
+                    'filename_item':filename_item,
+                }
+                self.dropdown_process(Kargs)
+
+    def dropdown_process(self, **Kargs):
+
+        discipline = self.fi_discipline_comboBox.currentText()
+        _, ext = os.path.splitext(Kargs['filename'])
+        if general_utils.get_custom_element_descs(self.item_data) and ext == '.exr':
+            pkg_dir_type = 'custom'
+            self.fi_tableWidget.setColumnHidden(3, False)
+            Kargs['custom_dropdown_widget'].setEnabled(True)
+        else:
+            pkg_dir_type = general_utils.assumed_pkg_type(discipline, Kargs['file'])
+        Kargs['custom_dropdown_widget'].setCurrentText('')
+        Kargs['pkg_dir_dropdown_widget'].setCurrentText(pkg_dir_type)
+        if pkg_dir_type == 'select':
+            Kargs['filename_item'].setBackgroundColor(QColor('#993300'))
 
     def pkg_dir_dropdown_exec(self, args):
 

@@ -17,7 +17,8 @@ class ShotItemWidget(shot_widget_item.Ui_swi_Frame, QDialog):
         self.pkg_type = pkg_type
         self.global_pkg_data = global_pkg_data
         self.pkg_dir = self.global_pkg_data.get('pkg_dir')
-        self.show_data = show_data or get_show_data(os.environ.get(('show')))
+        self.job = global_pkg_data.get('show', os.environ.get('show'))
+        self.show_data = show_data or get_show_data(self.job)
         self.shot = UNKNOWN
         self.discipline = UNKNOWN
         self.plate_version_num = UNKNOWN
@@ -106,14 +107,14 @@ class ShotItemWidget(shot_widget_item.Ui_swi_Frame, QDialog):
         self.parent_widget.takeItem(self.parent_widget.row(self.parent_item))
         self.parent_item.setSizeHint(self.swi_container_widget.sizeHint())
 
-    @staticmethod
-    def get_fi_data(parent_item, pkg_type, from_add_btn=False):
-        fi_widget = gui_file_importer.FileImporterWidget(pkg_dir=pkg_type)
-        if from_add_btn:
+
+    def get_fi_data(self):
+        fi_widget = gui_file_importer.FileImporterWidget(self.pkg_type)
+        if self.from_add_btn:
             fi_widget.fi_shot_comboBox.setEnabled(False)
             fi_widget.fi_discipline_comboBox.setEnabled(False)
-        if parent_item:
-            item_data = parent_item.data(Qt.UserRole)
+        if self.parent_item:
+            item_data = self.parent_item.data(Qt.UserRole)
         else:
             item_data = {}
         if item_data:
@@ -147,7 +148,7 @@ class ShotItemWidget(shot_widget_item.Ui_swi_Frame, QDialog):
 
 
     def add_exec(self, from_btn=False):
-        self.import_data = self.get_fi_data(self.parent_item, self.pkg_dir, from_btn)
+        self.import_data = self.get_fi_data()
         if not self.import_data:
             return
         self.import_data.update(self.global_pkg_data)
@@ -156,10 +157,12 @@ class ShotItemWidget(shot_widget_item.Ui_swi_Frame, QDialog):
 
         if not from_btn:
             self.import_data['pkg_type'] = self.pkg_type
-            shot_pkg_name = SHOT_PKG_NAME.format(self.import_data)
-            self.swi_lineEdit.setText(shot_pkg_name)
+            LOCAL_PKG_NAME = get_nomenclature(self.job, 'LOCAL_PKG_NAME')
+            pkg_name = LOCAL_PKG_NAME.format(self.import_data)
+            self.swi_lineEdit.setText(pkg_name)
         for file_data in self.import_data.get('files'):
             file_data['pkg_type'] = self.pkg_type
+            file_data['job'] = self.job
             file_data.update(self.import_data)
             file_data.pop('files')
             path_data, destination_path = package_dir_utiles.get_destination_info(

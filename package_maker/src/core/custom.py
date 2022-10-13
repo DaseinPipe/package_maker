@@ -7,7 +7,7 @@ from package_maker.src.utils import general_utils
 class Custom:
     def __init__(self, base_data=None):
         self.base_data = base_data
-
+        self.job = self.base_data.get('job', os.environ.get('job'))
         self._element_desc = UNKNOWN
         self._frame = UNKNOWN
         self._path_data = base_data or dict()
@@ -79,7 +79,7 @@ class Custom:
 
     @property
     def template(self):
-        return for_approval_filepath_template
+        return  get_path(self.job, 'for_approval_filepath_template')
 
     @property
     def destination_path(self):

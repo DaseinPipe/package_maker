@@ -7,6 +7,7 @@ from package_maker.src.utils import general_utils
 class ForApproval:
     def __init__(self, base_data=None):
         self.base_data = base_data
+        self.job = self.base_data.get('job', os.environ.get('show'))
         self._element_desc = UNKNOWN
         self._frame = UNKNOWN
         self._path_data = base_data or dict()
@@ -78,7 +79,7 @@ class ForApproval:
 
     @property
     def template(self):
-        return for_approval_filepath_template
+        return get_path(self.job, 'for_approval_filepath_template')
 
     @property
     def destination_path(self):
@@ -91,8 +92,10 @@ if __name__ == '__main__':
 
     t= ForApproval(base_data=base_data)
     r = 'temp_dir/20221002-dasein-asterix-v0005-package/20221002-dasein-asterix-v0005/shot-080_bb_0375-roto-master01-dasein-v001/for_approval/080_bb_0375-roto-master01-aces_UNKNOWN_v001/080_bb_0375-roto-master01-aces_UNKNOWN_v001.0-99.exr'
-    r = t.destination_path
+    r = t.path_data
     print(r)
 
     # print(t.template.parse(r))
+
+
 
