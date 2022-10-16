@@ -1,23 +1,24 @@
+import re
 import sys
 from importlib import reload
-import re
-from datetime import datetime
-from PySide2.QtWidgets import QApplication, QDialog, QDialogButtonBox, QListWidgetItem, QStyle
-from PySide2.QtGui import QGuiApplication
-from PySide2.QtCore import Qt, QFile, QTextStream, QSize
+
+from PySide2.QtCore import Qt, QSize
+from PySide2.QtWidgets import QApplication, QDialog, QDialogButtonBox, QListWidgetItem
 
 from package_maker.src.config.config_main import *
-from package_maker.src.gui import gui_file_importer, gui_shot_item
+from package_maker.src.gui import gui_file_importer, shot_widget_selector
 from package_maker.src.resource import resource_main, shot_widget_item
 from package_maker.src.utils import general_utils
-from package_maker import package_reload
 
 reload(resource_main)
 reload(shot_widget_item)
 reload(gui_file_importer)
 
-global GLOBAL_DATA
-GLOBAL_DATA = get_global_data()
+GLOBAL_DATA: dict = get_global_data()
+
+
+def update_database(item_data):
+    general_utils.update_shot_version(item_data)
 
 
 class PackageMakerDlg(resource_main.Ui_Dialog, QDialog):
@@ -32,11 +33,9 @@ class PackageMakerDlg(resource_main.Ui_Dialog, QDialog):
         self.apply_btn.setEnabled(False)
         self.job = UNKNOWN
         self.destination = UNKNOWN
-        self.vendor = UNKNOWN
         self.pkg_dir = UNKNOWN
-        self.pkg_version_prefix = UNKNOWN
         self.title = UNKNOWN
-        self.global_version = UNKNOWN
+        self._global_pkg_data =None
         self.stackedWidget.setCurrentIndex(0)
         self.populate_page1()
         self.connection()
@@ -59,17 +58,20 @@ class PackageMakerDlg(resource_main.Ui_Dialog, QDialog):
         self.shot_cancel_pushButton.clicked.connect(self.page2_cancel)
         self.shot_view_pushButton.clicked.connect(self.view_summary)
         self.summary_cancel_pushButton.clicked.connect(self.page3_cancel)
-        self.pkg_create_pushButton.clicked.connect(self.transfer_files)
+        self.pkg_create_pushButton.clicked.connect(self.create_pkg)
 
-
-    def transfer_files(self):
+    def create_pkg(self):
         for i in range(self.listWidget.count()):
             list_item = self.listWidget.item(i)
             item_data = list_item.data(Qt.UserRole)
-            self.update_database(item_data)
-
-    def update_database(self, item_data):
-        general_utils.update_shot_version(item_data)
+            item_widget = item_data['item_widget']
+            import_data = item_widget.import_data
+            general_utils.process_executor(
+                project=self.job,
+                processor='create_package',
+                process=import_data['discipline'],
+                data=import_data,
+            )
 
     def page3_cancel(self):
         self.stackedWidget.setCurrentIndex(1)
@@ -81,20 +83,13 @@ class PackageMakerDlg(resource_main.Ui_Dialog, QDialog):
     def page2_cancel(self):
         self.listWidget.clear()
         self.resize(self.start_size)
-        centerPoint = self.screen().availableGeometry().center()
-        self.move(centerPoint - self.frameGeometry().center())
+        center_point = self.screen().availableGeometry().center()
+        self.move(center_point - self.frameGeometry().center())
         self.stackedWidget.setCurrentIndex(0)
 
     @property
     def global_pkg_data(self):
-        return dict(
-            date=datetime.today().strftime('%Y%m%d'),
-            vendor=self.vendor,
-            show=self.job,
-            pkg_version_prefix=self.pkg_version_prefix,
-            pkg_version_num=self.global_version,
-            pkg_dir=self.pkg_dir,
-        )
+        return self._global_pkg_data
 
     def destination_exec(self, state):
         self.job_comboBox.clear()
@@ -105,8 +100,6 @@ class PackageMakerDlg(resource_main.Ui_Dialog, QDialog):
             return
         os.environ['destination'] = state
         self.destination = state
-        self.pkg_version_prefix = self.global_data['destination'][state]['pkg_version_prefix']
-        self.vendor = self.global_data['destination'][state]['vendor']
         job_list = list(self.global_data['destination'][state]['job'].keys())
         job_list.insert(0, 'Select')
         self.job_comboBox.addItems(job_list)
@@ -121,8 +114,6 @@ class PackageMakerDlg(resource_main.Ui_Dialog, QDialog):
         self.job = state
         self.title = self.global_data['destination'][self.destination]['job'][state]['title']
         self.pkg_dir = self.global_data['destination'][self.destination]['job'][state]['dir_path']
-        self.global_version = general_utils.get_latest_pkg_version(self.pkg_dir)
-
         self.apply_btn.setEnabled(True)
 
     def set_shot_status(self):
@@ -133,42 +124,63 @@ class PackageMakerDlg(resource_main.Ui_Dialog, QDialog):
         self.shot_select_lineEdit.setText(swi_main_widget.swi_lineEdit.text())
 
     def apply(self):
+        self.global_pkg_data = 'initiate'
         rect = self.screen().availableGeometry()
         self.move(rect.x() + 25, rect.y() + 50)
         self.resize(rect.width() - 50, rect.height() - 150)
         self.stackedWidget.setCurrentIndex(1)
         self.populate_page2()
 
+    @property
+    def global_pkg_name(self):
+        template = get_path(self.job.lower(), 'GLOBAL_PKG_NAME')
+        return template.format(self.global_pkg_data)
+
+    def make_pkg_dirs(self):
+        main_pkg_dir = get_path(self.job.lower(), 'main_pkg_dir')
+        main_pkg_dir_path = main_pkg_dir.format(self.global_pkg_data)
+        os.makedirs(main_pkg_dir_path)
+
     def populate_page2(self):
         self.asset_pushButton.setEnabled(False)
-        main_pkg_dir_path = main_pkg_dir.format(self.global_pkg_data)
-        os.makedirs(main_pkg_dir.format(self.global_pkg_data))
+        self.make_pkg_dirs()
         self.title_label.setText(self.title)
-        self.pkg_name_label.setText(GLOBAL_PKG_NAME.format(self.global_pkg_data))
+        self.pkg_name_label.setText(self.global_pkg_name)
 
     def populate_page3(self):
         self.summary_title_label.setText(self.title)
-        self.summary_pkg_name_label.setText(GLOBAL_PKG_NAME.format(self.global_pkg_data))
+        self.summary_pkg_name_label.setText(self.global_pkg_name)
 
     def add_shot(self):
-        itemN = QListWidgetItem()
-        item_widget = gui_shot_item.ShotItemWidget(
-            parent_item=itemN,
+        list_item = QListWidgetItem()
+        print(self.global_pkg_data)
+        item_widget = shot_widget_selector.get_shot_widget(
+            job=self.job,
+            parent_item=list_item,
             parent_widget=self.listWidget,
             global_pkg_data=self.global_pkg_data
         )
         item_widget.swi_status_lineEdit.textChanged.connect(self.set_selected_info)
-        itemN.setSizeHint(item_widget.sizeHint())
-        itemN.setData(Qt.UserRole, item_widget.import_data)
-        self.listWidget.addItem(itemN)
-        self.listWidget.setItemWidget(itemN, item_widget)
-        itemN.setSelected(True)
+        list_item.setSizeHint(item_widget.sizeHint())
+        list_item.setData(Qt.UserRole, {'item_widget': item_widget})
+        self.listWidget.addItem(list_item)
+        self.listWidget.setItemWidget(list_item, item_widget)
+        list_item.setSelected(True)
 
     def set_selected_info(self, info):
         if general_utils.is_name_matched(info, UNKNOWN):
             info = r'<span style="color:#993300;">UNKNOWN</span>'.join(re.split(UNKNOWN, info))
         self.selected_info_textEdit.setHtml(info)
 
+    @global_pkg_data.setter
+    def global_pkg_data(self, value):
+        if value != 'initiate':
+            raise RuntimeError('value should be "initiate" but plz make sur global_pkg_data is initiate once only')
+        self._global_pkg_data = general_utils.get_global_pkg_data(
+            self.job.lower(),
+            self.destination,
+            self.pkg_dir
+        )
 
 def run():
     app = QApplication(sys.argv)
@@ -182,4 +194,3 @@ def run():
 
 if __name__ == '__main__':
     run()
-

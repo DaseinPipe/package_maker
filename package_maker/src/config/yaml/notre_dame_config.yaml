@@ -1,0 +1,88 @@
+discipline:
+- roto
+- prep
+- comp
+- matchmove
+pkg_dir_types:
+  camera:
+    discipline:
+    - matchmove
+    ext_list:
+    - .fbx
+    - .abc
+    ext_type: app
+    match_list:
+    - cam
+    - camera
+    - len
+  custom: {}
+  element:
+    discipline:
+    - prep
+    - roto
+    ext_list:
+    - .exr
+    - .png
+    - .jpeg
+    - .tiff
+    ext_type: image
+    match_list:
+    - element
+    - STmaps
+    - map
+    - plate
+    - undistort
+    - matte
+  for_approval:
+    discipline:
+    - matchmove
+    - roto
+    - comp
+    ext_list:
+    - .exr
+    - .jpg
+    - .jpeg
+    - .png
+    - .tiff
+    ext_type: image
+    match_list: []
+  geometry:
+    discipline:
+    - matchmove
+    ext_list:
+    - .fbx
+    - .abc
+    ext_type: app
+    match_list: []
+  select: {}
+  workfile:
+    app_config:
+      3de: 3de
+      abc: maya
+      fbx: maya
+      ma: maya
+      nk: nuke
+      sfx: sfx
+    discipline:
+    - roto
+    - prep
+    - comp
+    - matchmove
+    ext_list:
+    - .nk
+    - .3de
+    - .hip
+    - .sfx
+    - .ma
+    ext_type: app
+    match_list: []
+plate_version_padding: 2
+plate_version_prefix: master
+seq_ext:
+- exr
+- jpg
+- jpeg
+- png
+- tiff
+shot_version_padding: 3
+shot_version_prefix: v

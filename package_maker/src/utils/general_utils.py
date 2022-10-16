@@ -1,11 +1,14 @@
 import csv
 import os.path
 from pathlib import Path
+from tempfile import NamedTemporaryFile
+import shutil
 
 
 
 from package_maker.src.core.for_approval import *
-from package_maker.src.utils import dbHelper
+from package_maker.src.utils import asterix_utils, trm_utils, dbHelper
+
 
 def is_name_matched(text, patterns):
     for pattern in patterns:
@@ -108,64 +111,14 @@ def assumed_pkg_type(dept, source_filepath):
     return global_discipline_pkg_type_assignment[dept][ext_type]['default']
 
 
-def get_latest_pkg_version(pkg_dir):
 
-    def get_existing_versions():
-        first_version = '{version_prefix}{version_num}'.format(
-            version_prefix=version_prefix,
-            version_num='0'.zfill(version_num)
-        )
-        if not os.path.exists(pkg_dir):
-            os.makedirs(pkg_dir)
-        pkg_names = sorted(os.listdir(pkg_dir))
-        if not pkg_names:
-            return [first_version]
-        version_list = []
-        for pkg_name in pkg_names:
-            version_expression = f'{version_prefix}\d' + '{' + str(version_num) + '}'
-            pkg_version = next(iter(re.findall(version_expression, pkg_name)), None)
-            if pkg_version:
-                version_list.append(pkg_version)
-        return sorted(version_list) or [first_version]
 
-    GLOBAl_DATA = get_global_data()
-    version_prefix = GLOBAl_DATA['destination'].get(os.environ.get('destination'), {}).get(
-        'pkg_version_prefix', global_pkg_version_prefix)
-    version_num = GLOBAl_DATA['destination'].get(os.environ.get('destination'), {}).get(
-        'pkg_version_padding', global_pkg_version_padding)
-    print(get_existing_versions())
-    latest_version = get_existing_versions()[-1]
-    up_version = re.sub(r'[0-9]+$',
-                  lambda x: str(int(x.group()) + 1).zfill(len(x.group())),
-                  latest_version)
-    return re.split(version_prefix, up_version)[-1]
+def get_global_pkg_data(job, destination, pkg_dir):
+    return {
+        'asterix': asterix_utils.global_pkg_data(job, destination, pkg_dir),
+        'trm': trm_utils.global_pkg_data(job, destination, pkg_dir)
+    }.get(job, asterix_utils.global_pkg_data(job, destination, pkg_dir))
 
-# depricated
-def update_shot_version_depricated(item_data):
-    pkg_dir = item_data['pkg_dir']
-    dept = item_data['discipline']
-    shot = item_data['shot']
-    db_path = os.path.join(pkg_dir, ".package/asterix.db").replace('\\', '/')
-    with dbHelper.ConnectDB(db_path) as con:
-        con.execute(f"SELECT client_version FROM {dept} WHERE shot = '{shot}'")
-        current_version = con.fetchone()
-    default_version = 1
-    if current_version:
-        latest_version = current_version[0] + 1
-    else:
-        latest_version = default_version + 1
-
-    with dbHelper.ConnectDB(db_path) as con:
-        con.execute(f"SELECT client_version FROM {dept} where shot = '{shot}'")
-        if con.fetchone():
-            msg = f"UPDATE {dept} set client_version = '{latest_version}' where shot = '{shot}'"
-        else:
-            msg = f"INSERT INTO {dept} (shot, client_version) VALUES ('{shot}', '{latest_version}')"
-        con.execute(msg)
-
-from tempfile import NamedTemporaryFile
-import shutil
-import csv
 
 
 
@@ -209,8 +162,6 @@ def update_shot_version(item_data):
 
 
 
-
-
 def get_latest_shot_version(item_data):
     pkg_dir = item_data['pkg_dir']
     dept = item_data['discipline']
@@ -229,39 +180,15 @@ def get_latest_shot_version(item_data):
                 return int(row['client_version'])
     return default_client_version
 
-# depricated function
-def get_latest_shot_version_depricated(item_data):
-    pkg_dir = item_data['pkg_dir']
-    dept = item_data['discipline']
-    shot = item_data['shot']
-    db_path = os.path.join(pkg_dir, ".package/asterix.db").replace('\\', '/')
-
-    with dbHelper.ConnectDB(db_path) as con:
-        msg = f'CREATE TABLE IF NOT EXISTS "{dept}" ("shot" TEXT UNIQUE, "client_version" INTEGER)'
-        con.execute(msg)
-
-    with dbHelper.ConnectDB(db_path) as con:
-        con.execute(f"SELECT client_version FROM {dept} WHERE shot = '{shot}'")
-        current_version = con.fetchone()
-    if current_version:
-        return current_version[0]
-    else:
-        return 1
 
 def get_custom_element_descs(item_data):
     pkg_dir = item_data['pkg_dir']
+    csv_path = os.path.join(pkg_dir, f".package/shot_list.csv").replace('\\', '/')
     dept = item_data['discipline']
     shot = item_data['shot']
     db_path = os.path.join(pkg_dir, ".package/asterix.db").replace('\\', '/')
     return []
-    with dbHelper.ConnectDB(db_path) as con:
-        con.execute(f"SELECT {dept}_element_descs FROM main_db WHERE shot = '{shot}'")
-        custom_element_descs = con.fetchone()
-    if custom_element_descs:
-        if not custom_element_descs[0]:
-            return
-        return [each.strip() for each in custom_element_descs[0].split(',')]
-    return []
+
 
 def get_shots(item_data):
     pkg_dir = item_data['pkg_dir']
@@ -271,7 +198,7 @@ def get_shots(item_data):
     csv_file = Path(csv_path)
     csv_file.touch(exist_ok=True)
     with open(csv_file, 'r') as csvfile:
-        reader = csv.DictReader(fix_nulls(csvfile), fieldnames=fields)
+        reader = csv.DictReader(csvfile, fieldnames=fields)
         shot_list = []
         for row in reader:
             if row['Shot Code'] and row['Shot Code'] != 'Shot Code':
@@ -302,6 +229,15 @@ def assume_shot(item_data):
     return find_patten(source_file, shots)
 
 
+
+def process_executor(project,processor, process,data,ignore_processes=None, app=None):
+    from package_maker.process_runner.core import process_runner
+    p = process_runner.ProcessRunner(project=project, processor=processor, app=app, process=process, kwargs=data, ignore_processes=ignore_processes)
+    p.runProcesses()
+    return True
+
+
+
 if __name__ == '__main__':
     source_filepath = r'C:/From_Pixstone/20220705B/082_em_0325/082_em_0325_roto_a_mb_v005/082_em_0325_matte_v005.993#.exr'
     source_filepath_list = ['C:/From_Pixstone/20220705B/082_em_0325/082_em_0325_roto_v005.nk',
@@ -328,25 +264,33 @@ if __name__ == '__main__':
     # for source_filepath in source_filepath_list:
     #     print(assumed_pkg_type(dept, source_filepath))
     
-    item_data = {'date': '20221008', 'discipline': 'roto', 'files': [], 'pkg_dir': '/mnt/pb6/Filmgate/TRM/io/To_Client/Package', 'pkg_type': 'shot', 'pkg_version_num': '0046', 'pkg_version_prefix': 'v', 'plate_version_num': '01', 'plate_version_prefix': 'master', 'shot': '080_bb_0360', 'shot_version_num': '001', 'shot_version_prefix': 'v', 'show': 'asterix', 'vendor': 'dasein'}
-    # print(update_shot_version(item_data))
+
+
 
     # pkg_dir = r'/mnt/pb6/Filmgate/TRM/io/To_Client/Package'
 
-    filepaths = [
-        "trm_ep01-rl03_00131_compositing_v0001_1009-1073#.exr",
-        "trm_ep01-rl03_00140_compositing_v0001_1009-1129#.exr",
-        "trm_ep01-rl03_00120_compositing_v0001.1009-1037#.exr",
-        "trm_ep01-rl03_00130_compositing_v0001.1009-1165#.exr",
-        "trm_ep01-rl03_00132_compositing_v0001.1009-1150#.exr",
-        "trm_ep01-rl01_00980_mattepainting_v0003.1001#.exr",
-        "trm_ep01-rl01_00980_mattepainting_v0003.1001#.exr",
-    ]
-    for file in filepaths:
-        print(11111111)
-        item_data = item_data.copy()
-        item_data['source_file'] = file
-        print(assume_shot(item_data))
+    # filepaths = [
+    #     "trm_ep01-rl03_00131_compositing_v0001_1009-1073#.exr",
+    #     "trm_ep01-rl03_00140_compositing_v0001_1009-1129#.exr",
+    #     "trm_ep01-rl03_00120_compositing_v0001.1009-1037#.exr",
+    #     "trm_ep01-rl03_00130_compositing_v0001.1009-1165#.exr",
+    #     "trm_ep01-rl03_00132_compositing_v0001.1009-1150#.exr",
+    #     "trm_ep01-rl01_00980_mattepainting_v0003.1001#.exr",
+    #     "trm_ep01-rl01_00980_mattepainting_v0003.1001#.exr",
+    # ]
+    # for file in filepaths:
+    #     print(11111111)
+    #     item_data = item_data.copy()
+    #     item_data['source_file'] = file
+    #     print(assume_shot(item_data))
 
 
+    item_data = {'date': '221015', 'discipline': 'comp', 'files': [{'date': '221015', 'destination_path': '/mnt/pb6/Filmgate/TRM/io/To_Client/Package/PKG-TRM-221015_E/TRM-comp-dasein-package/sequence/trm_ep01-rl02_00530_compositing_v0001.1009-1026#.exr', 'discipline': 'comp', 'ext': 'exr', 'filename': 'trm_ep01-rl02_00530_compositing_v0001.1009-1026#.exr', 'job': 'trm', 'pkg_dir': '/mnt/pb6/Filmgate/TRM/io/To_Client/Package', 'pkg_dir_type': 'for_approval', 'pkg_type': 'shot', 'pkg_version': 'E', 'shot': 'TRM_ep01-rl02_00530', 'shot_version_num': '001', 'shot_version_prefix': 'v', 'show': 'trm', 'source_path': '/mnt/pb6/Filmgate/TRM/io/From_Amolesh/20221014/0530_issue/Output/trm_ep01-rl02_00530_compositing_v0001/trm_ep01-rl02_00530_compositing_v0001.1009-1026#.exr', 'vendor': 'dasein'}, {'date': '221015', 'destination_path': '/mnt/pb6/Filmgate/TRM/io/To_Client/Package/PKG-TRM-221015_E/TRM-comp-dasein-package/sequence/trm_ep01-rl03_00131_compositing_v0001_1009-1073#.exr', 'discipline': 'comp', 'ext': 'exr', 'filename': 'trm_ep01-rl03_00131_compositing_v0001_1009-1073#.exr', 'job': 'trm', 'pkg_dir': '/mnt/pb6/Filmgate/TRM/io/To_Client/Package', 'pkg_dir_type': 'for_approval', 'pkg_type': 'shot', 'pkg_version': 'E', 'shot': 'TRM_ep01-rl03_00131', 'shot_version_num': '001', 'shot_version_prefix': 'v', 'show': 'trm', 'source_path': '/mnt/pb6/Filmgate/TRM/io/From_Amolesh/20221011/11shots/131/OUTPUT/trm_ep01-rl03_00131_compositing_v0001/trm_ep01-rl03_00131_compositing_v0001_1009-1073#.exr', 'vendor': 'dasein'}, {'date': '221015', 'destination_path': '/mnt/pb6/Filmgate/TRM/io/To_Client/Package/PKG-TRM-221015_E/TRM-comp-dasein-package/sequence/trm_ep01-rl03_00140_compositing_v0001_1009-1129#.exr', 'discipline': 'comp', 'ext': 'exr', 'filename': 'trm_ep01-rl03_00140_compositing_v0001_1009-1129#.exr', 'job': 'trm', 'pkg_dir': '/mnt/pb6/Filmgate/TRM/io/To_Client/Package', 'pkg_dir_type': 'for_approval', 'pkg_type': 'shot', 'pkg_version': 'E', 'shot': 'TRM_ep01-rl03_00140', 'shot_version_num': '001', 'shot_version_prefix': 'v', 'show': 'trm', 'source_path': '/mnt/pb6/Filmgate/TRM/io/From_Amolesh/20221011/11shots/140/Output/trm_ep01-rl03_00140_compositing_v0001/trm_ep01-rl03_00140_compositing_v0001_1009-1129#.exr', 'vendor': 'dasein'}, {'date': '221015', 'destination_path': '/mnt/pb6/Filmgate/TRM/io/To_Client/Package/PKG-TRM-221015_E/TRM-comp-dasein-package/sequence/trm_ep01-rl03_00120_compositing_v0001.1009-1037#.exr', 'discipline': 'comp', 'ext': 'exr', 'filename': 'trm_ep01-rl03_00120_compositing_v0001.1009-1037#.exr', 'job': 'trm', 'pkg_dir': '/mnt/pb6/Filmgate/TRM/io/To_Client/Package', 'pkg_dir_type': 'for_approval', 'pkg_type': 'shot', 'pkg_version': 'E', 'shot': 'TRM_ep01-rl03_00120', 'shot_version_num': '001', 'shot_version_prefix': 'v', 'show': 'trm', 'source_path': '/mnt/pb6/Filmgate/TRM/io/From_Amolesh/20221011/11shots/120/Output/trm_ep01-rl03_00120_compositing_v0001/trm_ep01-rl03_00120_compositing_v0001.1009-1037#.exr', 'vendor': 'dasein'}, {'date': '221015', 'destination_path': '/mnt/pb6/Filmgate/TRM/io/To_Client/Package/PKG-TRM-221015_E/TRM-comp-dasein-package/sequence/trm_ep01-rl03_00130_compositing_v0001.1009-1165#.exr', 'discipline': 'comp', 'ext': 'exr', 'filename': 'trm_ep01-rl03_00130_compositing_v0001.1009-1165#.exr', 'job': 'trm', 'pkg_dir': '/mnt/pb6/Filmgate/TRM/io/To_Client/Package', 'pkg_dir_type': 'for_approval', 'pkg_type': 'shot', 'pkg_version': 'E', 'shot': 'TRM_ep01-rl03_00130', 'shot_version_num': '001', 'shot_version_prefix': 'v', 'show': 'trm', 'source_path': '/mnt/pb6/Filmgate/TRM/io/From_Amolesh/20221011/11shots/130/OUTPUT/trm_ep01-rl03_00130_compositing_v0001/trm_ep01-rl03_00130_compositing_v0001.1009-1165#.exr', 'vendor': 'dasein'}, {'date': '221015', 'destination_path': '/mnt/pb6/Filmgate/TRM/io/To_Client/Package/PKG-TRM-221015_E/TRM-comp-dasein-package/sequence/trm_ep01-rl03_00132_compositing_v0001.1009-1150#.exr', 'discipline': 'comp', 'ext': 'exr', 'filename': 'trm_ep01-rl03_00132_compositing_v0001.1009-1150#.exr', 'job': 'trm', 'pkg_dir': '/mnt/pb6/Filmgate/TRM/io/To_Client/Package', 'pkg_dir_type': 'for_approval', 'pkg_type': 'shot', 'pkg_version': 'E', 'shot': 'TRM_ep01-rl03_00132', 'shot_version_num': '001', 'shot_version_prefix': 'v', 'show': 'trm', 'source_path': '/mnt/pb6/Filmgate/TRM/io/From_Amolesh/20221011/11shots/132/Output/trm_ep01-rl03_00132_compositing_v0001/trm_ep01-rl03_00132_compositing_v0001.1009-1150#.exr', 'vendor': 'dasein'}, {'date': '221015', 'destination_path': '/mnt/pb6/Filmgate/TRM/io/To_Client/Package/PKG-TRM-221015_E/TRM-comp-dasein-package/sequence/trm_ep01-rl01_00980_mattepainting_v0003.1001#.exr', 'discipline': 'comp', 'ext': 'exr', 'filename': 'trm_ep01-rl01_00980_mattepainting_v0003.1001#.exr', 'job': 'trm', 'pkg_dir': '/mnt/pb6/Filmgate/TRM/io/To_Client/Package', 'pkg_dir_type': 'for_approval', 'pkg_type': 'shot', 'pkg_version': 'E', 'shot': 'TRM_ep01-rl01_00980', 'shot_version_num': '001', 'shot_version_prefix': 'v', 'show': 'trm', 'source_path': '/mnt/pb6/Filmgate/TRM/io/From_Amolesh/20221013/0090/DMP_precomp/trm_ep01-rl01_00980_mattepainting_v0003.1001#.exr', 'vendor': 'dasein'}, {'date': '221015', 'destination_path': '/mnt/pb6/Filmgate/TRM/io/To_Client/Package/PKG-TRM-221015_E/TRM-comp-dasein-package/sequence/trm_ep01-rl01_00980_mattepainting_v0003.1001#.exr', 'discipline': 'comp', 'ext': 'exr', 'filename': 'trm_ep01-rl01_00980_mattepainting_v0003.1001#.exr', 'job': 'trm', 'pkg_dir': '/mnt/pb6/Filmgate/TRM/io/To_Client/Package', 'pkg_dir_type': 'for_approval', 'pkg_type': 'shot', 'pkg_version': 'E', 'shot': 'TRM_ep01-rl01_00980', 'shot_version_num': '001', 'shot_version_prefix': 'v', 'show': 'trm', 'source_path': '/mnt/pb6/Filmgate/TRM/io/From_Amolesh/20221012/1030/DMP_precomp/trm_ep01-rl01_00980_mattepainting_v0003.1001#.exr', 'vendor': 'dasein'}], 'pkg_dir': '/mnt/pb6/Filmgate/TRM/io/To_Client/Package', 'pkg_type': 'shot', 'pkg_version': 'E', 'show': 'trm', 'vendor': 'dasein'}
+    #
+    # for file_data in item_data['files']:
+    #     update_shot_version(file_data)
 
+    item_data = {'pkg_dir': '/mnt/mpcparis/NOTRE_DAME/io/To_Client/packages', 'shot': '1039b_0010', 'discipline': 'roto'}
+
+
+    print(get_custom_element_descs(item_data))

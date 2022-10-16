@@ -8,7 +8,7 @@ from package_maker.src.gui.gui_file_importer import FileImporterWidget
 from package_maker.src.utils import general_utils
 
 
-class FilmgateFileImporter(FileImporterWidget):
+class FilmgateFileImporter(FileImporterWidget, object):
 
     def __init__(self,pkg_dir, show_data=None):
         super(FilmgateFileImporter, self).__init__(pkg_dir, show_data)
@@ -24,14 +24,14 @@ class FilmgateFileImporter(FileImporterWidget):
             self.fi_plate_version_comboBox
         ]
 
-    def table_manipulation(self):
-        fi_tableWidget = self.fi_tableWidget
-        fi_tableWidget.setColumnHidden(4, True)
-        current_column_count = fi_tableWidget.columnCount()
-        fi_tableWidget.insertColumn(current_column_count)
-        fi_tableWidget.setHorizontalHeaderItem(current_column_count, QTableWidgetItem('shots'))
+    def add_column(self, column_name):
+        tableWidget = self.fi_tableWidget
+        tableWidget.setColumnHidden(4, True)
+        current_column_count = tableWidget.columnCount()
+        tableWidget.insertColumn(current_column_count)
+        tableWidget.setHorizontalHeaderItem(current_column_count, QTableWidgetItem(column_name))
         horizontalHeader = self.fi_tableWidget.horizontalHeader()
-        shot_column_no = self.get_column_no(column_name='shots')
+        shot_column_no = self.get_column_no(column_name=column_name)
         horizontalHeader.setSectionResizeMode(shot_column_no, QHeaderView.ResizeToContents)
 
 
@@ -43,7 +43,7 @@ class FilmgateFileImporter(FileImporterWidget):
 
         for each_widget in self.hide_widget_list:
             each_widget.setHidden(True)
-        self.table_manipulation()
+        self.add_column('shots')
 
 
     def get_column_no(self, column_name):
@@ -152,7 +152,9 @@ class FilmgateFileImporter(FileImporterWidget):
                     'shot_version_num': self.shot_version_num,
                     'shot_version_prefix': shot_prefix,
                     'shot': shot,
-                    'pkg_dir_type': 'for_approval'
+                    'pkg_dir_type': 'for_approval',
+                    'filename':filename,
+                    'pkg_version': 'A',
                 }
             )
         self.import_data = {

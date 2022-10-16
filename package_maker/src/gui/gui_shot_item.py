@@ -109,7 +109,7 @@ class ShotItemWidget(shot_widget_item.Ui_swi_Frame, QDialog):
 
 
     def get_fi_data(self):
-        fi_widget = gui_file_importer.FileImporterWidget(self.pkg_type)
+        fi_widget = gui_file_importer.FileImporterWidget(self.pkg_dir)
         if self.from_add_btn:
             fi_widget.fi_shot_comboBox.setEnabled(False)
             fi_widget.fi_discipline_comboBox.setEnabled(False)
@@ -148,71 +148,130 @@ class ShotItemWidget(shot_widget_item.Ui_swi_Frame, QDialog):
 
 
     def add_exec(self, from_btn=False):
-        self.import_data = self.get_fi_data()
-        if not self.import_data:
+        self.from_add_btn = from_btn
+        self.base_data = self.get_fi_data()
+        if not self.base_data:
             return
-        self.import_data.update(self.global_pkg_data)
-        self.shot = self.import_data.get('shot', UNKNOWN)
-        self.discipline = self.import_data.get('discipline', UNKNOWN)
+        self.base_data.update(self.global_pkg_data)
+        self.shot = self.base_data.get('shot', UNKNOWN)
+        self.discipline = self.base_data.get('discipline', UNKNOWN)
 
         if not from_btn:
-            self.import_data['pkg_type'] = self.pkg_type
+            self.base_data['pkg_type'] = self.pkg_type
             LOCAL_PKG_NAME = get_nomenclature(self.job, 'LOCAL_PKG_NAME')
-            pkg_name = LOCAL_PKG_NAME.format(self.import_data)
+            pkg_name = LOCAL_PKG_NAME.format(self.base_data)
             self.swi_lineEdit.setText(pkg_name)
-        for file_data in self.import_data.get('files'):
+        for file_data in self.base_data.get('files'):
             file_data['pkg_type'] = self.pkg_type
             file_data['job'] = self.job
-            file_data.update(self.import_data)
+            file_data.update(self.base_data)
             file_data.pop('files')
             path_data, destination_path = package_dir_utiles.get_destination_info(
                 file_data['pkg_dir_type'], file_data.copy()
             )
             file_data['destination_path'] = destination_path
-            self.add_row(file_data.copy())
+            self.add_row(
+                add_row_config=self.add_row_config(),
+                file_data=file_data.copy()
+            )
         self.set_package_path_dups()
         if self.parent_item and self.swi_dropdown_toolButton.text() == 'v':
             self.parent_item.setSizeHint(self.swi_container_widget.sizeHint())
 
 
-    def add_row(self, file_data):
+    def add_source_row(self, file_data, current_row_count):
         source_path = file_data.get('source_path')
-        destination_path = file_data.get('destination_path')
-        current_row_count = self.swi_tableWidget.rowCount()
-        pkg_type_row_dropdown = self.row_dropdown_widget(type='pkg_type')
-        args = [pkg_type_row_dropdown, current_row_count, file_data]
-        pkg_type_row_dropdown.currentIndexChanged.connect(lambda _, args=args: self.pkg_type_row_dropdown_exec(args=args))
-
-        custom_row_dropdown = self.row_dropdown_widget(type='custom')
-        custom_row_dropdown.setEnabled(False)
-
-        destination_item = QTableWidgetItem(destination_path)
-        self.cell_editable(destination_item, False)
         source_item = QTableWidgetItem(source_path)
         self.cell_editable(source_item, False)
-        path_data_item = QTableWidgetItem(str(file_data))
-        self.cell_editable(path_data_item, False)
-
-        self.swi_tableWidget.insertRow(current_row_count)
-        self.swi_tableWidget.setCellWidget(current_row_count, 0, self.row_cancel_widget())
         self.swi_tableWidget.setItem(current_row_count, 1, source_item)
+
+    def add_destination_row(self, file_data, current_row_count):
+        destination_path = file_data.get('destination_path')
+        destination_item = QTableWidgetItem(destination_path)
+        self.cell_editable(destination_item, False)
         self.swi_tableWidget.setItem(current_row_count, 2, destination_item)
+
+    def add_cancel_row(self,  current_row_count):
+        self.swi_tableWidget.setCellWidget(current_row_count, 0, self.row_cancel_widget())
+
+
+    def add_custom_name_row(self, file_data, current_row_count):
+        custom_row_dropdown = self.row_dropdown_widget(type='custom')
+        custom_row_dropdown.setEnabled(False)
         self.swi_tableWidget.setCellWidget(current_row_count, 3, custom_row_dropdown)
-        self.swi_tableWidget.setCellWidget(current_row_count, 4, pkg_type_row_dropdown)
-        self.swi_tableWidget.setItem(current_row_count, 5, path_data_item)
-
-        pkg_type_row_dropdown.setCurrentText(file_data.get('pkg_dir_type', 'select'))
         custom_row_dropdown.setCurrentText(file_data.get('custom_name', ''))
-
         if file_data.get('pkg_dir_type', 'select') == 'custom':
             self.swi_tableWidget.setColumnHidden(3, False)
             custom_row_dropdown.setEnabled(True)
 
-        has_error = general_utils.is_name_matched(destination_path, [UNKNOWN])
-        if has_error:
-            source_item.setBackgroundColor(QColor('#993300'))
-            destination_item.setText('')
-            pkg_type_row_dropdown.setCurrentText('select')
+    def add_pkg_type_row(self, file_data, current_row_count):
+        pkg_type_row_dropdown = self.row_dropdown_widget(type='pkg_type')
+        args = [pkg_type_row_dropdown, current_row_count, file_data]
+        pkg_type_row_dropdown.currentIndexChanged.connect(lambda _, args=args: self.pkg_type_row_dropdown_exec(args=args))
+        self.swi_tableWidget.setCellWidget(current_row_count, 4, pkg_type_row_dropdown)
+        pkg_type_row_dropdown.setCurrentText(file_data.get('pkg_dir_type', 'select'))
+
+    def add_path_data_row(self, file_data, current_row_count):
+        path_data_item = QTableWidgetItem(str(file_data))
+        self.cell_editable(path_data_item, False)
+        self.swi_tableWidget.setItem(current_row_count, 5, path_data_item)
+
+
+    @property
+    def import_data(self):
+        base_data = self.base_data
+        allRows = self.swi_tableWidget.rowCount()
+        filelist = []
+        for row in range(0, allRows):
+            path_data = eval(self.swi_tableWidget.item(row, 5).text())
+            filelist.append(path_data)
+        base_data['files'] = filelist
+        return base_data
+
+
+
+    @staticmethod
+    def add_row_config():
+        return {
+            'add_cancel_row': True,
+            'add_source_row': True,
+            'add_destination_row': True,
+            'add_custom_name_row': True,
+            'add_pkg_type_row': True,
+            'add_path_data_row': True
+        }
+
+
+    def add_row(self, add_row_config, file_data):
+        current_row_count = self.swi_tableWidget.rowCount()
+        self.swi_tableWidget.insertRow(current_row_count)
+
+        if add_row_config.get('add_cancel_row'):
+            self.add_cancel_row(current_row_count)
+
+        if add_row_config.get('add_source_row'):
+            self.add_source_row(file_data, current_row_count)
+
+        if add_row_config.get('add_destination_row'):
+            self.add_destination_row(file_data, current_row_count)
+
+        if add_row_config.get('add_custom_name_row'):
+            self.add_custom_name_row(file_data, current_row_count)
+
+        if add_row_config.get('add_pkg_type_row'):
+            self.add_pkg_type_row(file_data, current_row_count)
+
+        if add_row_config.get('add_path_data_row'):
+            self.add_path_data_row(file_data, current_row_count)
+
+            self.add_path_data_row(file_data, current_row_count)
+            self.add_path_data_row(file_data, current_row_count)
+
+        # has_error = general_utils.is_name_matched(destination_path, [UNKNOWN])
+        # if has_error:
+        #     source_item.setBackgroundColor(QColor('#993300'))
+        #     destination_item.setText('')
+        #     pkg_type_row_dropdown.setCurrentText('select')
 
 
     def cell_editable(self, item, status=False):
@@ -297,7 +356,9 @@ class ShotItemWidget(shot_widget_item.Ui_swi_Frame, QDialog):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    global_pkg_data = {'date': '20221008', 'vendor': 'dasein', 'show': 'asterix', 'pkg_version_prefix': 'v', 'pkg_version_num': '0021', 'pkg_dir': 'C:/mnt/mpcparis/A5/io/To_Client/packages'}
+    global_pkg_data = {'date': '20221016', 'vendor': 'dasein', 'show': 'notre_dame', 'pkg_version_prefix': 'v', 'pkg_version_num': '0008', 'pkg_dir': '/mnt/mpcparis/NOTRE_DAME/io/To_Client/packages'}
     w = ShotItemWidget(global_pkg_data=global_pkg_data)
     w.show()
     app.exec_()
+
+    # list_item.setData(Qt.UserRole, item_widget.import_data)

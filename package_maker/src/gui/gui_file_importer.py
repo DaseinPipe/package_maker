@@ -11,9 +11,10 @@ from package_maker.src.config.config_main import *
 class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
 
     def __init__(self,pkg_dir, show_data=None):
-        super(FileImporterWidget, self).__init__()
+        super().__init__()
         self.show_data = show_data or get_show_data(os.environ.get(('show')))
         self.setupUi(self)
+        print(pkg_dir)
         self.pkg_dir = pkg_dir
         # self.setModal(True)
         self.populate()
@@ -41,7 +42,7 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
         self.fi_plate_version_comboBox.clear()
         self.fi_shot_version_comboBox.clear()
         discipline_list = self.show_data.get('discipline', global_discipline)
-
+        print(self.item_data)
         shot_list = general_utils.get_shots(self.item_data)
         self.fi_discipline_comboBox.addItems(discipline_list)
         self.fi_shot_comboBox.addItems(shot_list)
@@ -58,7 +59,7 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
     def connection(self):
         self.fi_shot_comboBox.currentTextChanged.connect(self.set_shot_version)
         self.fi_discipline_comboBox.currentTextChanged.connect(self.refresh_all)
-        self.fi_import_pushButton.clicked.connect(self.fi_import)
+        self.fi_import_pushButton.clicked.connect(lambda : self.fi_import(do_dropdown_process=True))
         self.fi_apply_pushButton.clicked.connect(self.fi_apply)
         self.fi_cancel_pushButton.clicked.connect(self.close)
 
@@ -237,12 +238,13 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
             self.fi_tableWidget.setCellWidget(current_row_count, 4, pkg_dir_dropdown_widget)
             if do_dropdown_process:
                 Kargs = {
-                    'filename':filename,
-                    'custom_dropdown_widget':custom_dropdown_widget,
-                    'pkg_dir_dropdown_widget':pkg_dir_dropdown_widget,
-                    'filename_item':filename_item,
+                    'file': file,
+                    'filename': filename,
+                    'custom_dropdown_widget': custom_dropdown_widget,
+                    'pkg_dir_dropdown_widget': pkg_dir_dropdown_widget,
+                    'filename_item': filename_item,
                 }
-                self.dropdown_process(Kargs)
+                self.dropdown_process(**Kargs)
 
     def dropdown_process(self, **Kargs):
 
@@ -281,7 +283,7 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    pkg_dir = r'C:/mnt/mpcparis/A5/io/To_Client/packages'
+    pkg_dir = r'/mnt/mpcparis/NOTRE_DAME/io/To_Client/packages'
     w = FileImporterWidget(pkg_dir=pkg_dir)
     w.show()
     app.exec_()

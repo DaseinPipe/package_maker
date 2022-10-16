@@ -168,6 +168,17 @@ def trm_config_setup():
         plate_version_prefix='master'
     )
 
+def notre_dame_config_setup():
+    return dict(
+        discipline=global_discipline,
+        seq_ext=global_seq_ext,
+        pkg_dir_types=global_pkg_dir_types,
+        shot_version_padding=3,
+        shot_version_prefix='v',
+        plate_version_padding=2,
+        plate_version_prefix='master'
+    )
+
 
 
 def test_config_setup():
@@ -227,6 +238,7 @@ def get_show_config(show):
         asterix=asterix_config_setup(),
         test=test_config_setup(),
         trm=trm_config_setup(),
+        notre_dame=notre_dame_config_setup(),
     ).get(show)
 
 
@@ -271,6 +283,6 @@ def get_nomenclature(job, attr):
 
 
 if __name__ == '__main__':
-    show_list = ['asterix', 'test', 'trm']
+    show_list = ['asterix', 'test', 'trm', 'notre_dame']
     global_config_exec()
     for show in show_list:  show_config_exec(show)
