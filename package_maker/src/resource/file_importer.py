@@ -29,26 +29,26 @@ class Ui_File_Importer(object):
 
         self.gridLayout = QGridLayout()
         self.gridLayout.setObjectName(u"gridLayout")
-        self.label_3 = QLabel(File_Importer)
-        self.label_3.setObjectName(u"label_3")
+        self.fi_plate_version_label = QLabel(File_Importer)
+        self.fi_plate_version_label.setObjectName(u"fi_plate_version_label")
         font = QFont()
         font.setFamily(u"Times New Roman")
-        self.label_3.setFont(font)
-        self.label_3.setAlignment(Qt.AlignCenter)
+        self.fi_plate_version_label.setFont(font)
+        self.fi_plate_version_label.setAlignment(Qt.AlignCenter)
 
-        self.gridLayout.addWidget(self.label_3, 0, 2, 1, 1)
+        self.gridLayout.addWidget(self.fi_plate_version_label, 0, 2, 1, 1)
 
-        self.label_2 = QLabel(File_Importer)
-        self.label_2.setObjectName(u"label_2")
+        self.fi_discipline_label = QLabel(File_Importer)
+        self.fi_discipline_label.setObjectName(u"fi_discipline_label")
         sizePolicy = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
         sizePolicy.setHorizontalStretch(0)
         sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.label_2.sizePolicy().hasHeightForWidth())
-        self.label_2.setSizePolicy(sizePolicy)
-        self.label_2.setFont(font)
-        self.label_2.setAlignment(Qt.AlignCenter)
+        sizePolicy.setHeightForWidth(self.fi_discipline_label.sizePolicy().hasHeightForWidth())
+        self.fi_discipline_label.setSizePolicy(sizePolicy)
+        self.fi_discipline_label.setFont(font)
+        self.fi_discipline_label.setAlignment(Qt.AlignCenter)
 
-        self.gridLayout.addWidget(self.label_2, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.fi_discipline_label, 1, 0, 1, 1)
 
         self.fi_shot_comboBox = QComboBox(File_Importer)
         self.fi_shot_comboBox.setObjectName(u"fi_shot_comboBox")
@@ -76,15 +76,15 @@ class Ui_File_Importer(object):
 
         self.gridLayout.addWidget(self.fi_shot_version_comboBox, 1, 3, 1, 1)
 
-        self.label = QLabel(File_Importer)
-        self.label.setObjectName(u"label")
+        self.fi_shot_label = QLabel(File_Importer)
+        self.fi_shot_label.setObjectName(u"fi_shot_label")
         font1 = QFont()
         font1.setFamily(u"Times New Roman")
         font1.setPointSize(8)
-        self.label.setFont(font1)
-        self.label.setAlignment(Qt.AlignCenter)
+        self.fi_shot_label.setFont(font1)
+        self.fi_shot_label.setAlignment(Qt.AlignCenter)
 
-        self.gridLayout.addWidget(self.label, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.fi_shot_label, 0, 0, 1, 1)
 
         self.fi_plate_version_comboBox = QComboBox(File_Importer)
         self.fi_plate_version_comboBox.setObjectName(u"fi_plate_version_comboBox")
@@ -194,10 +194,10 @@ class Ui_File_Importer(object):
 
     def retranslateUi(self, File_Importer):
         File_Importer.setWindowTitle(QCoreApplication.translate("File_Importer", u"Frame", None))
-        self.label_3.setText(QCoreApplication.translate("File_Importer", u"Plate Version:-", None))
-        self.label_2.setText(QCoreApplication.translate("File_Importer", u"Discipline:- ", None))
+        self.fi_plate_version_label.setText(QCoreApplication.translate("File_Importer", u"Plate Version:-", None))
+        self.fi_discipline_label.setText(QCoreApplication.translate("File_Importer", u"Discipline:- ", None))
         self.fi_shot_version_label.setText(QCoreApplication.translate("File_Importer", u"Shot Version:-", None))
-        self.label.setText(QCoreApplication.translate("File_Importer", u"shot:- ", None))
+        self.fi_shot_label.setText(QCoreApplication.translate("File_Importer", u"shot:- ", None))
         self.fi_import_pushButton.setText(QCoreApplication.translate("File_Importer", u"Import", None))
         self.fi_apply_pushButton.setText(QCoreApplication.translate("File_Importer", u"Apply", None))
         self.fi_global_pkg_label.setText("")
