@@ -1,6 +1,7 @@
 import sys
-import os
-from PySide2.QtWidgets import QApplication, QDialog, QToolButton, QLineEdit, QTableWidgetItem, QComboBox, QHeaderView, QMessageBox
+from collections.abc import Iterable
+from PySide2.QtWidgets import QApplication, QDialog, QToolButton, QLineEdit, QTableWidgetItem, QComboBox, QHeaderView, \
+    QMessageBox
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QColor
 from package_maker.src.resource import custom_file_dailog, file_importer, message_box
@@ -10,22 +11,23 @@ from package_maker.src.config.config_main import *
 
 class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
 
-    def __init__(self,pkg_dir, show_data=None):
-        super(FileImporterWidget, self).__init__()
-        self.show_data = show_data or get_show_data(os.environ.get(('show')))
+    def __init__(self, current_pkg_dir, show_data=None):
+        super().__init__()
+        self.shot_version_num = None
+        self.show_data = show_data or get_show_data(os.environ.get('show'))
         self.setupUi(self)
-        self.pkg_dir = pkg_dir
+        self.pkg_dir = current_pkg_dir
         # self.setModal(True)
         self.populate()
         self.connection()
         self.set_shot_version()
         self.import_data = None
-        horizontalHeader = self.fi_tableWidget.horizontalHeader()
-        horizontalHeader.resizeSection(0, 30)
-        horizontalHeader.setSectionResizeMode(1, QHeaderView.Stretch)
-        horizontalHeader.setSectionResizeMode(2, QHeaderView.ResizeToContents)
-        horizontalHeader.setSectionResizeMode(3, QHeaderView.ResizeToContents)
-        horizontalHeader.resizeSection(4, 100)
+        horizontal_header = self.fi_tableWidget.horizontalHeader()
+        horizontal_header.resizeSection(0, 30)
+        horizontal_header.setSectionResizeMode(1, QHeaderView.Stretch)
+        horizontal_header.setSectionResizeMode(2, QHeaderView.ResizeToContents)
+        horizontal_header.setSectionResizeMode(3, QHeaderView.ResizeToContents)
+        horizontal_header.resizeSection(4, 100)
         self.fi_tableWidget.setColumnHidden(3, True)
 
     def populate(self):
@@ -40,7 +42,6 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
         self.fi_plate_version_comboBox.clear()
         self.fi_shot_version_comboBox.clear()
         discipline_list = self.show_data.get('discipline', global_discipline)
-
         shot_list = general_utils.get_shots(self.item_data)
         self.fi_discipline_comboBox.addItems(discipline_list)
         self.fi_shot_comboBox.addItems(shot_list)
@@ -55,12 +56,14 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
 
     def connection(self):
         self.fi_shot_comboBox.currentTextChanged.connect(self.set_shot_version)
+        self.fi_shot_comboBox.currentTextChanged.connect(self.refresh_all)
         self.fi_discipline_comboBox.currentTextChanged.connect(self.refresh_all)
-        self.fi_import_pushButton.clicked.connect(self.fi_import)
+        self.fi_import_pushButton.clicked.connect(lambda: self.fi_import(do_dropdown_process=True))
         self.fi_apply_pushButton.clicked.connect(self.fi_apply)
         self.fi_cancel_pushButton.clicked.connect(self.close)
 
     def refresh_row(self, row, auto_assume=True):
+
         discipline = self.fi_discipline_comboBox.currentText()
         dirpath_item = self.fi_tableWidget.item(row, 1)
         filename_item = self.fi_tableWidget.item(row, 2)
@@ -73,23 +76,26 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
                 pkg_dir_type = 'custom'
                 self.fi_tableWidget.setColumnHidden(3, False)
                 custom_dropdown_widget.setEnabled(True)
+                self.set_assumed_custom_name(row)
             else:
                 custom_dropdown_widget.setCurrentText('')
                 pkg_dir_type = general_utils.assumed_pkg_type(discipline, filepath)
             pkg_type_dropdown_widget.setCurrentText(pkg_dir_type)
         else:
             pkg_dir_type = pkg_type_dropdown_widget.currentText()
+
         if pkg_dir_type == 'select':
+
             filename_item.setBackgroundColor(QColor('#993300'))
         else:
-            filename_item.setBackgroundColor(QColor('#FFFFFF'))
 
+            filename_item.setBackgroundColor(QColor('#FFFFFF'))
 
     def refresh_all(self):
         self.set_shot_version()
-        allRows = self.fi_tableWidget.rowCount()
+        all_rows = self.fi_tableWidget.rowCount()
         has_custom_pkg_type = False
-        for row in range(0, allRows):
+        for row in range(0, all_rows):
             self.refresh_row(row)
             if self.fi_tableWidget.cellWidget(row, 4).currentText() == 'custom':
                 has_custom_pkg_type = True
@@ -98,6 +104,7 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
             self.fi_tableWidget.setColumnHidden(3, False)
         else:
             self.fi_tableWidget.setColumnHidden(3, True)
+
     @property
     def item_data(self):
         return {
@@ -112,8 +119,8 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
         self.shot_version_num = str(_shot_version_num).zfill(shot_padding)
 
     def validate_pkg_type(self):
-        allRows = self.fi_tableWidget.rowCount()
-        for row in range(0, allRows):
+        all_rows = self.fi_tableWidget.rowCount()
+        for row in range(0, all_rows):
             dropdown_widget = self.fi_tableWidget.cellWidget(row, 4)
             if dropdown_widget.currentText() == 'select':
                 return False
@@ -129,21 +136,22 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
         fi_table_cancel_pushButton.clicked.connect(lambda: fi_row_delete(fi_table_cancel_pushButton))
         return fi_table_cancel_pushButton
 
-    def row_dropdown_widget(self, type):
-        '''
-        :param type: enum
+    def row_dropdown_widget(self, _type):
+        """
+        :param _type: enum
         :valid types:- valid types 'custom' or 'pkg_type'
         :return: QComboBox Widget
-        '''
+        """
         row_comboBox = QComboBox(self.fi_tableWidget)
-        if type == 'pkg_type':
+        if _type == 'pkg_type':
             content_list = list(self.show_data.get('pkg_dir_types', global_pkg_dir_types).keys())
-        elif type == 'custom':
+        elif _type == 'custom':
             content_list = general_utils.get_custom_element_descs(self.item_data) or []
             content_list.append('')
         else:
             return row_comboBox
         row_comboBox.addItems(content_list)
+        setattr(row_comboBox, "allItems", lambda: [row_comboBox.itemText(i) for i in range(row_comboBox.count())])
         return row_comboBox
 
     def remove_select_rows(self):
@@ -154,8 +162,6 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
                 self.fi_tableWidget.removeRow(row)
                 return self.remove_select_rows()
         return
-
-
 
     def fi_apply(self):
         if not self.validate_pkg_type():
@@ -198,12 +204,23 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
         }
         self.close()
 
-    def fi_import(self):
+    def set_assumed_custom_name(self, row_no):
+        custom_name_item = self.fi_tableWidget.cellWidget(row_no, 3)
+        custom_names = custom_name_item.allItems()
+        source_file_item = self.fi_tableWidget.item(row_no, 2)
+        source_filepath = source_file_item.text()
+        custom_name = general_utils.find_patten(source_filepath, custom_names, get_matched_pattern=True)
+        if not custom_name:
+            source_file_item.setBackgroundColor(QColor('#993300'))
+            custom_name = ''
+        custom_name_item.setCurrentText(custom_name)
+
+    def fi_import(self, do_dropdown_process=True):
         custom_fileDailog = custom_file_dailog.FileDialog()
         custom_fileDailog.show()
         custom_fileDailog.exec_()
         files = custom_fileDailog.filesSelected()
-        if not files:
+        if not isinstance(files, Iterable):
             return
         extended_files = []
         for file in files:
@@ -214,10 +231,11 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
         for file in extended_files:
             dirpath, filename = os.path.split(file)
             current_row_count = self.fi_tableWidget.rowCount()
-            pkg_dir_dropdown_widget = self.row_dropdown_widget(type='pkg_type')
+            pkg_dir_dropdown_widget = self.row_dropdown_widget(_type='pkg_type')
             args = [pkg_dir_dropdown_widget, current_row_count]
-            pkg_dir_dropdown_widget.currentIndexChanged.connect(lambda _, args=args: self.pkg_dir_dropdown_exec(args=args))
-            custom_dropdown_widget = self.row_dropdown_widget(type='custom')
+            pkg_dir_dropdown_widget.currentIndexChanged.connect(
+                lambda _, args=args: self.pkg_dir_dropdown_exec(args=args))
+            custom_dropdown_widget = self.row_dropdown_widget(_type='custom')
             custom_dropdown_widget.setEnabled(False)
             filename_item = QTableWidgetItem(filename)
             self.fi_tableWidget.insertRow(current_row_count)
@@ -226,28 +244,40 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
             self.fi_tableWidget.setItem(current_row_count, 2, filename_item)
             self.fi_tableWidget.setCellWidget(current_row_count, 3, custom_dropdown_widget)
             self.fi_tableWidget.setCellWidget(current_row_count, 4, pkg_dir_dropdown_widget)
-            discipline = self.fi_discipline_comboBox.currentText()
-            _, ext = os.path.splitext(filename)
-            if general_utils.get_custom_element_descs(self.item_data) and ext == '.exr':
-                pkg_dir_type = 'custom'
-                self.fi_tableWidget.setColumnHidden(3, False)
-                custom_dropdown_widget.setEnabled(True)
-            else:
-                pkg_dir_type = general_utils.assumed_pkg_type(discipline, file)
-            custom_dropdown_widget.setCurrentText('')
-            pkg_dir_dropdown_widget.setCurrentText(pkg_dir_type)
-            if pkg_dir_type == 'select':
-                filename_item.setBackgroundColor(QColor('#993300'))
+            if do_dropdown_process:
+                Kargs = {
+                    'file': file,
+                    'filename': filename,
+                    'custom_dropdown_widget': custom_dropdown_widget,
+                    'pkg_dir_dropdown_widget': pkg_dir_dropdown_widget,
+                    'filename_item': filename_item,
+                    'current_row_count': current_row_count,
+                }
+                self.dropdown_process(**Kargs)
+
+    def dropdown_process(self, **Kargs):
+        discipline = self.fi_discipline_comboBox.currentText()
+        _, ext = os.path.splitext(Kargs['filename'])
+        if general_utils.get_custom_element_descs(self.item_data) and ext == '.exr':
+            pkg_dir_type = 'custom'
+            self.fi_tableWidget.setColumnHidden(3, False)
+            Kargs['custom_dropdown_widget'].setEnabled(True)
+            self.set_assumed_custom_name(Kargs['current_row_count'])
+        else:
+            pkg_dir_type = general_utils.assumed_pkg_type(discipline, Kargs['file'])
+            Kargs['custom_dropdown_widget'].setCurrentText('')
+        Kargs['pkg_dir_dropdown_widget'].setCurrentText(pkg_dir_type)
+        if pkg_dir_type == 'select':
+            Kargs['filename_item'].setBackgroundColor(QColor('#993300'))
 
     def pkg_dir_dropdown_exec(self, args):
 
-
-        def custom_cell_process(dropdown_widget, row):
-            custon_cell_item = self.fi_tableWidget.item(row, 4)
+        def custom_cell_process(_dropdown_widget, _row):
+            custon_cell_item = self.fi_tableWidget.item(_row, 4)
             if not custon_cell_item:
                 return
             flags = custon_cell_item.flags()
-            if dropdown_widget.currentText() == 'custom':
+            if _dropdown_widget.currentText() == 'custom':
                 flags |= Qt.ItemIsEditable
             else:
                 custon_cell_item.setText('')
@@ -261,7 +291,7 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    pkg_dir = r'C:/mnt/mpcparis/A5/io/To_Client/packages'
-    w = FileImporterWidget(pkg_dir=pkg_dir)
+    pkg_dir = r'/mnt/mpcparis/NOTRE_DAME/io/To_Client/packages'
+    w = FileImporterWidget(current_pkg_dir=pkg_dir)
     w.show()
     app.exec_()
