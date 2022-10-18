@@ -89,7 +89,7 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
             filename_item.setBackgroundColor(QColor('#993300'))
         else:
 
-            filename_item.setBackgroundColor(QColor('#FFFFFF'))
+            filename_item.setBackgroundColor(QColor('#aaaaaa'))
 
     def refresh_all(self):
         self.set_shot_version()
@@ -99,7 +99,6 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
             self.refresh_row(row)
             if self.fi_tableWidget.cellWidget(row, 4).currentText() == 'custom':
                 has_custom_pkg_type = True
-
         if has_custom_pkg_type:
             self.fi_tableWidget.setColumnHidden(3, False)
         else:
@@ -258,6 +257,8 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
     def dropdown_process(self, **Kargs):
         discipline = self.fi_discipline_comboBox.currentText()
         _, ext = os.path.splitext(Kargs['filename'])
+        print(self.item_data)
+        print(general_utils.get_custom_element_descs(self.item_data),'111111111111')
         if general_utils.get_custom_element_descs(self.item_data) and ext == '.exr':
             pkg_dir_type = 'custom'
             self.fi_tableWidget.setColumnHidden(3, False)
@@ -291,7 +292,8 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    pkg_dir = r'/mnt/mpcparis/NOTRE_DAME/io/To_Client/packages'
+    # pkg_dir = r'/mnt/mpcparis/NOTRE_DAME/io/To_Client/packages'
+    pkg_dir = r'/mnt/mpcparis/A5/io/To_Client/packages'
     w = FileImporterWidget(current_pkg_dir=pkg_dir)
     w.show()
     app.exec_()

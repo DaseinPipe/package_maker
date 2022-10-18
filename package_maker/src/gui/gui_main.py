@@ -4,7 +4,7 @@ from importlib import reload
 
 from PySide2.QtCore import Qt, QSize
 from PySide2.QtWidgets import QApplication, QDialog, QDialogButtonBox, QListWidgetItem
-
+import subprocess
 from package_maker.src.config.config_main import *
 from package_maker.src.gui import gui_file_importer, shot_widget_selector
 from package_maker.src.resource import resource_main, shot_widget_item
@@ -21,7 +21,7 @@ def update_database(item_data):
     general_utils.update_shot_version(item_data)
 
 
-class PackageMakerDlg(resource_main.Ui_Dialog, QDialog):
+class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
     def __init__(self, ):
         super(PackageMakerDlg, self).__init__()
         # Run the .setupUi() method to show the GUI
@@ -59,6 +59,14 @@ class PackageMakerDlg(resource_main.Ui_Dialog, QDialog):
         self.shot_view_pushButton.clicked.connect(self.view_summary)
         self.summary_cancel_pushButton.clicked.connect(self.page3_cancel)
         self.pkg_create_pushButton.clicked.connect(self.create_pkg)
+        self.done_pushButton.clicked.connect(self.close)
+        self.open_pkg_pushButton.clicked.connect(self.open_pkg_dir)
+
+
+    def open_pkg_dir(self):
+        main_pkg_dir_template = general_utils.get_path(self.job.lower(), 'main_pkg_dir')
+        main_pkg_dir = main_pkg_dir_template.format(self.global_pkg_data)
+        subprocess.Popen(['xdg-open', main_pkg_dir])
 
     def create_pkg(self):
         for i in range(self.listWidget.count()):
@@ -66,13 +74,14 @@ class PackageMakerDlg(resource_main.Ui_Dialog, QDialog):
             item_data = list_item.data(Qt.UserRole)
             item_widget = item_data['item_widget']
             import_data = item_widget.import_data
-            print(import_data)
             general_utils.process_executor(
                 project=self.job,
                 processor='create_package',
                 process=import_data['discipline'],
                 data=import_data,
             )
+        self.populate_page4()
+        self.stackedWidget.setCurrentIndex(3)
 
     def page3_cancel(self):
         self.stackedWidget.setCurrentIndex(1)
@@ -154,6 +163,12 @@ class PackageMakerDlg(resource_main.Ui_Dialog, QDialog):
     def populate_page3(self):
         self.summary_title_label.setText(self.title)
         self.summary_pkg_name_label.setText(self.global_pkg_name)
+
+    def populate_page4(self):
+        self.pkg_name_exit_label.setText(self.global_pkg_name)
+        self.setMaximumHeight(84)
+        self.setMaximumWidth(400)
+        self.resize(400, 84)
 
     def add_shot(self):
         list_item = QListWidgetItem()
