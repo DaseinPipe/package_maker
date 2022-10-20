@@ -1,7 +1,7 @@
 import re
 import sys
 import os
-from PySide2.QtWidgets import QApplication,  QTableWidgetItem, QComboBox, QHeaderView, QMessageBox
+from PySide2.QtWidgets import QApplication, QTableWidgetItem, QComboBox, QHeaderView, QMessageBox
 from PySide2.QtGui import QColor
 from package_maker.src.resource import message_box
 from package_maker.src.gui.gui_file_importer import FileImporterWidget
@@ -10,14 +10,14 @@ from package_maker.src.utils import general_utils
 
 class FilmgateFileImporter(FileImporterWidget, object):
 
-    def __init__(self,pkg_dir, show_data=None):
+    def __init__(self, pkg_dir, show_data=None):
         super(FilmgateFileImporter, self).__init__(pkg_dir, show_data)
         self.valid_ext_list = ['.exr']
         self.filmgate_populate()
 
     @property
     def hide_widget_list(self):
-         return [
+        return [
             self.fi_shot_comboBox,
             self.fi_shot_label,
             self.fi_plate_version_label,
@@ -34,9 +34,6 @@ class FilmgateFileImporter(FileImporterWidget, object):
         shot_column_no = self.get_column_no(column_name=column_name)
         horizontalHeader.setSectionResizeMode(shot_column_no, QHeaderView.ResizeToContents)
 
-
-
-
     def filmgate_populate(self):
         self.fi_discipline_comboBox.setCurrentText('comp')
         self.fi_discipline_comboBox.setEnabled(False)
@@ -45,25 +42,21 @@ class FilmgateFileImporter(FileImporterWidget, object):
             each_widget.setHidden(True)
         self.add_column('shots')
 
-
     def get_column_no(self, column_name):
         fi_tableWidget = self.fi_tableWidget
         for column in range(0, fi_tableWidget.columnCount()):
             if column_name == fi_tableWidget.horizontalHeaderItem(column).text():
                 return column
 
-
-
     def validate_source_file(self, row_no):
         source_file_column_no = self.get_column_no(column_name='source_file')
-        source_file_item = self.fi_tableWidget.item(row_no,source_file_column_no)
+        source_file_item = self.fi_tableWidget.item(row_no, source_file_column_no)
         source_filepath = source_file_item.text()
         _, ext = os.path.splitext(source_filepath)
         if not ext in self.valid_ext_list:
             source_file_item.setBackgroundColor(QColor('#993300'))
             return False
         return True
-
 
     def fi_import(self, **kwargs):
         super().fi_import(do_dropdown_process=False)
@@ -75,16 +68,16 @@ class FilmgateFileImporter(FileImporterWidget, object):
             shots_dropdown_widget = self.shot_dropdown_widget()
             shot_column_no = self.get_column_no(column_name='shots')
             fi_tableWidget.setCellWidget(row, shot_column_no, shots_dropdown_widget)
+            shots_dropdown_widget.currentTextChanged.connect(self.shot_changed_event)
             if self.validate_source_file(row):
                 self.set_assumed_shot(row)
-
 
     def set_assumed_shot(self, row_no):
         shot_column_no = self.get_column_no(column_name='shots')
         shot_item = self.fi_tableWidget.cellWidget(row_no, shot_column_no)
         shots = shot_item.allItems()
         source_file_column_no = self.get_column_no(column_name='source_file')
-        source_file_item = self.fi_tableWidget.item(row_no,source_file_column_no)
+        source_file_item = self.fi_tableWidget.item(row_no, source_file_column_no)
         source_filepath = source_file_item.text()
         shot_name = general_utils.find_patten(source_filepath, shots, get_matched_pattern=True)
         if not shot_name:
@@ -92,6 +85,13 @@ class FilmgateFileImporter(FileImporterWidget, object):
             shot_name = 'select'
         shot_item.setCurrentText(shot_name)
 
+    def shot_changed_event(self, state):
+        if state == 'select':
+            return
+        row_no = self.fi_tableWidget.currentRow()
+        source_file_column_no = self.get_column_no(column_name='source_file')
+        source_file_item = self.fi_tableWidget.item(row_no, source_file_column_no)
+        source_file_item.setBackgroundColor(QColor('#aaaaaa'))
 
     def validate_shots(self):
         allRows = self.fi_tableWidget.rowCount()
@@ -101,8 +101,6 @@ class FilmgateFileImporter(FileImporterWidget, object):
             if dropdown_widget.currentText() == 'select':
                 return False
         return True
-
-
 
     def pkg_dir_dropdown_exec(self, args):
         return None
@@ -153,7 +151,7 @@ class FilmgateFileImporter(FileImporterWidget, object):
                     'shot_version_prefix': shot_prefix,
                     'shot': shot,
                     'pkg_dir_type': 'for_approval',
-                    'filename':filename,
+                    'filename': filename,
                     'pkg_version': 'A',
                 }
             )
@@ -164,8 +162,6 @@ class FilmgateFileImporter(FileImporterWidget, object):
         print(self.import_data)
         self.close()
 
-
-            
     def shot_dropdown_widget(self):
 
         row_comboBox = QComboBox(self.fi_tableWidget)
@@ -174,9 +170,9 @@ class FilmgateFileImporter(FileImporterWidget, object):
         row_comboBox.addItems(shot_list)
         setattr(row_comboBox, "allItems", lambda: [row_comboBox.itemText(i) for i in range(row_comboBox.count())])
         return row_comboBox
-            
-if __name__ == '__main__':
 
+
+if __name__ == '__main__':
     app = QApplication(sys.argv)
     pkg_dir = r'/mnt/pb6/Filmgate/TRM/io/To_Client/Package'
     w = FilmgateFileImporter(pkg_dir=pkg_dir)

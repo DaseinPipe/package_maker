@@ -140,7 +140,7 @@ class ShotItemWidget(shot_widget_item.Ui_swi_Frame, QDialog):
         allRows = self.swi_tableWidget.rowCount()
         for row in range(0, allRows):
             source_item = self.swi_tableWidget.item(row, 1)
-            source_item.setBackgroundColor('#FFFFFF')
+            source_item.setBackgroundColor('#aaaaaa')
 
     def set_package_path_dups(self):
         self.set_default_source_path_color()
@@ -346,7 +346,7 @@ class ShotItemWidget(shot_widget_item.Ui_swi_Frame, QDialog):
                 _dropdown_widget.currentText(), _file_data.copy()
             )
             destination_cell_item.setText(destination_path)
-            source_cell_item.setBackgroundColor(QColor('#FFFFFF'))
+            source_cell_item.setBackgroundColor(QColor('#aaaaaa'))
             has_error = general_utils.is_name_matched(destination_path, [UNKNOWN])
             if has_error:
                 source_cell_item.setBackgroundColor(QColor('#993300'))

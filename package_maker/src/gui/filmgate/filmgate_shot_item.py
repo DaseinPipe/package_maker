@@ -1,9 +1,6 @@
-import re
 import sys
-import os
-from PySide2.QtWidgets import QApplication,  QTableWidgetItem, QComboBox, QHeaderView, QMessageBox
-from PySide2.QtCore import Qt
-from package_maker.src.resource import message_box
+
+from PySide2.QtWidgets import QApplication,  QTableWidgetItem, QComboBox, QHeaderView
 from package_maker.src.gui.gui_shot_item import ShotItemWidget
 from package_maker.src.gui.filmgate import filmgate_file_importer
 from package_maker.src.utils import general_utils

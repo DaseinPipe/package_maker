@@ -9,7 +9,7 @@ GLOBAL_PKG_NAME = lucidity.Template('global_pkg_name',
 
 
 SHOT_PKG_NAME = lucidity.Template('shot_pkg_name',
-                                    'trm_{shot}_compositing_{shot_version_prefix}{shot_version_num}')
+                                    '{shot}_compositing_{shot_version_prefix}{shot_version_num}')
 
 
 SEQ_FILE_NAME = lucidity.Template('seq_file_name',

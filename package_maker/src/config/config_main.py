@@ -212,6 +212,10 @@ def global_config_setup():
                         dir_path='/mnt/mpcparis/NOTRE_DAME/io/To_Client/packages',
                         title='MPC PARIS PACKAGE FOR NOTRE_DAME.',
                     ),
+                    test=dict(
+                        dir_path='/mnt/mpcparis/tesr/io/To_Client/packages',
+                        title='MPC PARIS PACKAGE FOR NOTRE_DAME.',
+                    ),
                 ),
                 vendor='dasein',
                 pkg_version_padding=4,
