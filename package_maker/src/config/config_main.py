@@ -65,7 +65,10 @@ global_pkg_dir_types = dict(
         ext_type='app'
     ),
     element=dict(
-        match_list=['element', 'STmaps', 'map', 'plate', 'undistort', 'matte'],
+        match_list=[
+            'element', 'STmaps', 'map', 'plate',
+            'undistort', 'matte']
+        ,
         ext_list=['.exr', '.png', '.jpeg', '.tiff'],
         discipline=['prep', 'roto'],
         ext_type='image',
@@ -159,13 +162,16 @@ def asterix_config_setup():
 
 def trm_config_setup():
     return dict(
-        discipline=global_discipline,
+        discipline=[
+            'Animation', 'BG_plates', 'Cleanup', 'Lighting',
+            'Matchmoving', 'Matte_painting', 'Plates', 'Rotoscoping'
+        ],
         seq_ext=global_seq_ext,
-        pkg_dir_types=global_pkg_dir_types,
-        shot_version_padding=3,
+        shot_version_padding=4,
         shot_version_prefix='v',
         plate_version_padding=2,
-        plate_version_prefix='master'
+        plate_version_prefix='master',
+        shot_name_regex=r'ep\d{2}-rl\d{2}_\d{5}'
     )
 
 def notre_dame_config_setup():
@@ -178,7 +184,6 @@ def notre_dame_config_setup():
         plate_version_padding=2,
         plate_version_prefix='master'
     )
-
 
 
 def test_config_setup():

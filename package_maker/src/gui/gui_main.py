@@ -1,6 +1,6 @@
 import re
 import sys
-from importlib import reload
+
 
 from PySide2.QtCore import Qt, QSize
 from PySide2.QtWidgets import QApplication, QDialog, QDialogButtonBox, QListWidgetItem
@@ -10,9 +10,6 @@ from package_maker.src.gui import gui_file_importer, shot_widget_selector
 from package_maker.src.resource import resource_main, shot_widget_item
 from package_maker.src.utils import general_utils
 
-reload(resource_main)
-reload(shot_widget_item)
-reload(gui_file_importer)
 
 GLOBAL_DATA: dict = get_global_data()
 
@@ -39,6 +36,7 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
         self.stackedWidget.setCurrentIndex(0)
         self.populate_page1()
         self.connection()
+
 
     def populate_page1(self):
         self.pkg_version_comboBox.setHidden(True)
@@ -208,7 +206,7 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
     @global_pkg_data.setter
     def global_pkg_data(self, value):
         if value != 'initiate':
-            raise RuntimeError('value should be "initiate" but plz make sur global_pkg_data is initiate once only')
+            raise RuntimeError('value should be "initiate" but plz make sure global_pkg_data is initiate once only')
         self._global_pkg_data = general_utils.get_global_pkg_data(
             self.job.lower(),
             self.destination,
