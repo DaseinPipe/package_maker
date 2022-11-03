@@ -39,7 +39,7 @@ def find_patten(text, patterns, get_matched_pattern=False):
 def list_duplicates(seq):
     seen = set()
     seen_add = seen.add
-    seen_twice = set( x for x in seq if x in seen or seen_add(x) )
+    seen_twice = set( x for x in seq if x in seen or seen_add(x))
     return list( seen_twice )
 
 
