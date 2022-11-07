@@ -171,6 +171,8 @@ def trm_config_setup():
         shot_version_prefix='v',
         plate_version_padding=2,
         plate_version_prefix='master',
+        episode_name_regex=r'ep\d{2}-rl\d{2}',
+        shot_no_regex=r'\d{5}',
         shot_name_regex=r'ep\d{2}-rl\d{2}_\d{5}'
     )
 
