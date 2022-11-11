@@ -1,0 +1,342 @@
+2022-10-31 07:02:44,628 : INFO : create_organization_package : ------------------------------ init_logger ---------------------------------------
+2022-10-31 07:02:44,628 : INFO : create_organization_package : ------------------------------ make_link ---------------------------------------
+2022-10-31 07:02:44,704 : WARNING : create_organization_package : cannot recognize /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/txt_info
+2022-10-31 07:02:44,704 : WARNING : create_organization_package : cannot recognize /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matte paintings & BG plates/TRM_EP01_PLATE_036 folder
+2022-10-31 07:02:44,708 : WARNING : create_organization_package : cannot recognize /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Uel_TRM - Batch2 - 2022-10-19.pdf
+2022-10-31 07:03:39,796 : INFO : create_organization_package : ------------------------------ init_logger ---------------------------------------
+2022-10-31 07:03:39,796 : INFO : create_organization_package : ------------------------------ make_link ---------------------------------------
+2022-10-31 07:03:39,799 : WARNING : create_organization_package : cannot recognize /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_2022-10-04/OFFICE SEQUENCES/Matte painting-20221010/trm_factorychromastillsday_a001c028_mattepainting_v0001_r0001_aa.psd folder
+2022-10-31 07:03:39,808 : WARNING : create_organization_package : cannot recognize /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_2022-10-04/OFFICE SEQUENCES/Approved look version (for shots 00760 to 01040)
+2022-10-31 07:03:39,824 : WARNING : create_organization_package : cannot recognize /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_2022-10-04/OFFICE SEQUENCES/LUT_GIZMO
+2022-10-31 07:03:39,826 : WARNING : create_organization_package : /mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep01-rl01_00980/Matte_painting has duplicate src files :- 
+/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_2022-10-04/OFFICE SEQUENCES/Matte painting-20221010/trm_ep01-rl01_00980_mattepainting_v0004
+/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_2022-10-04/OFFICE SEQUENCES/Matte painting-20221005/trm_ep01-rl01_00980_mattepainting_v0004
+2022-10-31 07:09:37,982 : INFO : create_organization_package : ------------------------------ init_logger ---------------------------------------
+2022-10-31 07:09:37,984 : INFO : create_organization_package : ------------------------------ make_link ---------------------------------------
+2022-10-31 07:10:37,189 : INFO : create_organization_package : ------------------------------ init_logger ---------------------------------------
+2022-10-31 07:10:37,190 : INFO : create_organization_package : ------------------------------ make_link ---------------------------------------
+2022-10-31 07:11:53,581 : INFO : create_organization_package : ------------------------------ init_logger ---------------------------------------
+2022-10-31 07:11:53,583 : INFO : create_organization_package : ------------------------------ make_link ---------------------------------------
+2022-10-31 07:11:53,623 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Cleanup/trm_ep02-rl03_00010_paintandcleanup_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Cleanup/trm_ep02-rl03_00010_paintandcleanup_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl03_00010/Cleanup'
+2022-10-31 07:11:53,624 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Cleanup/trm_ep02-rl03_00030_paintandcleanup_v0003 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Cleanup/trm_ep02-rl03_00030_paintandcleanup_v0003' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl03_00030/Cleanup'
+2022-10-31 07:11:53,624 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Cleanup/trm_ep02-rl02_00280_paintandcleanup_v0003 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Cleanup/trm_ep02-rl02_00280_paintandcleanup_v0003' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00280/Cleanup'
+2022-10-31 07:11:53,625 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Cleanup/trm_ep02-rl03_00020_paintandcleanup_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Cleanup/trm_ep02-rl03_00020_paintandcleanup_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl03_00020/Cleanup'
+2022-10-31 07:11:53,626 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Cleanup/trm_ep02-rl02_00350_paintandcleanup_v0004 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Cleanup/trm_ep02-rl02_00350_paintandcleanup_v0004' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00350/Cleanup'
+2022-10-31 07:11:53,626 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Cleanup/trm_ep02-rl03_00360_paintandcleanup_v0003 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Cleanup/trm_ep02-rl03_00360_paintandcleanup_v0003' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl03_00360/Cleanup'
+2022-10-31 07:11:53,627 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Cleanup/trm_ep02-rl03_00060_paintandcleanup_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Cleanup/trm_ep02-rl03_00060_paintandcleanup_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl03_00060/Cleanup'
+2022-10-31 07:11:53,627 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Cleanup/trm_ep01-rl03_00360_paintandcleanup_v0003 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Cleanup/trm_ep01-rl03_00360_paintandcleanup_v0003' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep01-rl03_00360/Cleanup'
+2022-10-31 07:11:53,628 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Cleanup/trm_ep02-rl01_00650_paintandcleanup_v0002 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Cleanup/trm_ep02-rl01_00650_paintandcleanup_v0002' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl01_00650/Cleanup'
+2022-10-31 07:11:53,629 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Cleanup/trm_ep02-rl01_00800_paintandcleanup_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Cleanup/trm_ep02-rl01_00800_paintandcleanup_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl01_00800/Cleanup'
+2022-10-31 07:11:53,629 : WARNING : create_organization_package : cannot recognize /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/txt_info
+2022-10-31 07:11:53,630 : WARNING : create_organization_package : cannot recognize /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matte paintings & BG plates/TRM_EP01_PLATE_036 folder
+2022-10-31 07:11:53,630 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matte paintings & BG plates/trm_ep02-rl01_00800_mattepainting_v0002 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matte paintings & BG plates/trm_ep02-rl01_00800_mattepainting_v0002' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl01_00800/BG_plates'
+2022-10-31 07:11:53,630 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matte paintings & BG plates/trm_ep02-rl02_00190_mattepainting_v0002 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matte paintings & BG plates/trm_ep02-rl02_00190_mattepainting_v0002' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00190/BG_plates'
+2022-10-31 07:11:53,631 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matte paintings & BG plates/trm_ep02-rl01_00520_layout_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matte paintings & BG plates/trm_ep02-rl01_00520_layout_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl01_00520/BG_plates'
+2022-10-31 07:11:53,632 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matte paintings & BG plates/trm_ep02-rl01_00810_mattepainting_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matte paintings & BG plates/trm_ep02-rl01_00810_mattepainting_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl01_00810/BG_plates'
+2022-10-31 07:11:53,632 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matte paintings & BG plates/trm_ep02-rl02_00290_mattepainting_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matte paintings & BG plates/trm_ep02-rl02_00290_mattepainting_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00290/BG_plates'
+2022-10-31 07:11:53,632 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matte paintings & BG plates/trm_ep02-rl01_00410_layout_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matte paintings & BG plates/trm_ep02-rl01_00410_layout_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl01_00410/BG_plates'
+2022-10-31 07:11:53,633 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matte paintings & BG plates/trm_ep02-rl01_00840_mattepainting_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matte paintings & BG plates/trm_ep02-rl01_00840_mattepainting_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl01_00840/BG_plates'
+2022-10-31 07:11:53,634 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matte paintings & BG plates/trm_ep02-rl03_00360_mattepainting_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matte paintings & BG plates/trm_ep02-rl03_00360_mattepainting_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl03_00360/BG_plates'
+2022-10-31 07:11:53,635 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matte paintings & BG plates/trm_ep02-rl02_00310_mattepainting_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matte paintings & BG plates/trm_ep02-rl02_00310_mattepainting_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00310/BG_plates'
+2022-10-31 07:11:53,635 : WARNING : create_organization_package : cannot recognize /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Uel_TRM - Batch2 - 2022-10-19.pdf
+2022-10-31 07:11:53,640 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep01-rl03/00090 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep01-rl03/00090' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep01-rl03_00090/Plates'
+2022-10-31 07:11:53,643 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep01-rl03/00920 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep01-rl03/00920' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep01-rl03_00920/Plates'
+2022-10-31 07:11:53,643 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep01-rl03/00070 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep01-rl03/00070' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep01-rl03_00070/Plates'
+2022-10-31 07:11:53,644 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep01-rl03/00041 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep01-rl03/00041' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep01-rl03_00041/Plates'
+2022-10-31 07:11:53,645 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep01-rl03/00051 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep01-rl03/00051' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep01-rl03_00051/Plates'
+2022-10-31 07:11:53,645 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep01-rl03/00360 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep01-rl03/00360' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep01-rl03_00360/Plates'
+2022-10-31 07:11:53,646 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl02/00350 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl02/00350' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00350/Plates'
+2022-10-31 07:11:53,646 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl02/00320 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl02/00320' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00320/Plates'
+2022-10-31 07:11:53,647 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl02/00300 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl02/00300' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00300/Plates'
+2022-10-31 07:11:53,647 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl02/00290 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl02/00290' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00290/Plates'
+2022-10-31 07:11:53,647 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl02/00310 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl02/00310' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00310/Plates'
+2022-10-31 07:11:53,648 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl02/00280 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl02/00280' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00280/Plates'
+2022-10-31 07:11:53,648 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl02/00340 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl02/00340' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00340/Plates'
+2022-10-31 07:11:53,648 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl02/00330 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl02/00330' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00330/Plates'
+2022-10-31 07:11:53,648 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl02/00360 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl02/00360' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00360/Plates'
+2022-10-31 07:11:53,648 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl03/00010 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl03/00010' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl03_00010/Plates'
+2022-10-31 07:11:53,648 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl03/00060 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl03/00060' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl03_00060/Plates'
+2022-10-31 07:11:53,648 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl03/00030 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl03/00030' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl03_00030/Plates'
+2022-10-31 07:11:53,649 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl03/00340 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl03/00340' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl03_00340/Plates'
+2022-10-31 07:11:53,649 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl03/00020 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl03/00020' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl03_00020/Plates'
+2022-10-31 07:11:53,649 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl03/00330 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl03/00330' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl03_00330/Plates'
+2022-10-31 07:11:53,649 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl03/00360 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl03/00360' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl03_00360/Plates'
+2022-10-31 07:11:53,650 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl01/00810 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl01/00810' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl01_00810/Plates'
+2022-10-31 07:11:53,651 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl01/00750 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl01/00750' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl01_00750/Plates'
+2022-10-31 07:11:53,652 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl01/00670 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl01/00670' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl01_00670/Plates'
+2022-10-31 07:11:53,652 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl01/00650 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl01/00650' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl01_00650/Plates'
+2022-10-31 07:11:53,652 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl01/00800 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl01/00800' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl01_00800/Plates'
+2022-10-31 07:11:53,652 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl01/00900 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl01/00900' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl01_00900/Plates'
+2022-10-31 07:11:53,653 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl01/00660 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl01/00660' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl01_00660/Plates'
+2022-10-31 07:11:53,653 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl01/00680 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep02-rl01/00680' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl01_00680/Plates'
+2022-10-31 07:11:53,653 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep01-rl02/00491 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Plates/ep01-rl02/00491' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep01-rl02_00491/Plates'
+2022-10-31 07:11:53,654 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl01_00800_matchmoving_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl01_00800_matchmoving_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl01_00800/Matchmoving'
+2022-10-31 07:11:53,654 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl01_00660_matchmoving_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl01_00660_matchmoving_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl01_00660/Matchmoving'
+2022-10-31 07:11:53,654 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl01_00680_matchmoving_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl01_00680_matchmoving_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl01_00680/Matchmoving'
+2022-10-31 07:11:53,655 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl02_00300_matchmoving_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl02_00300_matchmoving_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00300/Matchmoving'
+2022-10-31 07:11:53,655 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl02_00310_matchmoving_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl02_00310_matchmoving_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00310/Matchmoving'
+2022-10-31 07:11:53,655 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl01_00810_matchmoving_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl01_00810_matchmoving_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl01_00810/Matchmoving'
+2022-10-31 07:11:53,655 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl01_00670_matchmoving_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl01_00670_matchmoving_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl01_00670/Matchmoving'
+2022-10-31 07:11:53,655 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl02_00320_matchmoving_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl02_00320_matchmoving_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00320/Matchmoving'
+2022-10-31 07:11:53,655 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl02_00280_matchmoving_v0002 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl02_00280_matchmoving_v0002' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00280/Matchmoving'
+2022-10-31 07:11:53,656 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl02_00350_matchmoving_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl02_00350_matchmoving_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00350/Matchmoving'
+2022-10-31 07:11:53,656 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl02_00290_matchmoving_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl02_00290_matchmoving_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00290/Matchmoving'
+2022-10-31 07:11:53,657 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl02_00330_matchmoving_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl02_00330_matchmoving_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00330/Matchmoving'
+2022-10-31 07:11:53,657 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep01-rl03_00360_matchmoving_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep01-rl03_00360_matchmoving_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep01-rl03_00360/Matchmoving'
+2022-10-31 07:11:53,657 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl02_00340_matchmoving_v0001 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_TO2-20221019/Matchmoving/trm_ep02-rl02_00340_matchmoving_v0001' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221031/trm_ep02-rl02_00340/Matchmoving'

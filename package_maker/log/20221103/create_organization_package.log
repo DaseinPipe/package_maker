@@ -1,0 +1,16 @@
+2022-11-03 07:44:12,519 : INFO : create_organization_package : ------------------------------ init_logger ---------------------------------------
+2022-11-03 07:44:12,521 : INFO : create_organization_package : ------------------------------ make_link ---------------------------------------
+2022-11-03 07:44:13,811 : WARNING : create_organization_package : cannot recognize /mnt/pb6/Filmgate/TRM/io/From_Client/TO-03/Uel_Batch03/Matchmoving/20221031 folder
+2022-11-03 07:48:19,370 : INFO : create_organization_package : ------------------------------ init_logger ---------------------------------------
+2022-11-03 07:48:19,370 : INFO : create_organization_package : ------------------------------ make_link ---------------------------------------
+2022-11-03 07:48:19,514 : WARNING : create_organization_package : cannot recognize /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_2022-10-04/OFFICE-SEQUENCES/Matte painting-20221010/trm_factorychromastillsday_a001c028_mattepainting_v0001_r0001_aa.psd folder
+2022-11-03 07:48:19,526 : WARNING : create_organization_package : cannot recognize /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_2022-10-04/OFFICE-SEQUENCES/LUT_GIZMO
+2022-11-03 07:48:19,526 : WARNING : create_organization_package : cannot recognize /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_2022-10-04/OFFICE-SEQUENCES/Approved look version (for shots 00760 to 01040)
+2022-11-03 07:48:19,526 : ERROR : create_organization_package : having some error on /mnt/pb6/Filmgate/TRM/io/From_Client/Uel_2022-10-04/OFFICE-SEQUENCES/Matte painting-20221005/trm_ep01-rl01_00980_mattepainting_v0004 symlink
+Traceback (most recent call last):
+  File "/home/rithik/rithik/tools/package_maker/package_maker/process_runner/processor/create_organization_package/processes/make_link.py", line 63, in run
+    os.symlink(shot_path, destination_path, target_is_directory=True)
+FileExistsError: [Errno 17] File exists: '/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_2022-10-04/OFFICE-SEQUENCES/Matte painting-20221005/trm_ep01-rl01_00980_mattepainting_v0004' -> '/mnt/pb6/Filmgate/TRM/io/To_Shakti/20221103/trm_ep01-rl01_00980/Matte_painting'
+2022-11-03 07:48:19,527 : WARNING : create_organization_package : /mnt/pb6/Filmgate/TRM/io/To_Shakti/20221103/trm_ep01-rl01_00980/Matte_painting has duplicate src files :- 
+/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_2022-10-04/OFFICE-SEQUENCES/Matte painting-20221010/trm_ep01-rl01_00980_mattepainting_v0004
+/mnt/pb6/Filmgate/TRM/io/From_Client/Uel_2022-10-04/OFFICE-SEQUENCES/Matte painting-20221005/trm_ep01-rl01_00980_mattepainting_v0004
