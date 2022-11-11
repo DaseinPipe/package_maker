@@ -13,14 +13,14 @@ from PySide2.QtGui import *
 from PySide2.QtWidgets import *
 
 
-class Ui_Dialog(object):
-    def setupUi(self, Dialog):
-        if not Dialog.objectName():
-            Dialog.setObjectName(u"Dialog")
-        Dialog.resize(381, 340)
-        self.gridLayout_6 = QGridLayout(Dialog)
+class Ui_Package_Maker(object):
+    def setupUi(self, Package_Maker):
+        if not Package_Maker.objectName():
+            Package_Maker.setObjectName(u"Package_Maker")
+        Package_Maker.resize(381, 291)
+        self.gridLayout_6 = QGridLayout(Package_Maker)
         self.gridLayout_6.setObjectName(u"gridLayout_6")
-        self.stackedWidget = QStackedWidget(Dialog)
+        self.stackedWidget = QStackedWidget(Package_Maker)
         self.stackedWidget.setObjectName(u"stackedWidget")
         self.stackedWidget.setEnabled(True)
         self.stackedWidget.setInputMethodHints(Qt.ImhNone)
@@ -67,11 +67,6 @@ class Ui_Dialog(object):
         self.frame.setFrameShadow(QFrame.Raised)
         self.gridLayout = QGridLayout(self.frame)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.destination_comboBox = QComboBox(self.frame)
-        self.destination_comboBox.setObjectName(u"destination_comboBox")
-
-        self.gridLayout.addWidget(self.destination_comboBox, 2, 1, 1, 1)
-
         self.label_2 = QLabel(self.frame)
         self.label_2.setObjectName(u"label_2")
         font1 = QFont()
@@ -80,11 +75,26 @@ class Ui_Dialog(object):
 
         self.gridLayout.addWidget(self.label_2, 2, 0, 1, 1)
 
+        self.destination_comboBox = QComboBox(self.frame)
+        self.destination_comboBox.setObjectName(u"destination_comboBox")
+
+        self.gridLayout.addWidget(self.destination_comboBox, 2, 2, 1, 1)
+
+        self.pkg_version_label = QLabel(self.frame)
+        self.pkg_version_label.setObjectName(u"pkg_version_label")
+
+        self.gridLayout.addWidget(self.pkg_version_label, 4, 0, 1, 1)
+
+        self.pkg_version_comboBox = QComboBox(self.frame)
+        self.pkg_version_comboBox.setObjectName(u"pkg_version_comboBox")
+
+        self.gridLayout.addWidget(self.pkg_version_comboBox, 4, 2, 1, 1)
+
         self.label_3 = QLabel(self.frame)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setFont(font1)
 
-        self.gridLayout.addWidget(self.label_3, 0, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_3, 3, 0, 1, 1)
 
         self.job_comboBox = QComboBox(self.frame)
         self.job_comboBox.setObjectName(u"job_comboBox")
@@ -94,17 +104,7 @@ class Ui_Dialog(object):
         sizePolicy1.setHeightForWidth(self.job_comboBox.sizePolicy().hasHeightForWidth())
         self.job_comboBox.setSizePolicy(sizePolicy1)
 
-        self.gridLayout.addWidget(self.job_comboBox, 0, 1, 1, 1)
-
-        self.pkg_version_label = QLabel(self.frame)
-        self.pkg_version_label.setObjectName(u"pkg_version_label")
-
-        self.gridLayout.addWidget(self.pkg_version_label, 3, 0, 1, 1)
-
-        self.pkg_version_comboBox = QComboBox(self.frame)
-        self.pkg_version_comboBox.setObjectName(u"pkg_version_comboBox")
-
-        self.gridLayout.addWidget(self.pkg_version_comboBox, 3, 1, 1, 1)
+        self.gridLayout.addWidget(self.job_comboBox, 3, 2, 1, 1)
 
 
         self.gridLayout_2.addWidget(self.frame, 1, 0, 1, 1)
@@ -340,42 +340,84 @@ class Ui_Dialog(object):
         self.gridLayout_4.addLayout(self.horizontalLayout_7, 4, 0, 1, 1)
 
         self.stackedWidget.addWidget(self.summary_page)
+        self.exit_page = QWidget()
+        self.exit_page.setObjectName(u"exit_page")
+        self.gridLayout_7 = QGridLayout(self.exit_page)
+        self.gridLayout_7.setObjectName(u"gridLayout_7")
+        self.horizontalLayout_8 = QHBoxLayout()
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.pkg_name_label_header_2 = QLabel(self.exit_page)
+        self.pkg_name_label_header_2.setObjectName(u"pkg_name_label_header_2")
+        sizePolicy4.setHeightForWidth(self.pkg_name_label_header_2.sizePolicy().hasHeightForWidth())
+        self.pkg_name_label_header_2.setSizePolicy(sizePolicy4)
+        self.pkg_name_label_header_2.setFont(font2)
+
+        self.horizontalLayout_8.addWidget(self.pkg_name_label_header_2)
+
+        self.pkg_name_exit_label = QLabel(self.exit_page)
+        self.pkg_name_exit_label.setObjectName(u"pkg_name_exit_label")
+        self.pkg_name_exit_label.setFont(font4)
+
+        self.horizontalLayout_8.addWidget(self.pkg_name_exit_label)
+
+
+        self.gridLayout_7.addLayout(self.horizontalLayout_8, 0, 0, 1, 3)
+
+        self.done_pushButton = QPushButton(self.exit_page)
+        self.done_pushButton.setObjectName(u"done_pushButton")
+
+        self.gridLayout_7.addWidget(self.done_pushButton, 1, 0, 1, 1)
+
+        self.horizontalSpacer_3 = QSpacerItem(132, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.gridLayout_7.addItem(self.horizontalSpacer_3, 1, 1, 1, 1)
+
+        self.open_pkg_pushButton = QPushButton(self.exit_page)
+        self.open_pkg_pushButton.setObjectName(u"open_pkg_pushButton")
+
+        self.gridLayout_7.addWidget(self.open_pkg_pushButton, 1, 2, 1, 1)
+
+        self.stackedWidget.addWidget(self.exit_page)
 
         self.gridLayout_6.addWidget(self.stackedWidget, 0, 0, 1, 1)
 
 
-        self.retranslateUi(Dialog)
+        self.retranslateUi(Package_Maker)
 
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(3)
 
 
-        QMetaObject.connectSlotsByName(Dialog)
+        QMetaObject.connectSlotsByName(Package_Maker)
     # setupUi
 
-    def retranslateUi(self, Dialog):
-        Dialog.setWindowTitle(QCoreApplication.translate("Dialog", u"Dialog", None))
-        self.label.setText(QCoreApplication.translate("Dialog", u"PACKAGE MAKER", None))
-        self.label_2.setText(QCoreApplication.translate("Dialog", u"Destination:- ", None))
-        self.label_3.setText(QCoreApplication.translate("Dialog", u" Job :- ", None))
-        self.pkg_version_label.setText(QCoreApplication.translate("Dialog", u"Version:-", None))
-        self.selected_info_textEdit.setHtml(QCoreApplication.translate("Dialog", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
+    def retranslateUi(self, Package_Maker):
+        Package_Maker.setWindowTitle(QCoreApplication.translate("Package_Maker", u"Dialog", None))
+        self.label.setText(QCoreApplication.translate("Package_Maker", u"PACKAGE MAKER", None))
+        self.label_2.setText(QCoreApplication.translate("Package_Maker", u"Destination:- ", None))
+        self.pkg_version_label.setText(QCoreApplication.translate("Package_Maker", u"Version:-", None))
+        self.label_3.setText(QCoreApplication.translate("Package_Maker", u" Job :- ", None))
+        self.selected_info_textEdit.setHtml(QCoreApplication.translate("Package_Maker", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:7.8pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", None))
-        self.title_label_header.setText(QCoreApplication.translate("Dialog", u"Title:- ", None))
+"</style></head><body style=\" font-family:'Cantarell'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:7.8pt;\"><br /></p></body></html>", None))
+        self.title_label_header.setText(QCoreApplication.translate("Package_Maker", u"Title:- ", None))
         self.title_label.setText("")
-        self.asset_pushButton.setText(QCoreApplication.translate("Dialog", u"+ ASSET", None))
-        self.shot_pushButton.setText(QCoreApplication.translate("Dialog", u"+ SHOT", None))
-        self.shot_cancel_pushButton.setText(QCoreApplication.translate("Dialog", u"Cancel", None))
-        self.shot_view_pushButton.setText(QCoreApplication.translate("Dialog", u"View Summary", None))
-        self.pkg_name_label_header.setText(QCoreApplication.translate("Dialog", u"PKG Name :-", None))
+        self.asset_pushButton.setText(QCoreApplication.translate("Package_Maker", u"+ ASSET", None))
+        self.shot_pushButton.setText(QCoreApplication.translate("Package_Maker", u"+ SHOT", None))
+        self.shot_cancel_pushButton.setText(QCoreApplication.translate("Package_Maker", u"Cancel", None))
+        self.shot_view_pushButton.setText(QCoreApplication.translate("Package_Maker", u"View Summary", None))
+        self.pkg_name_label_header.setText(QCoreApplication.translate("Package_Maker", u"PKG Name :-", None))
         self.pkg_name_label.setText("")
-        self.summary_title_label_header.setText(QCoreApplication.translate("Dialog", u"Title:- ", None))
+        self.summary_title_label_header.setText(QCoreApplication.translate("Package_Maker", u"Title:- ", None))
         self.summary_title_label.setText("")
-        self.summary_pkg_name_label_header.setText(QCoreApplication.translate("Dialog", u"PKG Name :-", None))
+        self.summary_pkg_name_label_header.setText(QCoreApplication.translate("Package_Maker", u"PKG Name :-", None))
         self.summary_pkg_name_label.setText("")
-        self.summary_cancel_pushButton.setText(QCoreApplication.translate("Dialog", u"Cancel", None))
-        self.pkg_create_pushButton.setText(QCoreApplication.translate("Dialog", u"Create Package", None))
+        self.summary_cancel_pushButton.setText(QCoreApplication.translate("Package_Maker", u"Cancel", None))
+        self.pkg_create_pushButton.setText(QCoreApplication.translate("Package_Maker", u"Create Package", None))
+        self.pkg_name_label_header_2.setText(QCoreApplication.translate("Package_Maker", u"PKG Name :-", None))
+        self.pkg_name_exit_label.setText("")
+        self.done_pushButton.setText(QCoreApplication.translate("Package_Maker", u"Done", None))
+        self.open_pkg_pushButton.setText(QCoreApplication.translate("Package_Maker", u"Open Package", None))
     # retranslateUi
 

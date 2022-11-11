@@ -1,16 +1,17 @@
 import yaml
 import os
-from package_maker.src.config.py.asterix_paths import *
+
 from package_maker.src import stylesheets
 
 __config_folder_path = os.path.dirname(os.path.realpath(__file__))
-
+import importlib
 _stylesheets_folder_path = os.path.dirname(os.path.abspath(stylesheets.__file__))
 
-global stylesheet_path
+
 stylesheet_path = os.path.join(_stylesheets_folder_path,'EasyCode.qss')
 
-global global_discipline
+UNKNOWN = 'UNKNOWN'
+
 global_discipline = [
     'roto',
     'prep',
@@ -18,7 +19,7 @@ global_discipline = [
     'matchmove'
 ]
 
-global global_seq_ext
+
 global_seq_ext = [
     'exr',
     'jpg',
@@ -26,7 +27,7 @@ global_seq_ext = [
     'png',
     'tiff'
 ]
-global global_work_app_config
+
 global_work_app_config = {
     'nk': 'nuke',
     'ma': 'maya',
@@ -35,26 +36,27 @@ global_work_app_config = {
     'abc': 'maya',
     'fbx': 'maya'
 }
-global global_pkg_version_padding
+
+
 global_pkg_version_padding = 4
 
-global global_pkg_version_prefix
-global_pkg_version_prefix = 'ver'
 
-global global_shot_version_padding
+global_pkg_version_prefix = 'v'
+
+
 global_shot_version_padding = 3
 
-global global_shot_version_prefix
+
 global_shot_version_prefix = 'v'
 
-global global_plate_version_padding
+
 global_plate_version_padding = 2
 
-global global_plate_version_prefix
+
 global_plate_version_prefix = 'master'
 
 
-global global_pkg_dir_types
+
 global_pkg_dir_types = dict(
     camera=dict(
         match_list=['cam', 'camera', 'len'],
@@ -63,7 +65,10 @@ global_pkg_dir_types = dict(
         ext_type='app'
     ),
     element=dict(
-        match_list=['element', 'STmaps', 'map', 'plate', 'undistort', 'matte'],
+        match_list=[
+            'element', 'STmaps', 'map', 'plate',
+            'undistort', 'matte']
+        ,
         ext_list=['.exr', '.png', '.jpeg', '.tiff'],
         discipline=['prep', 'roto'],
         ext_type='image',
@@ -90,7 +95,7 @@ global_pkg_dir_types = dict(
     custom={},
     select={})
 
-global global_discipline_pkg_type_assignment
+
 global_discipline_pkg_type_assignment=dict(
     roto=dict(
         image=dict(
@@ -143,12 +148,7 @@ global_discipline_pkg_type_assignment=dict(
 )
 
 def asterix_config_setup():
-    asterix_config = dict(
-        shot=[
-            "080_bb_0375",
-            "082_em_0325",
-            "082_em_0320",
-        ],
+    return dict(
         discipline=global_discipline,
         seq_ext=global_seq_ext,
         pkg_dir_types=global_pkg_dir_types,
@@ -157,7 +157,45 @@ def asterix_config_setup():
         plate_version_padding=2,
         plate_version_prefix='master'
     )
-    return asterix_config
+
+def greek_salad_config_setup():
+    return dict(
+        discipline=global_discipline,
+        seq_ext=global_seq_ext,
+        pkg_dir_types=global_pkg_dir_types,
+        shot_version_padding=4,
+        shot_version_prefix='v',
+        plate_version_padding=2,
+        plate_version_prefix='master'
+    )
+
+
+def trm_config_setup():
+    return dict(
+        discipline=[
+            'Animation', 'BG_plates', 'Cleanup', 'Lighting', 'comp',
+            'Matchmoving', 'Matte_painting', 'Plates', 'Rotoscoping'
+        ],
+        seq_ext=global_seq_ext,
+        shot_version_padding=4,
+        shot_version_prefix='v',
+        plate_version_padding=2,
+        plate_version_prefix='master',
+        episode_name_regex=r'ep\d{2}-rl\d{2}',
+        shot_no_regex=r'\d{5}',
+        shot_name_regex=r'ep\d{2}-rl\d{2}_\d{5}'
+    )
+
+def notre_dame_config_setup():
+    return dict(
+        discipline=global_discipline,
+        seq_ext=global_seq_ext,
+        pkg_dir_types=global_pkg_dir_types,
+        shot_version_padding=3,
+        shot_version_prefix='v',
+        plate_version_padding=2,
+        plate_version_prefix='master'
+    )
 
 
 def test_config_setup():
@@ -180,37 +218,40 @@ def test_config_setup():
 
 def global_config_setup():
     global_config = dict(
-        job=dict(
-            asterix=dict(
-                destination=dict(
-                    MPC_Paris=dict(
-                        dir_path='C:/mnt/mpcparis/A5/io/To_Client/packages',
+        destination=dict(
+            MPC_Paris=dict(
+                job=dict(
+                    asterix=dict(
+                        dir_path='/mnt/mpcparis/A5/io/To_Client/packages',
                         title='MPC PARIS PACKAGE FOR A5.',
                     ),
-                    Filmgate=dict(
-                        dir_path='C:/mnt/filmgate/A5/io/To_Client/packages',
-                        title='Filmgate PACKAGE FOR A5.',
+                    NOTRE_DAME=dict(
+                        dir_path='/mnt/mpcparis/NOTRE_DAME/io/To_Client/packages',
+                        title='MPC PARIS PACKAGE FOR NOTRE_DAME.',
+                    ),
+                    Greek_Salad=dict(
+                        dir_path='/mnt/mpcparis/Greek_Salad/io/to_client/packages',
+                        title='MPC PARIS PACKAGE FOR Greek_Salad.',
+                    ),
+                    test=dict(
+                        dir_path='/mnt/mpcparis/tesr/io/To_Client/packages',
+                        title='MPC PARIS PACKAGE FOR NOTRE_DAME.',
                     ),
                 ),
                 vendor='dasein',
                 pkg_version_padding=4,
                 pkg_version_prefix='v',
             ),
-            test=dict(
-                destination=dict(
-                    MPC_Paris_test=dict(
-                        dir_path='C:/mnt/mpcparis_test/A5/io/To_Client/packages',
-                        title='MPC PARIS PACKAGE FOR A5.',
-                    ),
-                    Filmgate_test=dict(
-                        dir_path='/mnt/pb6/Filmgate/TRM/io/To_Client/Package/PKG-',
-                        title='Filmgate PACKAGE FOR TRM.',
+            filmgate=dict(
+                job=dict(
+                    TRM=dict(
+                        dir_path='/mnt/pb6/Filmgate/TRM/io/To_Client/Package',
+                        title='FILMGATE PACKAGE FOR TRM.',
                     ),
                 ),
-                vendor='rithik',
-                pkg_version_padding=2,
-                pkg_version_prefix='ver',
-                title='TEST PACKAGE FOR RITHIK.'
+                vendor='dasein',
+                pkg_version_padding=4,
+                pkg_version_prefix='v',
             )
         )
     )
@@ -220,7 +261,10 @@ def global_config_setup():
 def get_show_config(show):
     return dict(
         asterix=asterix_config_setup(),
-        test=test_config_setup()
+        test=test_config_setup(),
+        trm=trm_config_setup(),
+        notre_dame=notre_dame_config_setup(),
+        Greek_Salad=greek_salad_config_setup(),
     ).get(show)
 
 
@@ -232,10 +276,9 @@ def global_config_exec():
         print("Write successful")
 
 
-def show_config_exec(show=None):
-    show_config_filepath = os.path.join(__config_folder_path, f'yaml/{show}_config.yaml')
+def show_config_exec(show):
+    show_config_filepath = os.path.join(__config_folder_path, f'yaml/{show.lower()}_config.yaml')
     show_config_data = get_show_config(show)
-    assert show_config_data, f"can't find config function for {show}"
     with open(show_config_filepath, 'w') as yamlfile:
         data = yaml.dump(show_config_data, yamlfile)
         print("Write successful")
@@ -247,15 +290,28 @@ def get_global_data():
         return yaml.load(yamlfile, Loader=yaml.FullLoader)
 
 
-def get_show_data(show: object) -> object:
+def get_show_data(show):
     if not show:
         return {}
+    show = show.lower()
     show_config_filepath = os.path.join(__config_folder_path, f'yaml/{show}_config.yaml')
     with open(show_config_filepath, "r") as yamlfile:
         return yaml.load(yamlfile, Loader=yaml.FullLoader)
 
+def get_path(job, attr):
+    job = job.lower()
+    show_config = f'package_maker.src.config.py.{job}_paths'
+    path_config = importlib.import_module(show_config)
+    return path_config.__getattribute__(attr)
+
+def get_nomenclature(job, attr):
+    show_config = f'package_maker.src.config.py.{job}_nomenclature'
+    nomenclature_config = importlib.import_module(show_config)
+    return nomenclature_config.__getattribute__(attr)
+
 
 if __name__ == '__main__':
-    show_list = ['asterix', 'test']
+
+    show_list = ['asterix', 'test', 'trm', 'notre_dame', 'Greek_Salad']
     global_config_exec()
     for show in show_list:  show_config_exec(show)

@@ -7,6 +7,7 @@ from package_maker.src.utils import general_utils
 class Geomerty:
     def __init__(self, base_data=None):
         self.base_data = base_data
+        self.job = self.base_data.get('job', os.environ.get('job'))
         self._element_desc = UNKNOWN
         self._path_data = base_data or dict()
         self.ext = self.base_data.get('ext') or self.get_ext
@@ -49,7 +50,7 @@ class Geomerty:
 
     @property
     def template(self):
-        return workfile_filepath_template
+        return get_path(self.job, 'workfile_filepath_template')
 
     @property
     def destination_path(self):
