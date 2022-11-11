@@ -41,7 +41,7 @@ global_work_app_config = {
 global_pkg_version_padding = 4
 
 
-global_pkg_version_prefix = 'ver'
+global_pkg_version_prefix = 'v'
 
 
 global_shot_version_padding = 3
@@ -158,6 +158,16 @@ def asterix_config_setup():
         plate_version_prefix='master'
     )
 
+def greek_salad_config_setup():
+    return dict(
+        discipline=global_discipline,
+        seq_ext=global_seq_ext,
+        pkg_dir_types=global_pkg_dir_types,
+        shot_version_padding=4,
+        shot_version_prefix='v',
+        plate_version_padding=2,
+        plate_version_prefix='master'
+    )
 
 
 def trm_config_setup():
@@ -219,6 +229,10 @@ def global_config_setup():
                         dir_path='/mnt/mpcparis/NOTRE_DAME/io/To_Client/packages',
                         title='MPC PARIS PACKAGE FOR NOTRE_DAME.',
                     ),
+                    Greek_Salad=dict(
+                        dir_path='/mnt/mpcparis/Greek_Salad/io/to_client/packages',
+                        title='MPC PARIS PACKAGE FOR Greek_Salad.',
+                    ),
                     test=dict(
                         dir_path='/mnt/mpcparis/tesr/io/To_Client/packages',
                         title='MPC PARIS PACKAGE FOR NOTRE_DAME.',
@@ -250,6 +264,7 @@ def get_show_config(show):
         test=test_config_setup(),
         trm=trm_config_setup(),
         notre_dame=notre_dame_config_setup(),
+        Greek_Salad=greek_salad_config_setup(),
     ).get(show)
 
 
@@ -261,8 +276,8 @@ def global_config_exec():
         print("Write successful")
 
 
-def show_config_exec(show=None):
-    show_config_filepath = os.path.join(__config_folder_path, f'yaml/{show}_config.yaml')
+def show_config_exec(show):
+    show_config_filepath = os.path.join(__config_folder_path, f'yaml/{show.lower()}_config.yaml')
     show_config_data = get_show_config(show)
     with open(show_config_filepath, 'w') as yamlfile:
         data = yaml.dump(show_config_data, yamlfile)
@@ -275,15 +290,19 @@ def get_global_data():
         return yaml.load(yamlfile, Loader=yaml.FullLoader)
 
 
-def get_show_data(show: object) -> object:
+def get_show_data(show):
     if not show:
         return {}
+    show = show.lower()
     show_config_filepath = os.path.join(__config_folder_path, f'yaml/{show}_config.yaml')
+    print(show_config_filepath)
     with open(show_config_filepath, "r") as yamlfile:
         return yaml.load(yamlfile, Loader=yaml.FullLoader)
 
 def get_path(job, attr):
+    job = job.lower()
     show_config = f'package_maker.src.config.py.{job}_paths'
+    print(show_config)
     path_config = importlib.import_module(show_config)
     return path_config.__getattribute__(attr)
 
@@ -294,6 +313,7 @@ def get_nomenclature(job, attr):
 
 
 if __name__ == '__main__':
-    show_list = ['asterix', 'test', 'trm', 'notre_dame']
+
+    show_list = ['asterix', 'test', 'trm', 'notre_dame', 'Greek_Salad']
     global_config_exec()
     for show in show_list:  show_config_exec(show)

@@ -6,8 +6,8 @@ from PySide2.QtCore import Qt, QSize
 from PySide2.QtWidgets import QApplication, QDialog, QDialogButtonBox, QListWidgetItem
 import subprocess
 from package_maker.src.config.config_main import *
-from package_maker.src.gui import gui_file_importer, shot_widget_selector
-from package_maker.src.resource import resource_main, shot_widget_item
+from package_maker.src.config import shot_widget_selector
+from package_maker.src.resource import resource_main
 from package_maker.src.utils import general_utils
 
 
