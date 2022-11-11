@@ -33,6 +33,7 @@ def get_latest_pkg_version(pkg_dir):
         for pkg_name in pkg_names:
             version_expression = f'{version_prefix}\d' + '{' + str(version_num) + '}'
             pkg_version = next(iter(re.findall(version_expression, pkg_name)), None)
+            print(pkg_version)
             if pkg_version:
                 version_list.append(pkg_version)
         return sorted(version_list) or [first_version]

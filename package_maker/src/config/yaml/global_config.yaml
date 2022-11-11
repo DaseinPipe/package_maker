@@ -1,6 +1,9 @@
 destination:
   MPC_Paris:
     job:
+      Greek_Salad:
+        dir_path: /mnt/mpcparis/Greek_Salad/io/to_client/packages
+        title: MPC PARIS PACKAGE FOR Greek_Salad.
       NOTRE_DAME:
         dir_path: /mnt/mpcparis/NOTRE_DAME/io/To_Client/packages
         title: MPC PARIS PACKAGE FOR NOTRE_DAME.

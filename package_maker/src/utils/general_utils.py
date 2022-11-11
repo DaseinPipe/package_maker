@@ -7,7 +7,7 @@ import shutil
 
 
 from package_maker.src.core.for_approval import *
-from package_maker.src.utils import asterix_utils, trm_utils, dbHelper
+from package_maker.src.utils import asterix_utils, trm_utils
 
 
 def is_name_matched(text, patterns):
