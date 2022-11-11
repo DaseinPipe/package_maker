@@ -173,7 +173,7 @@ def greek_salad_config_setup():
 def trm_config_setup():
     return dict(
         discipline=[
-            'Animation', 'BG_plates', 'Cleanup', 'Lighting',
+            'Animation', 'BG_plates', 'Cleanup', 'Lighting', 'comp',
             'Matchmoving', 'Matte_painting', 'Plates', 'Rotoscoping'
         ],
         seq_ext=global_seq_ext,
@@ -295,14 +295,12 @@ def get_show_data(show):
         return {}
     show = show.lower()
     show_config_filepath = os.path.join(__config_folder_path, f'yaml/{show}_config.yaml')
-    print(show_config_filepath)
     with open(show_config_filepath, "r") as yamlfile:
         return yaml.load(yamlfile, Loader=yaml.FullLoader)
 
 def get_path(job, attr):
     job = job.lower()
     show_config = f'package_maker.src.config.py.{job}_paths'
-    print(show_config)
     path_config = importlib.import_module(show_config)
     return path_config.__getattribute__(attr)
 

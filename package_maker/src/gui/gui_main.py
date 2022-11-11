@@ -121,6 +121,7 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
             self.apply_btn.setEnabled(False)
             return
         os.environ['job'] = state
+        os.environ['show'] = state
         self.job = state
 
         self.title = self.global_data['destination'][self.destination]['job'][state]['title']
