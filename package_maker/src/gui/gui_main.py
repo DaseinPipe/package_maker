@@ -1,7 +1,6 @@
 import re
 import sys
 
-
 from PySide2.QtCore import Qt, QSize
 from PySide2.QtWidgets import QApplication, QDialog, QDialogButtonBox, QListWidgetItem
 import subprocess
@@ -9,7 +8,6 @@ from package_maker.src.config.config_main import *
 from package_maker.src.config import shot_widget_selector
 from package_maker.src.resource import resource_main
 from package_maker.src.utils import general_utils
-
 
 GLOBAL_DATA: dict = get_global_data()
 
@@ -37,7 +35,6 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
         self.populate_page1()
         self.connection()
 
-
     def populate_page1(self):
         self.pkg_version_comboBox.setHidden(True)
         self.pkg_version_label.setHidden(True)
@@ -59,7 +56,6 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
         self.pkg_create_pushButton.clicked.connect(self.create_pkg)
         self.done_pushButton.clicked.connect(self.close)
         self.open_pkg_pushButton.clicked.connect(self.open_pkg_dir)
-
 
     def open_pkg_dir(self):
         main_pkg_dir_template = general_utils.get_path(self.job.lower(), 'main_pkg_dir')

@@ -169,6 +169,17 @@ def greek_salad_config_setup():
         plate_version_prefix='master'
     )
 
+def dogman_config_setup():
+    return dict(
+        discipline=global_discipline,
+        seq_ext=global_seq_ext,
+        pkg_dir_types=global_pkg_dir_types,
+        shot_version_padding=4,
+        shot_version_prefix='v',
+        plate_version_padding=2,
+        plate_version_prefix='master'
+    )
+
 
 def trm_config_setup():
     return dict(
@@ -233,6 +244,10 @@ def global_config_setup():
                         dir_path='/mnt/mpcparis/Greek_Salad/io/to_client/packages',
                         title='MPC PARIS PACKAGE FOR Greek_Salad.',
                     ),
+                    DOGMAN=dict(
+                        dir_path='/mnt/mpcparis/DOGMAN/io/to_client/packages/',
+                        title='MPC PARIS PACKAGE FOR DOGMAN.',
+                    ),
                     test=dict(
                         dir_path='/mnt/mpcparis/tesr/io/To_Client/packages',
                         title='MPC PARIS PACKAGE FOR NOTRE_DAME.',
@@ -265,6 +280,7 @@ def get_show_config(show):
         trm=trm_config_setup(),
         notre_dame=notre_dame_config_setup(),
         Greek_Salad=greek_salad_config_setup(),
+        dogman=dogman_config_setup(),
     ).get(show)
 
 
@@ -312,6 +328,6 @@ def get_nomenclature(job, attr):
 
 if __name__ == '__main__':
 
-    show_list = ['asterix', 'test', 'trm', 'notre_dame', 'Greek_Salad']
+    show_list = ['asterix', 'test', 'trm', 'notre_dame', 'Greek_Salad', 'dogman']
     global_config_exec()
     for show in show_list:  show_config_exec(show)
