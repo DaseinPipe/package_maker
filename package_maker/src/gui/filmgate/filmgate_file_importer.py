@@ -142,7 +142,9 @@ class FilmgateFileImporter(FileImporterWidget, object):
             shot = self.fi_tableWidget.cellWidget(row, shot_column_no).currentText()
 
             filepath = os.path.join(dirpath, filename).replace('\\', '/')
-
+            item_data = self.item_data.copy()
+            item_data['shot'] = shot
+            self.set_shot_version(item_data=item_data)
             filelist.append(
                 {
                     'source_path': filepath,
@@ -159,7 +161,6 @@ class FilmgateFileImporter(FileImporterWidget, object):
             'discipline': self.fi_discipline_comboBox.currentText(),
             'files': filelist
         }
-        print(self.import_data)
         self.close()
 
     def shot_dropdown_widget(self):
@@ -174,7 +175,8 @@ class FilmgateFileImporter(FileImporterWidget, object):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    pkg_dir = r'/mnt/pb6/Filmgate/TRM/io/To_Client/Package'
+    os.environ['show'] = 'trm'
+    pkg_dir = r'/home/rithik/rithik/test/package'
     w = FilmgateFileImporter(pkg_dir=pkg_dir)
     w.show()
     app.exec_()
