@@ -112,8 +112,10 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
             'discipline': self.fi_discipline_comboBox.currentText(),
         }
 
-    def set_shot_version(self):
-        _shot_version_num = general_utils.get_latest_shot_version(self.item_data)
+    def set_shot_version(self, item_data=None):
+        if not item_data:
+            item_data = self.item_data
+        _shot_version_num = general_utils.get_latest_shot_version(item_data)
         shot_padding = int(self.show_data.get("shot_version_padding", "3"))
         self.shot_version_num = str(_shot_version_num).zfill(shot_padding)
 
@@ -257,8 +259,6 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
     def dropdown_process(self, **Kargs):
         discipline = self.fi_discipline_comboBox.currentText()
         _, ext = os.path.splitext(Kargs['filename'])
-        print(self.item_data)
-        print(general_utils.get_custom_element_descs(self.item_data),'111111111111')
         if general_utils.get_custom_element_descs(self.item_data) and ext == '.exr':
             pkg_dir_type = 'custom'
             self.fi_tableWidget.setColumnHidden(3, False)
@@ -293,6 +293,7 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     # pkg_dir = r'/mnt/mpcparis/NOTRE_DAME/io/To_Client/packages'
+
     pkg_dir = r'/mnt/mpcparis/A5/io/To_Client/packages'
     w = FileImporterWidget(current_pkg_dir=pkg_dir)
     w.show()
