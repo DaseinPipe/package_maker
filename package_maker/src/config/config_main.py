@@ -245,7 +245,7 @@ def global_config_setup():
                         title='MPC PARIS PACKAGE FOR Greek_Salad.',
                     ),
                     DOGMAN=dict(
-                        dir_path='/mnt/mpcparis/DOGMAN/io/to_client/packages/',
+                        dir_path='/mnt/mpcparis/DOGMAN/io/to_client/packages',
                         title='MPC PARIS PACKAGE FOR DOGMAN.',
                     ),
                     test=dict(
