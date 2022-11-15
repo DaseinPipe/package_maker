@@ -2,7 +2,7 @@ destination:
   MPC_Paris:
     job:
       DOGMAN:
-        dir_path: /mnt/mpcparis/DOGMAN/io/to_client/packages/
+        dir_path: /mnt/mpcparis/DOGMAN/io/to_client/packages
         title: MPC PARIS PACKAGE FOR DOGMAN.
       Greek_Salad:
         dir_path: /mnt/mpcparis/Greek_Salad/io/to_client/packages
