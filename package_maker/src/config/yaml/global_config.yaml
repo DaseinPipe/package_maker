@@ -21,6 +21,9 @@ destination:
     vendor: dasein
   filmgate:
     job:
+      KILL:
+        dir_path: /mnt/pb6/Filmgate/KILL/io/To_Client/Package
+        title: FILMGATE PACKAGE FOR KILL.
       TRM:
         dir_path: /mnt/pb6/Filmgate/TRM/io/To_Client/Package
         title: FILMGATE PACKAGE FOR TRM.
