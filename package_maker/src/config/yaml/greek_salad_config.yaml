@@ -84,5 +84,6 @@ seq_ext:
 - jpeg
 - png
 - tiff
+- dpx
 shot_version_padding: 4
 shot_version_prefix: v

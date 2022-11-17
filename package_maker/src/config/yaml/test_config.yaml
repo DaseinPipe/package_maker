@@ -84,6 +84,7 @@ seq_ext:
 - jpeg
 - png
 - tiff
+- dpx
 shot:
 - 080_bb_0375_test
 - 082_em_0325_test

@@ -5,6 +5,7 @@ from PySide2.QtCore import Qt, QSize
 from PySide2.QtWidgets import QApplication, QDialog, QDialogButtonBox, QListWidgetItem
 import subprocess
 from package_maker.src.config.config_main import *
+from package_maker.src.config.global_pkg_data_selector import get_global_pkg_data
 from package_maker.src.config import shot_widget_selector
 from package_maker.src.resource import resource_main
 from package_maker.src.utils import general_utils
@@ -204,7 +205,7 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
     def global_pkg_data(self, value):
         if value != 'initiate':
             raise RuntimeError('value should be "initiate" but plz make sure global_pkg_data is initiate once only')
-        self._global_pkg_data = general_utils.get_global_pkg_data(
+        self._global_pkg_data = get_global_pkg_data(
             self.job.lower(),
             self.destination,
             self.pkg_dir
