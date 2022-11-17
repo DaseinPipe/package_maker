@@ -25,7 +25,8 @@ global_seq_ext = [
     'jpg',
     'jpeg',
     'png',
-    'tiff'
+    'tiff',
+    'dpx'
 ]
 
 global_work_app_config = {
@@ -197,6 +198,22 @@ def trm_config_setup():
         shot_name_regex=r'ep\d{2}-rl\d{2}_\d{5}'
     )
 
+def kill_config_setup():
+    return dict(
+        discipline=[
+            'Animation', 'BG_plates', 'Cleanup', 'Lighting', 'comp',
+            'Matchmoving', 'Matte_painting', 'Plates', 'Rotoscoping'
+        ],
+        seq_ext=global_seq_ext,
+        shot_version_padding=4,
+        shot_version_prefix='v',
+        plate_version_padding=2,
+        plate_version_prefix='master',
+        episode_name_regex=r'ep\d{2}-rl\d{2}',
+        shot_no_regex=r'\d{5}',
+        shot_name_regex=r'ep\d{2}-rl\d{2}_\d{5}'
+    )
+
 def notre_dame_config_setup():
     return dict(
         discipline=global_discipline,
@@ -245,7 +262,7 @@ def global_config_setup():
                         title='MPC PARIS PACKAGE FOR Greek_Salad.',
                     ),
                     DOGMAN=dict(
-                        dir_path='/mnt/mpcparis/DOGMAN/io/to_client/packages/',
+                        dir_path='/mnt/mpcparis/DOGMAN/io/to_client/packages',
                         title='MPC PARIS PACKAGE FOR DOGMAN.',
                     ),
                     test=dict(
@@ -262,6 +279,10 @@ def global_config_setup():
                     TRM=dict(
                         dir_path='/mnt/pb6/Filmgate/TRM/io/To_Client/Package',
                         title='FILMGATE PACKAGE FOR TRM.',
+                    ),
+                    KILL=dict(
+                        dir_path='/mnt/pb6/Filmgate/KILL/io/To_Client/Package',
+                        title='FILMGATE PACKAGE FOR KILL.',
                     ),
                 ),
                 vendor='dasein',
@@ -281,6 +302,7 @@ def get_show_config(show):
         notre_dame=notre_dame_config_setup(),
         Greek_Salad=greek_salad_config_setup(),
         dogman=dogman_config_setup(),
+        kill=kill_config_setup(),
     ).get(show)
 
 
@@ -328,6 +350,6 @@ def get_nomenclature(job, attr):
 
 if __name__ == '__main__':
 
-    show_list = ['asterix', 'test', 'trm', 'notre_dame', 'Greek_Salad', 'dogman']
+    show_list = ['asterix', 'test', 'trm', 'notre_dame', 'Greek_Salad', 'dogman', 'kill']
     global_config_exec()
     for show in show_list:  show_config_exec(show)
