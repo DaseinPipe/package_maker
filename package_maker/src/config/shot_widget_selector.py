@@ -6,7 +6,7 @@ from PySide2.QtWidgets import QApplication
 
 
 def get_shot_widget(job, parent_item, parent_widget, global_pkg_data ):
-    if job.lower() == 'trm':
+    if job.lower() in ['trm', 'kill']:
         return filmgate_shot_item.FilmgateShotItemWidget(
             parent_item=parent_item,
             parent_widget=parent_widget,

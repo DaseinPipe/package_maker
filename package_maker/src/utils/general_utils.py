@@ -7,7 +7,7 @@ import shutil
 
 
 from package_maker.src.core.for_approval import *
-from package_maker.src.utils import asterix_utils, trm_utils
+from package_maker.src.utils import mpc_utils, filmgate_utils
 
 
 def is_name_matched(text, patterns):
@@ -113,11 +113,6 @@ def assumed_pkg_type(dept, source_filepath):
 
 
 
-def get_global_pkg_data(job, destination, pkg_dir):
-    return {
-        'asterix': asterix_utils.global_pkg_data(job, destination, pkg_dir),
-        'trm': trm_utils.global_pkg_data(job, destination, pkg_dir)
-    }.get(job, asterix_utils.global_pkg_data(job, destination, pkg_dir))
 
 
 
