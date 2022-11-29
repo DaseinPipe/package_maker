@@ -166,7 +166,9 @@ class FilmgateFileImporter(FileImporterWidget, object):
     def shot_dropdown_widget(self):
 
         row_comboBox = QComboBox(self.fi_tableWidget)
+        print(self.item_data)
         shot_list = general_utils.get_shots(self.item_data)
+        print(shot_list)
         shot_list.insert(0, 'select')
         row_comboBox.addItems(shot_list)
         setattr(row_comboBox, "allItems", lambda: [row_comboBox.itemText(i) for i in range(row_comboBox.count())])
@@ -175,8 +177,8 @@ class FilmgateFileImporter(FileImporterWidget, object):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    os.environ['show'] = 'trm'
-    pkg_dir = r'/home/rithik/rithik/test/package'
+    os.environ['show'] = 'boderland'
+    pkg_dir = r'/mnt/pb6/Filmgate/Boderland/io/To_Client/Package'
     w = FilmgateFileImporter(pkg_dir=pkg_dir)
     w.show()
     app.exec_()
