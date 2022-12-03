@@ -156,6 +156,7 @@ def update_shot_version(item_data):
 
 
 def get_latest_shot_version(item_data):
+    print(item_data)
     pkg_dir = item_data['pkg_dir']
     dept = item_data['discipline']
     shot = item_data['shot']
@@ -283,5 +284,5 @@ if __name__ == '__main__':
 
     # item_data = {'pkg_dir': '/mnt/mpcparis/NOTRE_DAME/io/To_Client/packages', 'shot': '1039b_0010', 'discipline': 'prep'}
 
-    item_data = {'pkg_dir': '/mnt/pb6/Filmgate/Boderland/io/To_Client/Package', 'shot': '', 'discipline': 'comp'}
-    print(get_shots(item_data))
+    item_data = {'pkg_dir': '/mnt/mpcparis/DOGMAN/io/to_client/packages', 'shot': '025_010', 'discipline': 'prep'}
+    print(get_latest_shot_version(item_data))
