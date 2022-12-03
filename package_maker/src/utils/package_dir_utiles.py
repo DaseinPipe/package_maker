@@ -13,6 +13,7 @@ def get_camera_info(file_data):
 
 
 def get_element_info(file_data):
+    print(file_data)
     element_obj = element.Element(file_data)
     return element_obj.path_data, element_obj.destination_path
 

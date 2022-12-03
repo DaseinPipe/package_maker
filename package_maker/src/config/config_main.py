@@ -204,6 +204,18 @@ def marinet_config_setup():
     )
 
 
+def ecodlair_config_setup():
+    return dict(
+        discipline=global_discipline,
+        seq_ext=global_seq_ext,
+        pkg_dir_types=global_pkg_dir_types,
+        shot_version_padding=4,
+        shot_version_prefix='v',
+        plate_version_padding=2,
+        plate_version_prefix='master'
+    )
+
+
 
 def trm_config_setup():
     return dict(
@@ -313,6 +325,10 @@ def global_config_setup():
                         dir_path='/mnt/mpcparis/MARINET/io//to_client/packages',
                         title='MPC PARIS PACKAGE FOR MARINET.',
                     ),
+                    ECODLAIR=dict(
+                        dir_path='/mnt/mpcparis/ECODLAIR/IO/To_Client/packages/',
+                        title='MPC PARIS PACKAGE FOR ECODLAIR.',
+                    ),
                     test=dict(
                         dir_path='/mnt/mpcparis/tesr/io/To_Client/packages',
                         title='MPC PARIS PACKAGE FOR NOTRE_DAME.',
@@ -358,6 +374,7 @@ def get_show_config(show):
         marinet=marinet_config_setup(),
         kill=kill_config_setup(),
         boderland=boderland_config_setup(),
+        ecodlair=ecodlair_config_setup(),
     ).get(show)
 
 
@@ -407,7 +424,7 @@ if __name__ == '__main__':
 
     show_list = [
         'asterix', 'test', 'trm', 'notre_dame', 'Greek_Salad', 'dogman', 'kill', 'wonderman',
-        'marinet', 'boderland'
+        'marinet', 'boderland', 'ecodlair'
      ]
     global_config_exec()
     for show in show_list:  show_config_exec(show)
