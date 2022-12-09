@@ -13,7 +13,7 @@ WORKFILE_NAME = lucidity.Template('workfile_name',
                                   '_{element_desc}_{shot_version_prefix}{shot_version_num}')
 
 SEQ_FILE_NAME = lucidity.Template('seq_file_name',
-                                  '{shot}-{discipline}-{plate_version_prefix}{plate_version_num}-aces'
+                                  '{shot}-src-{plate_version_prefix}{plate_version_num}-aces'
                                   '_{element_desc}_{shot_version_prefix}{shot_version_num}.{frame}')
 
 
