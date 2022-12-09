@@ -1,0 +1,24 @@
+discipline:
+- Animation
+- BG_plates
+- Cleanup
+- Lighting
+- comp
+- Matchmoving
+- Matte_painting
+- Plates
+- Rotoscoping
+episode_name_regex: ep\d{2}-rl\d{2}
+plate_version_padding: 2
+plate_version_prefix: master
+seq_ext:
+- exr
+- jpg
+- jpeg
+- png
+- tiff
+- dpx
+shot_name_regex: ep\d{2}-rl\d{2}_\d{5}
+shot_no_regex: \d{5}
+shot_version_padding: 4
+shot_version_prefix: v

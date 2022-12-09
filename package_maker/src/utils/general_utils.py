@@ -156,6 +156,7 @@ def update_shot_version(item_data):
 
 
 def get_latest_shot_version(item_data):
+    print(item_data)
     pkg_dir = item_data['pkg_dir']
     dept = item_data['discipline']
     shot = item_data['shot']
@@ -197,11 +198,13 @@ def get_shots(item_data):
         os.makedirs(os.path.dirname(csv_path))
     fields = ['Shot Code']
     csv_file = Path(csv_path)
+    print(csv_file)
     csv_file.touch(exist_ok=True)
     with open(csv_file, 'r') as csvfile:
         reader = csv.DictReader(csvfile, fieldnames=fields)
         shot_list = []
         for row in reader:
+            print(row)
             if row['Shot Code'] and row['Shot Code'] != 'Shot Code':
                 shot_list.append(row['Shot Code'])
 
@@ -281,5 +284,5 @@ if __name__ == '__main__':
 
     # item_data = {'pkg_dir': '/mnt/mpcparis/NOTRE_DAME/io/To_Client/packages', 'shot': '1039b_0010', 'discipline': 'prep'}
 
-    item_data = {'pkg_dir': '/mnt/mpcparis/A5/io/To_Client/packages', 'shot': '082_em_0110', 'discipline': 'roto'}
-    print(get_custom_element_descs(item_data))
+    item_data = {'pkg_dir': '/mnt/mpcparis/DOGMAN/io/to_client/packages', 'shot': '025_010', 'discipline': 'prep'}
+    print(get_latest_shot_version(item_data))

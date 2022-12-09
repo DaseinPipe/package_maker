@@ -192,6 +192,41 @@ def wonderman_config_setup():
         plate_version_prefix='master'
     )
 
+def marinet_config_setup():
+    return dict(
+        discipline=global_discipline,
+        seq_ext=global_seq_ext,
+        pkg_dir_types=global_pkg_dir_types,
+        shot_version_padding=4,
+        shot_version_prefix='v',
+        plate_version_padding=2,
+        plate_version_prefix='master'
+    )
+
+
+def ecodlair_config_setup():
+    return dict(
+        discipline=global_discipline,
+        seq_ext=global_seq_ext,
+        pkg_dir_types=global_pkg_dir_types,
+        shot_version_padding=4,
+        shot_version_prefix='v',
+        plate_version_padding=2,
+        plate_version_prefix='master'
+    )
+
+
+def latresse_config_setup():
+    return dict(
+        discipline=global_discipline,
+        seq_ext=global_seq_ext,
+        pkg_dir_types=global_pkg_dir_types,
+        shot_version_padding=4,
+        shot_version_prefix='v',
+        plate_version_padding=2,
+        plate_version_prefix='master'
+    )
+
 
 
 def trm_config_setup():
@@ -211,6 +246,23 @@ def trm_config_setup():
     )
 
 def kill_config_setup():
+    return dict(
+        discipline=[
+            'Animation', 'BG_plates', 'Cleanup', 'Lighting', 'comp',
+            'Matchmoving', 'Matte_painting', 'Plates', 'Rotoscoping'
+        ],
+        seq_ext=global_seq_ext,
+        shot_version_padding=4,
+        shot_version_prefix='v',
+        plate_version_padding=2,
+        plate_version_prefix='master',
+        episode_name_regex=r'ep\d{2}-rl\d{2}',
+        shot_no_regex=r'\d{5}',
+        shot_name_regex=r'ep\d{2}-rl\d{2}_\d{5}'
+    )
+
+
+def boderland_config_setup():
     return dict(
         discipline=[
             'Animation', 'BG_plates', 'Cleanup', 'Lighting', 'comp',
@@ -281,6 +333,18 @@ def global_config_setup():
                         dir_path='/mnt/mpcparis/WONDERMAN/io//to_client/packages',
                         title='MPC PARIS PACKAGE FOR WONDERMAN.',
                     ),
+                    MARINET=dict(
+                        dir_path='/mnt/mpcparis/MARINET/io//to_client/packages',
+                        title='MPC PARIS PACKAGE FOR MARINET.',
+                    ),
+                    ECODLAIR=dict(
+                        dir_path='/mnt/mpcparis/ECODLAIR/IO/To_Client/packages',
+                        title='MPC PARIS PACKAGE FOR ECODLAIR.',
+                    ),
+                    LATRESSE=dict(
+                        dir_path='/mnt/mpcparis/LATRESSE/IO/To_Client/packages',
+                        title='MPC PARIS PACKAGE FOR LATRESSE.',
+                    ),
                     test=dict(
                         dir_path='/mnt/mpcparis/tesr/io/To_Client/packages',
                         title='MPC PARIS PACKAGE FOR NOTRE_DAME.',
@@ -299,6 +363,10 @@ def global_config_setup():
                     KILL=dict(
                         dir_path='/mnt/pb6/Filmgate/KILL/io/To_Client/Package',
                         title='FILMGATE PACKAGE FOR KILL.',
+                    ),
+                    Boderland=dict(
+                        dir_path='/mnt/pb6/Filmgate/Boderland/io/To_Client/Package',
+                        title='FILMGATE PACKAGE FOR Boderland.',
                     ),
                 ),
                 vendor='dasein',
@@ -319,7 +387,11 @@ def get_show_config(show):
         Greek_Salad=greek_salad_config_setup(),
         dogman=dogman_config_setup(),
         wonderman=wonderman_config_setup(),
+        marinet=marinet_config_setup(),
         kill=kill_config_setup(),
+        boderland=boderland_config_setup(),
+        ecodlair=ecodlair_config_setup(),
+        latresse=latresse_config_setup(),
     ).get(show)
 
 
@@ -367,6 +439,9 @@ def get_nomenclature(job, attr):
 
 if __name__ == '__main__':
 
-    show_list = ['asterix', 'test', 'trm', 'notre_dame', 'Greek_Salad', 'dogman', 'kill', 'wonderman']
+    show_list = [
+        'asterix', 'test', 'trm', 'notre_dame', 'Greek_Salad', 'dogman', 'kill', 'wonderman',
+        'marinet', 'boderland', 'ecodlair', 'latresse'
+     ]
     global_config_exec()
     for show in show_list:  show_config_exec(show)

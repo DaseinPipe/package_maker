@@ -4,9 +4,18 @@ destination:
       DOGMAN:
         dir_path: /mnt/mpcparis/DOGMAN/io/to_client/packages
         title: MPC PARIS PACKAGE FOR DOGMAN.
+      ECODLAIR:
+        dir_path: /mnt/mpcparis/ECODLAIR/IO/To_Client/packages/
+        title: MPC PARIS PACKAGE FOR ECODLAIR.
       Greek_Salad:
         dir_path: /mnt/mpcparis/Greek_Salad/io/to_client/packages
         title: MPC PARIS PACKAGE FOR Greek_Salad.
+      LATRESSE:
+        dir_path: /mnt/mpcparis/LATRESSE/IO/To_Client/packages/
+        title: MPC PARIS PACKAGE FOR LATRESSE.
+      MARINET:
+        dir_path: /mnt/mpcparis/MARINET/io//to_client/packages
+        title: MPC PARIS PACKAGE FOR MARINET.
       NOTRE_DAME:
         dir_path: /mnt/mpcparis/NOTRE_DAME/io/To_Client/packages
         title: MPC PARIS PACKAGE FOR NOTRE_DAME.
@@ -24,6 +33,9 @@ destination:
     vendor: dasein
   filmgate:
     job:
+      Boderland:
+        dir_path: /mnt/pb6/Filmgate/Boderland/io/To_Client/Package
+        title: FILMGATE PACKAGE FOR Boderland.
       KILL:
         dir_path: /mnt/pb6/Filmgate/KILL/io/To_Client/Package
         title: FILMGATE PACKAGE FOR KILL.
