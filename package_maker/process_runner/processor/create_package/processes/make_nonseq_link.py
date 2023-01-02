@@ -1,5 +1,4 @@
-import os
-import fileseq
+from package_maker.src.utils.general_utils import make_relative_file
 from package_maker.src.config.config_main import *
 __name = 'make seq symbolic link'
 
@@ -12,7 +11,7 @@ def run(**data):
         destination_path = file_data['destination_path']
         if not os.path.exists(os.path.dirname(destination_path)):
             os.makedirs(os.path.dirname(destination_path))
-        os.symlink(source_path, destination_path)
+        make_relative_file(source_path, destination_path)
 
     return 0, {
         'info': '', 

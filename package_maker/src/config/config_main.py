@@ -227,7 +227,38 @@ def latresse_config_setup():
         plate_version_prefix='master'
     )
 
+def labete_config_setup():
+    return dict(
+        discipline=global_discipline,
+        seq_ext=global_seq_ext,
+        pkg_dir_types=global_pkg_dir_types,
+        shot_version_padding=4,
+        shot_version_prefix='v',
+        plate_version_padding=2,
+        plate_version_prefix='master'
+    )
 
+def lrdo_config_setup():
+    return dict(
+        discipline=global_discipline,
+        seq_ext=global_seq_ext,
+        pkg_dir_types=global_pkg_dir_types,
+        shot_version_padding=4,
+        shot_version_prefix='v',
+        plate_version_padding=2,
+        plate_version_prefix='master'
+    )
+
+def paf_config_setup():
+    return dict(
+        discipline=global_discipline,
+        seq_ext=global_seq_ext,
+        pkg_dir_types=global_pkg_dir_types,
+        shot_version_padding=4,
+        shot_version_prefix='v',
+        plate_version_padding=2,
+        plate_version_prefix='master'
+    )
 
 def trm_config_setup():
     return dict(
@@ -314,11 +345,11 @@ def global_config_setup():
             MPC_Paris=dict(
                 job=dict(
                     asterix=dict(
-                        dir_path='/mnt/mpcparis/A5/io/To_Client/packages',
+                        dir_path='/mnt/mpcparis/A5/io/to_client/packages',
                         title='MPC PARIS PACKAGE FOR A5.',
                     ),
                     NOTRE_DAME=dict(
-                        dir_path='/mnt/mpcparis/NOTRE_DAME/io/To_Client/packages',
+                        dir_path='/mnt/mpcparis/NOTRE_DAME/io/to_client/packages',
                         title='MPC PARIS PACKAGE FOR NOTRE_DAME.',
                     ),
                     Greek_Salad=dict(
@@ -338,15 +369,27 @@ def global_config_setup():
                         title='MPC PARIS PACKAGE FOR MARINET.',
                     ),
                     ECODLAIR=dict(
-                        dir_path='/mnt/mpcparis/ECODLAIR/IO/To_Client/packages',
+                        dir_path='/mnt/mpcparis/ECODLAIR/io/to_client/packages',
                         title='MPC PARIS PACKAGE FOR ECODLAIR.',
                     ),
                     LATRESSE=dict(
-                        dir_path='/mnt/mpcparis/LATRESSE/IO/To_Client/packages',
+                        dir_path='/mnt/mpcparis/LATRESSE/io/to_client/packages',
                         title='MPC PARIS PACKAGE FOR LATRESSE.',
                     ),
+                    LABETE=dict(
+                        dir_path='/mnt/mpcparis/LABETE/io/to_client/packages',
+                        title='MPC PARIS PACKAGE FOR LABETE.',
+                    ),
+                    LRDO=dict(
+                        dir_path='/mnt/mpcparis/LRDO/io/to_client/packages',
+                        title='MPC PARIS PACKAGE FOR LRDO.',
+                    ),
+                    PAF=dict(
+                        dir_path='/mnt/mpcparis/PAF/io//to_client/packages',
+                        title='MPC PARIS PACKAGE FOR PAF.',
+                    ),
                     test=dict(
-                        dir_path='/mnt/mpcparis/tesr/io/To_Client/packages',
+                        dir_path='/mnt/mpcparis/tesr/io/to_client/packages',
                         title='MPC PARIS PACKAGE FOR NOTRE_DAME.',
                     ),
                 ),
@@ -392,6 +435,9 @@ def get_show_config(show):
         boderland=boderland_config_setup(),
         ecodlair=ecodlair_config_setup(),
         latresse=latresse_config_setup(),
+        labete=labete_config_setup(),
+        lrdo=lrdo_config_setup(),
+        paf=paf_config_setup(),
     ).get(show)
 
 
@@ -441,7 +487,7 @@ if __name__ == '__main__':
 
     show_list = [
         'asterix', 'test', 'trm', 'notre_dame', 'Greek_Salad', 'dogman', 'kill', 'wonderman',
-        'marinet', 'boderland', 'ecodlair', 'latresse'
+        'marinet', 'boderland', 'ecodlair', 'latresse', 'labete', 'lrdo', 'paf'
      ]
     global_config_exec()
     for show in show_list:  show_config_exec(show)

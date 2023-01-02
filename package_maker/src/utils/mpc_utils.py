@@ -2,11 +2,19 @@ import re
 from datetime import datetime, timedelta
 
 from package_maker.src.config.config_main import *
-global GLOBAL_DATA
-GLOBAL_DATA = get_global_data()
+from package_maker.src.config.config_vendor import  *
 
 
-def global_pkg_data(job, destination, pkg_dir):
+
+def global_pkg_data(job, destination, pkg_dir, pkg_for, vendor_name):
+
+    if pkg_for == 'client':
+        GLOBAL_DATA = get_global_data()
+    elif pkg_for == 'vendor':
+        GLOBAL_DATA = vendor_config_data(vendor=vendor_name)
+    else:
+        return {}
+
     return dict(
         date=datetime.today().strftime('%Y%m%d'),
         vendor=GLOBAL_DATA['destination'][destination]['vendor'],
@@ -14,6 +22,8 @@ def global_pkg_data(job, destination, pkg_dir):
         pkg_version_prefix=GLOBAL_DATA['destination'][destination]['pkg_version_prefix'],
         pkg_version_num=get_latest_pkg_version(pkg_dir),
         pkg_dir=pkg_dir,
+        pkg_for=pkg_for,
+        vendor_name=vendor_name
     )
 
 
@@ -33,7 +43,6 @@ def get_latest_pkg_version(pkg_dir):
         for pkg_name in pkg_names:
             version_expression = f'{version_prefix}\d' + '{' + str(version_num) + '}'
             pkg_version = next(iter(re.findall(version_expression, pkg_name)), None)
-            print(pkg_version)
             if pkg_version:
                 version_list.append(pkg_version)
         return sorted(version_list) or [first_version]

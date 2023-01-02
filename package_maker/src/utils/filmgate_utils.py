@@ -2,21 +2,27 @@ import re
 from datetime import datetime, timedelta
 
 from package_maker.src.config.config_main import *
-
-
-global GLOBAL_DATA
-GLOBAL_DATA = get_global_data()
+from package_maker.src.config.config_vendor import *
 
 
 
+def global_pkg_data(job, destination, pkg_dir, pkg_for, vendor_name):
 
-def global_pkg_data(job, destination, pkg_dir):
+    if pkg_for == 'client':
+        GLOBAL_DATA = get_global_data()
+    elif pkg_for == 'vendor':
+        GLOBAL_DATA = vendor_config_data(vendor=vendor_name)
+    else:
+        return {}
+
     return dict(
         date=datetime.today().strftime('%Y%m%d')[2:],
         vendor= GLOBAL_DATA['destination'][destination]['vendor'],
         show=job,
         pkg_version=get_latest_pkg_version(pkg_dir),
         pkg_dir=pkg_dir,
+        pkg_for=pkg_for,
+        vendor_name=vendor_name,
     )
 
 
@@ -46,9 +52,6 @@ def get_latest_pkg_version(pkg_dir):
         return 'A'
 
     return chr(ord(lastest_version)+1)
-
-
-
 
 
 if __name__ == '__main__':

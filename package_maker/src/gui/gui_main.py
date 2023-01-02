@@ -5,12 +5,13 @@ from PySide2.QtCore import Qt, QSize
 from PySide2.QtWidgets import QApplication, QDialog, QDialogButtonBox, QListWidgetItem
 import subprocess
 from package_maker.src.config.config_main import *
+from package_maker.src.config.config_vendor import *
 from package_maker.src.config.global_pkg_data_selector import get_global_pkg_data
 from package_maker.src.config import shot_widget_selector
 from package_maker.src.resource import resource_main
 from package_maker.src.utils import general_utils
 
-GLOBAL_DATA: dict = get_global_data()
+CLIENT_GLOBAL_DATA: dict = get_global_data()
 
 
 def update_database(item_data):
@@ -21,7 +22,7 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
     def __init__(self, ):
         super(PackageMakerDlg, self).__init__()
         # Run the .setupUi() method to show the GUI
-        self.global_data = GLOBAL_DATA
+        self.client_global_data = CLIENT_GLOBAL_DATA
         self.setupUi(self)
         self.start_size = QSize(self.width(), self.height())
         self.apply_btn = self.main_buttonBox.button(QDialogButtonBox.Apply)
@@ -30,6 +31,8 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
         self.job = UNKNOWN
         self.destination = UNKNOWN
         self.pkg_dir = UNKNOWN
+        self.pkg_type = UNKNOWN
+        self.vendor_name = UNKNOWN
         self.title = UNKNOWN
         self._global_pkg_data = None
         self.stackedWidget.setCurrentIndex(0)
@@ -37,16 +40,18 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
         self.connection()
 
     def populate_page1(self):
-        self.pkg_version_comboBox.setHidden(True)
-        self.pkg_version_label.setHidden(True)
+        self.vendor_name_comboBox.setHidden(True)
+        self.vendor_name_label.setHidden(True)
         self.job_comboBox.setEnabled(False)
-        destination_list = list(self.global_data['destination'].keys())
-        destination_list.insert(0, 'Select')
+        self.pkg_type_comboBox.setEnabled(False)
+        destination_list = list(self.client_global_data['destination'].keys())
         self.destination_comboBox.addItems(destination_list)
 
     def connection(self):
         self.job_comboBox.currentTextChanged.connect(self.job_exec)
         self.destination_comboBox.currentTextChanged.connect(self.destination_exec)
+        self.pkg_type_comboBox.currentTextChanged.connect(self.pkg_type_exec)
+        self.vendor_name_comboBox.currentTextChanged.connect(self.vendor_name_exec)
         self.apply_btn.clicked.connect(self.apply)
         self.shot_pushButton.clicked.connect(self.add_shot)
         self.listWidget.itemSelectionChanged.connect(self.set_shot_status)
@@ -64,15 +69,20 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
         subprocess.Popen(['xdg-open', main_pkg_dir])
 
     def create_pkg(self):
+        process = None
+        if self.pkg_type == 'vendor':
+            process = 'vendor'
         for i in range(self.listWidget.count()):
             list_item = self.listWidget.item(i)
             item_data = list_item.data(Qt.UserRole)
             item_widget = item_data['item_widget']
             import_data = item_widget.import_data
+            if not process:
+                process = import_data['discipline']
             general_utils.process_executor(
                 project=self.job,
                 processor='create_package',
-                process=import_data['discipline'],
+                process=process,
                 data=import_data,
             )
         self.populate_page4()
@@ -105,7 +115,7 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
             return
         os.environ['destination'] = state
         self.destination = state
-        job_list = list(self.global_data['destination'][state]['job'].keys())
+        job_list = list(self.client_global_data['destination'][state]['job'].keys())
         job_list.insert(0, 'Select')
         self.job_comboBox.addItems(job_list)
         self.job_comboBox.setEnabled(True)
@@ -113,16 +123,48 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
     def job_exec(self, state):
         if not state:
             return
-
         if state == 'Select':
+            self.pkg_type_comboBox.setEnabled(False)
             self.apply_btn.setEnabled(False)
             return
         os.environ['job'] = state
         os.environ['show'] = state
         self.job = state
+        self.pkg_type_comboBox.setEnabled(True)
 
-        self.title = self.global_data['destination'][self.destination]['job'][state]['title']
-        self.pkg_dir = self.global_data['destination'][self.destination]['job'][state]['dir_path']
+
+    def pkg_type_exec(self, state):
+        if not state:
+            return
+        if state == 'Select':
+            self.apply_btn.setEnabled(False)
+            return
+        os.environ['pkg_type'] = state
+        self.pkg_type = state
+        if state == 'vendor':
+            self.vendor_name_comboBox.setHidden(False)
+            self.vendor_name_label.setHidden(False)
+            self.vendor_name_comboBox.clear()
+            self.vendor_name_comboBox.addItems(VENDOR_LIST)
+        else:
+            self.title = self.client_global_data['destination'][self.destination]['job'][state]['title']
+            self.pkg_dir = self.client_global_data['destination'][self.destination]['job'][state]['dir_path']
+            self.apply_btn.setEnabled(True)
+
+
+    def vendor_name_exec(self, state):
+        if not state:
+            return
+        if state == 'Select':
+            self.apply_btn.setEnabled(False)
+            return
+
+
+        os.environ['vendor_name'] = state
+        vendor_data = vendor_config_data(vendor=state)
+        self.title = vendor_data['destination'][self.destination]['job'][self.job]['title']
+        self.pkg_dir = vendor_data['destination'][self.destination]['job'][self.job]['dir_path']
+        self.vendor_name = state
         self.apply_btn.setEnabled(True)
 
     def set_shot_status(self):
@@ -172,8 +214,10 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
             job=self.job,
             parent_item=list_item,
             parent_widget=self.listWidget,
-            global_pkg_data=self.global_pkg_data
+            global_pkg_data=self.global_pkg_data,
+            pkg_for=self.pkg_type
         )
+        print(item_widget, self.pkg_type)
         item_widget.swi_status_lineEdit.textChanged.connect(self.set_selected_info)
         list_item.setSizeHint(item_widget.sizeHint())
         list_item.setData(Qt.UserRole, {'item_widget': item_widget})
@@ -208,7 +252,9 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
         self._global_pkg_data = get_global_pkg_data(
             self.job.lower(),
             self.destination,
-            self.pkg_dir
+            self.pkg_dir,
+            self.pkg_type,
+            self.vendor_name
         )
 
 
@@ -224,3 +270,4 @@ def run():
 
 if __name__ == '__main__':
     run()
+
