@@ -110,10 +110,11 @@ def assumed_pkg_type(dept, source_filepath):
 
 
 def update_shot_version(item_data):
-    pkg_dir = item_data['pkg_dir']
+    pkg_dir = Path(item_data['pkg_dir'])
+    job_dir = pkg_dir.parents[2]
     dept = item_data['discipline']
     shot = item_data['shot']
-    csv_path = os.path.join(pkg_dir, f".package/{dept}.csv").replace('\\', '/')
+    csv_path = PurePath(job_dir, ".package", 'to_client', f"{dept}.csv")
     default_client_version = 1
     fields = ['shot', 'client_version']
 
@@ -146,17 +147,17 @@ def update_shot_version(item_data):
 
 
 def get_latest_shot_version(item_data):
-    pkg_dir = item_data['pkg_dir']
     pkg_dir = Path(item_data['pkg_dir'])
     dept = item_data['discipline']
     job_dir = pkg_dir.parents[2]
-    csv_path = PurePath(job_dir, ".package", f"{dept}.csv")
+    csv_path = PurePath(job_dir, ".package", 'to_client', f"{dept}.csv")
     shot = item_data['shot']
 
     default_client_version = 1
     fields = ['shot', 'client_version']
 
     csv_file = Path(csv_path)
+    csv_file.parents[0].parents[0].mkdir(parents=True, exist_ok=True)
     csv_file.touch(exist_ok=True)
     with open(csv_file, 'r') as csvfile:
         reader = csv.DictReader(fix_nulls(csvfile), fieldnames=fields)

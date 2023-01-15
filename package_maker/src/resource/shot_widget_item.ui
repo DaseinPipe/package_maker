@@ -127,12 +127,12 @@
         </column>
         <column>
          <property name="text">
-          <string>pkg item</string>
+          <string>custom_name</string>
          </property>
         </column>
         <column>
          <property name="text">
-          <string>custom_name</string>
+          <string>pkg item</string>
          </property>
         </column>
         <column>

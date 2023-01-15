@@ -1,6 +1,7 @@
 import os
 import fileseq
 from package_maker.src.config.config_main import *
+from package_maker.src.utils.general_utils import make_relative_file
 __name = 'make seq symbolic link'
 
 def run(**data):
@@ -19,7 +20,7 @@ def run(**data):
             destination_framepath = destination_seq.frame(frame)
             if not os.path.exists(os.path.dirname(destination_framepath)):
                 os.makedirs(os.path.dirname(destination_framepath))
-            os.symlink(source_framepath, destination_framepath)
+            make_relative_file(source_framepath, destination_framepath)
 
 
     return 0, {

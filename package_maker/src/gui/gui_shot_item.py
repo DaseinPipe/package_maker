@@ -46,7 +46,7 @@ class ShotItemWidget(shot_widget_item.Ui_swi_Frame, QDialog):
 
     def populate(self):
         self.swi_container_widget.setHidden(True)
-        # self.swi_status_lineEdit.setHidden(True)
+        self.swi_status_lineEdit.setHidden(True)
         horizontalHeader = self.swi_tableWidget.horizontalHeader()
         horizontalHeader.resizeSection(0, 30)
         horizontalHeader.setSectionResizeMode(1, QHeaderView.Stretch)

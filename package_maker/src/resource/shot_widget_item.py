@@ -116,9 +116,9 @@ class Ui_swi_Frame(object):
         ___qtablewidgetitem1 = self.swi_tableWidget.horizontalHeaderItem(2)
         ___qtablewidgetitem1.setText(QCoreApplication.translate("swi_Frame", u"package_path", None));
         ___qtablewidgetitem2 = self.swi_tableWidget.horizontalHeaderItem(3)
-        ___qtablewidgetitem2.setText(QCoreApplication.translate("swi_Frame", u"pkg item", None));
+        ___qtablewidgetitem2.setText(QCoreApplication.translate("swi_Frame", u"custom_name", None));
         ___qtablewidgetitem3 = self.swi_tableWidget.horizontalHeaderItem(4)
-        ___qtablewidgetitem3.setText(QCoreApplication.translate("swi_Frame", u"custom_name", None));
+        ___qtablewidgetitem3.setText(QCoreApplication.translate("swi_Frame", u"pkg item", None));
         ___qtablewidgetitem4 = self.swi_tableWidget.horizontalHeaderItem(5)
         ___qtablewidgetitem4.setText(QCoreApplication.translate("swi_Frame", u"path_data", None));
         self.swi_edit_pushButton.setText(QCoreApplication.translate("swi_Frame", u"edit", None))

@@ -141,14 +141,15 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
             return
         os.environ['pkg_type'] = state
         self.pkg_type = state
+        print(self.destination)
         if state == 'vendor':
             self.vendor_name_comboBox.setHidden(False)
             self.vendor_name_label.setHidden(False)
             self.vendor_name_comboBox.clear()
             self.vendor_name_comboBox.addItems(VENDOR_LIST)
         else:
-            self.title = self.client_global_data['destination'][self.destination]['job'][state]['title']
-            self.pkg_dir = self.client_global_data['destination'][self.destination]['job'][state]['dir_path']
+            self.title = self.client_global_data['destination'][self.destination]['job'][self.job]['title']
+            self.pkg_dir = self.client_global_data['destination'][self.destination]['job'][self.job]['dir_path']
             self.apply_btn.setEnabled(True)
 
 
