@@ -212,7 +212,8 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
                     'source_path': filepath,
                     'pkg_dir_type': pkg_dir_type,
                     'custom_name': self.fi_tableWidget.cellWidget(row, 3).currentText(),
-                    'ext': os.path.splitext(filepath)[-1].replace('.', '')
+                    'ext': os.path.splitext(filepath)[-1].replace('.', ''),
+                    'filename': filename
                 }
             )
         plate_prefix = self.show_data.get("plate_version_prefix", "master")

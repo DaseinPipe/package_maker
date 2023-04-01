@@ -82,6 +82,8 @@ def assumed_pkg_type(dept, source_filepath):
 
     _, source_ext = os.path.splitext(source_filepath)
     SHOW_DATA = get_show_data(os.environ.get('show'))
+    if os.environ.get('show') == 'TRM':
+        return 'select'
     pkg_dir_type_dict = SHOW_DATA.get('pkg_dir_types', global_pkg_dir_types)
     ext_type = get_ext_type(source_ext)
 
@@ -179,7 +181,10 @@ def get_custom_element_descs(item_data):
         reader = csv.DictReader(csvfile, fieldnames=fields)
         for row in reader:
             if row['Shot'] == shot:
-                custom_name = row[f'{dept}_custom_name']
+                try:
+                    custom_name = row[f'{dept}_custom_name']
+                except:
+                    pass
     if not custom_name:
         return []
     return custom_name.split(',')

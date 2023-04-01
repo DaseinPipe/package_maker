@@ -11,7 +11,7 @@ def global_pkg_data(job, destination, pkg_dir, pkg_for, vendor_name):
     if pkg_for == 'client':
         GLOBAL_DATA = get_global_data()
     elif pkg_for == 'vendor':
-        GLOBAL_DATA = vendor_config_data(vendor=vendor_name)
+        GLOBAL_DATA = vendor_config_data(vendor='dasein')
     else:
         return {}
 

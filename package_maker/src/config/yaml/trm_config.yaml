@@ -1,13 +1,5 @@
 discipline:
-- Animation
-- BG_plates
-- Cleanup
-- Lighting
-- comp
-- Matchmoving
-- Matte_painting
-- Plates
-- Rotoscoping
+- compositing
 episode_name_regex: ep\d{2}-rl\d{2}
 plate_version_padding: 2
 plate_version_prefix: master

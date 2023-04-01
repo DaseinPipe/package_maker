@@ -260,11 +260,21 @@ def paf_config_setup():
         plate_version_prefix='master'
     )
 
+def lgo_config_setup():
+    return dict(
+        discipline=global_discipline,
+        seq_ext=global_seq_ext,
+        pkg_dir_types=global_pkg_dir_types,
+        shot_version_padding=4,
+        shot_version_prefix='v',
+        plate_version_padding=2,
+        plate_version_prefix='master'
+    )
+
 def trm_config_setup():
     return dict(
         discipline=[
-            'Animation', 'BG_plates', 'Cleanup', 'Lighting', 'comp',
-            'Matchmoving', 'Matte_painting', 'Plates', 'Rotoscoping'
+            'compositing',
         ],
         seq_ext=global_seq_ext,
         shot_version_padding=4,
@@ -357,7 +367,7 @@ def global_config_setup():
                         title='MPC PARIS PACKAGE FOR Greek_Salad.',
                     ),
                     DOGMAN=dict(
-                        dir_path='/mnt/mpcparis/DOGMAN/io/to_client/test/',
+                        dir_path='/mnt/mpcparis/DOGMAN/io/to_client/',
                         title='MPC PARIS PACKAGE FOR DOGMAN.',
                     ),
                     WONDERMAN=dict(
@@ -385,12 +395,16 @@ def global_config_setup():
                         title='MPC PARIS PACKAGE FOR LRDO.',
                     ),
                     PAF=dict(
-                        dir_path='/mnt/mpcparis/PAF/io//to_client/packages',
+                        dir_path='/mnt/mpcparis/PAF/io/to_client/packages',
                         title='MPC PARIS PACKAGE FOR PAF.',
                     ),
                     test=dict(
                         dir_path='/mnt/mpcparis/tesr/io/to_client/packages',
                         title='MPC PARIS PACKAGE FOR NOTRE_DAME.',
+                    ),
+                    LGO=dict(
+                        dir_path='/mnt/mpcparis/LGO/io/to_client//packages',
+                        title='MPC PARIS PACKAGE FOR LGO.',
                     ),
                 ),
                 vendor='dasein',
@@ -438,6 +452,7 @@ def get_show_config(show):
         labete=labete_config_setup(),
         lrdo=lrdo_config_setup(),
         paf=paf_config_setup(),
+        lgo=lgo_config_setup(),
     ).get(show)
 
 
@@ -487,7 +502,7 @@ if __name__ == '__main__':
 
     show_list = [
         'asterix', 'test', 'trm', 'notre_dame', 'Greek_Salad', 'dogman', 'kill', 'wonderman',
-        'marinet', 'boderland', 'ecodlair', 'latresse', 'labete', 'lrdo', 'paf'
+        'marinet', 'boderland', 'ecodlair', 'latresse', 'labete', 'lrdo', 'paf', 'lgo'
      ]
     global_config_exec()
     for show in show_list:  show_config_exec(show)

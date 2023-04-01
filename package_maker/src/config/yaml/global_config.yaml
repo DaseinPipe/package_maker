@@ -2,7 +2,7 @@ destination:
   MPC_Paris:
     job:
       DOGMAN:
-        dir_path: /mnt/mpcparis/DOGMAN/io/to_client/test/
+        dir_path: /mnt/mpcparis/DOGMAN/io/to_client/
         title: MPC PARIS PACKAGE FOR DOGMAN.
       ECODLAIR:
         dir_path: /mnt/mpcparis/ECODLAIR/io/to_client/packages
@@ -16,6 +16,9 @@ destination:
       LATRESSE:
         dir_path: /mnt/mpcparis/LATRESSE/io/to_client/packages
         title: MPC PARIS PACKAGE FOR LATRESSE.
+      LGO:
+        dir_path: /mnt/mpcparis/LGO/io/to_client//packages
+        title: MPC PARIS PACKAGE FOR LGO.
       LRDO:
         dir_path: /mnt/mpcparis/LRDO/io/to_client/packages
         title: MPC PARIS PACKAGE FOR LRDO.
@@ -26,7 +29,7 @@ destination:
         dir_path: /mnt/mpcparis/NOTRE_DAME/io/to_client/packages
         title: MPC PARIS PACKAGE FOR NOTRE_DAME.
       PAF:
-        dir_path: /mnt/mpcparis/PAF/io//to_client/packages
+        dir_path: /mnt/mpcparis/PAF/io/to_client/packages
         title: MPC PARIS PACKAGE FOR PAF.
       WONDERMAN:
         dir_path: /mnt/mpcparis/WONDERMAN/io//to_client/packages

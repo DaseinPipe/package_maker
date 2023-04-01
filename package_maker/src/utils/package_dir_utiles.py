@@ -25,6 +25,7 @@ def get_geometry_info(file_data):
 
 def get_workfile_info(file_data):
     workfile_obj = workfile.Workfile(file_data)
+    print(workfile_obj)
     return workfile_obj.path_data, workfile_obj.destination_path
 
 def get_custom_info(file_data):
