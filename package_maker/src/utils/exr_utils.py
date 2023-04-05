@@ -1,6 +1,6 @@
 import fileseq
 import os
-from package_maker.src.config.config_main import *
+from package_maker.src.config.config_client import *
 
 
 def get_frame_range(file):

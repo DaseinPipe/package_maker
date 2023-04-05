@@ -1,7 +1,7 @@
 import re
 from datetime import datetime, timedelta
 
-from package_maker.src.config.config_main import *
+from package_maker.src.config.config_client import *
 from package_maker.src.config.config_vendor import  *
 
 
@@ -13,7 +13,10 @@ def global_pkg_data(job, destination, pkg_dir, pkg_for, vendor_name):
     elif pkg_for == 'vendor':
         GLOBAL_DATA = vendor_config_data(vendor='dasein')
     else:
-        return {}
+        return {
+            'show': job,
+            'pkg_dir': pkg_dir,
+        }
 
     return dict(
         date=datetime.today().strftime('%Y%m%d'),

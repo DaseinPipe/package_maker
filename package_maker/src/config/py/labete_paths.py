@@ -17,6 +17,13 @@ global_pkg_dir = lucidity.Template(
     template_resolver=resolver
 )
 
+local_pkg_dir = lucidity.Template(
+    'local_pkg_dir',
+    '{pkg_dir}/{discipline}',
+    anchor=lucidity.Template.ANCHOR_END,
+    template_resolver=resolver
+)
+
 shot_pkg_dir = lucidity.Template(
     'shot_pkg_dir',
     '{@global_pkg_dir}/{@local_pkg_name}',

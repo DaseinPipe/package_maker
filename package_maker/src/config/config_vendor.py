@@ -9,14 +9,6 @@ VENDOR_LIST = [
     'Amolesh'
 ]
 
-
-CLIENT_LIST = [
-    'mpc',
-    'filmgate'
-]
-
-
-
 def vendor_config_data(vendor):
     vendor = vendor.lower()
     vendor_global_config = dict(

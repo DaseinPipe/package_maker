@@ -1,6 +1,6 @@
 import fileseq
 import re
-from package_maker.src.config.config_main import *
+from package_maker.src.config.config_client import *
 from package_maker.src.utils import general_utils
 
 

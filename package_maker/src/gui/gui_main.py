@@ -4,15 +4,16 @@ import sys
 from PySide2.QtCore import Qt, QSize
 from PySide2.QtWidgets import QApplication, QDialog, QDialogButtonBox, QListWidgetItem
 import subprocess
-from package_maker.src.config.config_main import *
+from package_maker.src.config.config_client import *
 from package_maker.src.config.config_vendor import *
+from package_maker.src.config.config_internal import *
 from package_maker.src.config.global_pkg_data_selector import get_global_pkg_data
 from package_maker.src.config import shot_widget_selector
 from package_maker.src.resource import resource_main
 from package_maker.src.utils import general_utils
 
 CLIENT_GLOBAL_DATA: dict = get_global_data()
-
+LOCAL_GLOBAL_DATA: dict = internal_config_data()
 
 def update_database(item_data):
     general_utils.update_shot_version(item_data)
@@ -23,6 +24,7 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
         super(PackageMakerDlg, self).__init__()
         # Run the .setupUi() method to show the GUI
         self.client_global_data = CLIENT_GLOBAL_DATA
+        self.local_global_data = LOCAL_GLOBAL_DATA
         self.setupUi(self)
         self.start_size = QSize(self.width(), self.height())
         self.apply_btn = self.main_buttonBox.button(QDialogButtonBox.Apply)
@@ -64,14 +66,19 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
         self.open_pkg_pushButton.clicked.connect(self.open_pkg_dir)
 
     def open_pkg_dir(self):
-        main_pkg_dir_template = general_utils.get_path(self.job.lower(), 'main_pkg_dir')
-        main_pkg_dir = main_pkg_dir_template.format(self.global_pkg_data)
+        if self.pkg_type == 'local':
+            main_pkg_dir = self.pkg_dir
+        else:
+            main_pkg_dir_template = general_utils.get_path(self.job.lower(), 'main_pkg_dir')
+            main_pkg_dir = main_pkg_dir_template.format(self.global_pkg_data)
         subprocess.Popen(['xdg-open', main_pkg_dir])
 
     def create_pkg(self):
         process = None
         if self.pkg_type == 'vendor':
             process = 'vendor'
+        elif self.pkg_type == 'local':
+            process = 'local'
         for i in range(self.listWidget.count()):
             list_item = self.listWidget.item(i)
             item_data = list_item.data(Qt.UserRole)
@@ -92,6 +99,8 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
         self.stackedWidget.setCurrentIndex(1)
 
     def view_summary(self):
+        if self.pkg_type == 'local':
+            return
         self.populate_page3()
         self.stackedWidget.setCurrentIndex(2)
 
@@ -147,11 +156,13 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
             self.vendor_name_label.setHidden(False)
             self.vendor_name_comboBox.clear()
             self.vendor_name_comboBox.addItems(VENDOR_LIST)
-        else:
+        elif state == 'client':
             self.title = self.client_global_data['destination'][self.destination]['job'][self.job]['title']
             self.pkg_dir = self.client_global_data['destination'][self.destination]['job'][self.job]['dir_path']
             self.apply_btn.setEnabled(True)
-
+        else:
+            self.pkg_dir = self.local_global_data['job'][self.job]['dir_path']
+            self.apply_btn.setEnabled(True)
 
     def vendor_name_exec(self, state):
         if not state:
@@ -195,22 +206,44 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
 
     def populate_page2(self):
         self.asset_pushButton.setEnabled(False)
+        self.hide_widget()
+        if self.pkg_type == 'local':
+            self.shot_view_pushButton.setText('Create Package')
+            self.shot_view_pushButton.clicked.connect(self.create_pkg)
+            return
         self.make_pkg_dirs()
         self.title_label.setText(self.title)
         self.pkg_name_label.setText(self.global_pkg_name)
+
+
+
+    def hide_widget(self):
+        hide_list = None
+        if self.pkg_type == 'local':
+            hide_list = [self.title_label_header, self.title_label, self.pkg_name_label_header, self.pkg_name_label]
+
+        if hide_list:
+            for each_widget in hide_list:
+                each_widget.setHidden(True)
+
+
 
     def populate_page3(self):
         self.summary_title_label.setText(self.title)
         self.summary_pkg_name_label.setText(self.global_pkg_name)
 
     def populate_page4(self):
-        self.pkg_name_exit_label.setText(self.global_pkg_name)
+        if self.pkg_type == 'local':
+            self.pkg_name_exit_label.setText('Creating Local Package')
+        else:
+            self.pkg_name_exit_label.setText(self.global_pkg_name) # remove if else
         self.setMaximumHeight(84)
         self.setMaximumWidth(400)
         self.resize(400, 84)
 
     def add_shot(self):
         list_item = QListWidgetItem()
+
         item_widget = shot_widget_selector.get_shot_widget(
             job=self.job,
             parent_item=list_item,
@@ -218,7 +251,6 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
             global_pkg_data=self.global_pkg_data,
             pkg_for=self.pkg_type
         )
-        print(item_widget, self.pkg_type)
         item_widget.swi_status_lineEdit.textChanged.connect(self.set_selected_info)
         list_item.setSizeHint(item_widget.sizeHint())
         list_item.setData(Qt.UserRole, {'item_widget': item_widget})

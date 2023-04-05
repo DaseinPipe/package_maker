@@ -1,7 +1,7 @@
 import re
 from datetime import datetime, timedelta
 
-from package_maker.src.config.config_main import *
+from package_maker.src.config.config_client import *
 from package_maker.src.config.config_vendor import *
 
 

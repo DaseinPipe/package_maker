@@ -1,6 +1,6 @@
 import os
 import fileseq
-from package_maker.src.config.config_main import *
+from package_maker.src.config.config_client import *
 from package_maker.src.utils.general_utils import make_relative_file
 __name = 'make seq symbolic link'
 

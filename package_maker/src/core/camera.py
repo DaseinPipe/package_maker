@@ -1,4 +1,4 @@
-from package_maker.src.config.config_main import *
+from package_maker.src.config.config_client import *
 
 
 

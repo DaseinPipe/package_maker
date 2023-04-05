@@ -1,4 +1,4 @@
-from package_maker.src.config.config_main import get_path
+from package_maker.src.config.config_client import get_path
 import os
 __name = 'create require folders'
 

@@ -11,3 +11,5 @@ def get_global_pkg_data(job, destination, pkg_dir, pkk_for, vendor_name):
         job,
         mpc_utils.global_pkg_data(job, destination, pkg_dir, pkk_for, vendor_name)
     )
+
+

@@ -1,9 +1,8 @@
 from package_maker.src.utils.general_utils import make_relative_file
-from package_maker.src.config.config_main import *
+from package_maker.src.config.config_client import *
 __name = 'make seq symbolic link'
 
 def run(**data):
-    print(data)
     for file_data in data['files']:
         source_path = file_data['source_path']
         ext = os.path.splitext(source_path)[-1][1:]
