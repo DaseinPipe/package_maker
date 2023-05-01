@@ -5,10 +5,10 @@ from package_maker.src import stylesheets
 
 __config_folder_path = os.path.dirname(os.path.realpath(__file__))
 import importlib
+
 _stylesheets_folder_path = os.path.dirname(os.path.abspath(stylesheets.__file__))
 
-
-stylesheet_path = os.path.join(_stylesheets_folder_path,'EasyCode.qss')
+stylesheet_path = os.path.join(_stylesheets_folder_path, 'EasyCode.qss')
 
 UNKNOWN = 'UNKNOWN'
 
@@ -18,7 +18,6 @@ global_discipline = [
     'comp',
     'matchmove'
 ]
-
 
 global_seq_ext = [
     'exr',
@@ -38,25 +37,17 @@ global_work_app_config = {
     'fbx': 'maya'
 }
 
-
 global_pkg_version_padding = 4
-
 
 global_pkg_version_prefix = 'v'
 
-
 global_shot_version_padding = 3
-
 
 global_shot_version_prefix = 'v'
 
-
 global_plate_version_padding = 2
 
-
 global_plate_version_prefix = 'master'
-
-
 
 global_pkg_dir_types = dict(
     camera=dict(
@@ -96,8 +87,7 @@ global_pkg_dir_types = dict(
     custom={},
     select={})
 
-
-global_discipline_pkg_type_assignment=dict(
+global_discipline_pkg_type_assignment = dict(
     roto=dict(
         image=dict(
             pkg_types=['element', 'for_approval'],
@@ -148,6 +138,7 @@ global_discipline_pkg_type_assignment=dict(
     ),
 )
 
+
 def asterix_config_setup():
     return dict(
         discipline=global_discipline,
@@ -158,6 +149,7 @@ def asterix_config_setup():
         plate_version_padding=2,
         plate_version_prefix='master'
     )
+
 
 def greek_salad_config_setup():
     return dict(
@@ -170,6 +162,7 @@ def greek_salad_config_setup():
         plate_version_prefix='master'
     )
 
+
 def dogman_config_setup():
     return dict(
         discipline=global_discipline,
@@ -181,6 +174,7 @@ def dogman_config_setup():
         plate_version_prefix='master'
     )
 
+
 def wonderman_config_setup():
     return dict(
         discipline=global_discipline,
@@ -191,6 +185,7 @@ def wonderman_config_setup():
         plate_version_padding=2,
         plate_version_prefix='master'
     )
+
 
 def marinet_config_setup():
     return dict(
@@ -227,6 +222,7 @@ def latresse_config_setup():
         plate_version_prefix='master'
     )
 
+
 def labete_config_setup():
     return dict(
         discipline=global_discipline,
@@ -237,6 +233,7 @@ def labete_config_setup():
         plate_version_padding=2,
         plate_version_prefix='master'
     )
+
 
 def lrdo_config_setup():
     return dict(
@@ -249,6 +246,7 @@ def lrdo_config_setup():
         plate_version_prefix='master'
     )
 
+
 def paf_config_setup():
     return dict(
         discipline=global_discipline,
@@ -260,6 +258,7 @@ def paf_config_setup():
         plate_version_prefix='master'
     )
 
+
 def lgo_config_setup():
     return dict(
         discipline=global_discipline,
@@ -270,6 +269,19 @@ def lgo_config_setup():
         plate_version_padding=2,
         plate_version_prefix='master'
     )
+
+
+def ped_config_setup():
+    return dict(
+        discipline=global_discipline,
+        seq_ext=global_seq_ext,
+        pkg_dir_types=global_pkg_dir_types,
+        shot_version_padding=4,
+        shot_version_prefix='v',
+        plate_version_padding=2,
+        plate_version_prefix='master'
+    )
+
 
 def trm_config_setup():
     return dict(
@@ -285,6 +297,7 @@ def trm_config_setup():
         shot_no_regex=r'\d{5}',
         shot_name_regex=r'ep\d{2}-rl\d{2}_\d{5}'
     )
+
 
 def kill_config_setup():
     return dict(
@@ -319,6 +332,7 @@ def boderland_config_setup():
         shot_name_regex=r'ep\d{2}-rl\d{2}_\d{5}'
     )
 
+
 def notre_dame_config_setup():
     return dict(
         discipline=global_discipline,
@@ -347,6 +361,18 @@ def test_config_setup():
         plate_version_prefix='master'
     )
     return test_config
+
+
+def sitw_config_setup():
+    return dict(
+        discipline=['paint', 'comp'],
+        seq_ext=['mov', 'exr'],
+        pkg_dir_types=global_pkg_dir_types,
+        shot_version_padding=3,
+        shot_version_prefix='v',
+        plate_version_padding=2,
+        plate_version_prefix='master'
+    )
 
 
 def global_config_setup():
@@ -403,8 +429,12 @@ def global_config_setup():
                         title='MPC PARIS PACKAGE FOR NOTRE_DAME.',
                     ),
                     LGO=dict(
-                        dir_path='/mnt/mpcparis/LGO/io/to_client//packages',
+                        dir_path='/mnt/mpcparis/LGO/io/to_client/packages',
                         title='MPC PARIS PACKAGE FOR LGO.',
+                    ),
+                    PED=dict(
+                        dir_path='/mnt/pb6/Primary/PED/io/to_client/packages',
+                        title='MPC PARIS PACKAGE FOR PED.',
                     ),
                 ),
                 vendor='dasein',
@@ -429,7 +459,18 @@ def global_config_setup():
                 vendor='dasein',
                 pkg_version_padding=4,
                 pkg_version_prefix='v',
-            )
+            ),
+            Sitw=dict(
+                job=dict(
+                    sitw=dict(
+                        dir_path='/mnt/sitw/io/to-sitw',
+                        title='PACKAGE FOR SITW.',
+                    ),
+                ),
+                vendor='dasein',
+                pkg_version_padding=2,
+                pkg_version_prefix='-',
+            ),
         )
     )
     return global_config
@@ -453,6 +494,8 @@ def get_show_config(show):
         lrdo=lrdo_config_setup(),
         paf=paf_config_setup(),
         lgo=lgo_config_setup(),
+        ped=ped_config_setup(),
+        sitw=sitw_config_setup(),
     ).get(show)
 
 
@@ -486,11 +529,13 @@ def get_show_data(show):
     with open(show_config_filepath, "r") as yamlfile:
         return yaml.load(yamlfile, Loader=yaml.FullLoader)
 
+
 def get_path(job, attr):
     job = job.lower()
     show_config = f'package_maker.src.config.py.{job}_paths'
     path_config = importlib.import_module(show_config)
     return path_config.__getattribute__(attr)
+
 
 def get_nomenclature(job, attr):
     show_config = f'package_maker.src.config.py.{job}_nomenclature'
@@ -502,7 +547,8 @@ if __name__ == '__main__':
 
     show_list = [
         'asterix', 'test', 'trm', 'notre_dame', 'Greek_Salad', 'dogman', 'kill', 'wonderman',
-        'marinet', 'boderland', 'ecodlair', 'latresse', 'labete', 'lrdo', 'paf', 'lgo'
-     ]
+        'marinet', 'boderland', 'ecodlair', 'latresse', 'labete', 'lrdo', 'paf', 'lgo', 'ped',
+        'sitw'
+    ]
     global_config_exec()
     for show in show_list:  show_config_exec(show)

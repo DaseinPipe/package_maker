@@ -11,6 +11,7 @@ def run(**data):
         destination_path = file_data['destination_path']
         if not os.path.exists(os.path.dirname(destination_path)):
             os.makedirs(os.path.dirname(destination_path))
+        print(source_path, destination_path, '>>>>>>>>>>>>')
         make_relative_file(source_path, destination_path)
 
     return 0, {

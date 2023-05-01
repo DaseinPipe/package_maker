@@ -2,13 +2,19 @@
 import sys
 from package_maker.src.gui import gui_shot_item, gui_vendor_shot_item, gui_internal_shot_item
 from package_maker.src.gui.filmgate import filmgate_shot_item
-
+from package_maker.src.gui.sitw import sitw_shot_item
 from PySide2.QtWidgets import QApplication
 
 
 def get_client_shot_widget(job, parent_item, parent_widget, global_pkg_data ):
     if job.lower() in ['kill', 'boderland']:
         return filmgate_shot_item.FilmgateShotItemWidget(
+            parent_item=parent_item,
+            parent_widget=parent_widget,
+            _global_pkg_data=global_pkg_data
+        )
+    if job.lower() in ['sitw',]:
+        return sitw_shot_item.SitwShotItemWidget(
             parent_item=parent_item,
             parent_widget=parent_widget,
             _global_pkg_data=global_pkg_data

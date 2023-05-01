@@ -51,8 +51,6 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
         elif self.pkg_for == 'client':
             shot_list = general_utils.get_shots(self.item_data)
             discipline_list = self.show_data.get('discipline', global_discipline)
-
-        if shot_list:
             shot_line_edit = QLineEdit(self)
             shot_line_edit.setFrame(False)
             shot_line_edit.resize(self.fi_shot_comboBox.sizeHint())
@@ -336,6 +334,8 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
         self.vendor_import(files)
 
     def fi_import(self, do_dropdown_process=True):
+        print('>>>>>>>>>>>>>>>>>>>')
+        print(self.pkg_for)
         custom_fileDailog = custom_file_dailog.FileDialog()
         custom_fileDailog.show()
         custom_fileDailog.exec_()

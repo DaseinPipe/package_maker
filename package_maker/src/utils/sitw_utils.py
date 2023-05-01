@@ -1,0 +1,138 @@
+import re, csv, shutil
+from datetime import datetime, timedelta
+from pathlib import Path, PurePath
+from tempfile import NamedTemporaryFile
+from package_maker.src.config.config_client import *
+from package_maker.src.config.config_vendor import  *
+from package_maker.src.utils.general_utils import fix_nulls
+
+
+
+def global_pkg_data(job, destination, pkg_dir, pkg_for, vendor_name):
+
+    if pkg_for == 'client':
+        GLOBAL_DATA = get_global_data()
+    elif pkg_for == 'vendor':
+        GLOBAL_DATA = vendor_config_data(vendor='dasein')
+    else:
+        return {
+            'show': job,
+            'pkg_dir': pkg_dir,
+        }
+
+    return dict(
+        date=datetime.today().strftime('%Y_%m_%d'),
+        vendor=GLOBAL_DATA['destination'][destination]['vendor'],
+        show=job,
+        pkg_version_prefix=GLOBAL_DATA['destination'][destination]['pkg_version_prefix'],
+        pkg_version_num=get_latest_pkg_version(pkg_dir),
+        pkg_dir=pkg_dir,
+        pkg_for=pkg_for,
+        vendor_name=vendor_name
+    )
+
+
+def get_latest_pkg_version(pkg_dir):
+
+    def get_existing_versions():
+        first_version = '{version_prefix}{version_num}'.format(
+            version_prefix=version_prefix,
+            version_num='0'.zfill(version_num)
+        )
+        date_fld = os.path.join(pkg_dir, datetime.today().strftime('%Y_%m_%d'))
+        if not os.path.exists(date_fld):
+            os.makedirs(date_fld)
+        pkg_names = sorted(os.listdir(date_fld))
+        print(pkg_names)
+        if not pkg_names:
+            return [first_version]
+        version_list = []
+        for pkg_name in pkg_names:
+            version_expression = f'{version_prefix}\d' + '{' + str(version_num) + '}'
+            print(version_expression)
+            pkg_version = next(iter(re.findall(version_expression, pkg_name)), None)
+            if pkg_version:
+                version_list.append(pkg_version)
+        return sorted(version_list) or [first_version]
+
+    GLOBAl_DATA = get_global_data()
+    version_prefix = GLOBAl_DATA['destination'].get(os.environ.get('destination'), {}).get(
+        'pkg_version_prefix', 'send_')
+    version_num = GLOBAl_DATA['destination'].get(os.environ.get('destination'), {}).get(
+        'pkg_version_padding', 2)
+    latest_version = get_existing_versions()[-1]
+    print(latest_version)
+    up_version = re.sub(r'[0-9]+$',
+                  lambda x: str(int(x.group()) + 1).zfill(len(x.group())),
+                  latest_version)
+    return re.split(version_prefix, up_version)[-1]
+
+
+
+def update_shot_version(item_data):
+    dept = item_data['discipline']
+    pkg_dir = Path(item_data['files'][0]['pkg_dir'])
+    job_dir = pkg_dir.parents[1]
+    shots = list(set([file_data['shot'] for file_data in item_data['files']]))
+    csv_path = PurePath(job_dir, ".package", 'to_client.csv')
+    default_client_version = 1
+    fields = ['shot', 'client_version']
+    csv_file = Path(csv_path)
+    csv_file.touch(exist_ok=True)
+
+    tempfile = NamedTemporaryFile(mode='w', delete=False)
+
+    with open(csv_file, 'r') as csvfile, tempfile:
+        reader = csv.DictReader(csvfile, fieldnames=fields)
+        writer = csv.DictWriter(tempfile, fieldnames=fields)
+        writer.writeheader()
+        for shot in shots:
+            row_update = False
+            for row in reader:
+
+                if row['shot'] == 'shot' and row['client_version'] == 'client_version':
+                    continue
+
+                if row['shot'] == shot:
+                    row_update = True
+                    row['shot'], row['client_version'], = row['shot'], str(int(row['client_version']) + 1)
+                row = {'shot': row['shot'], 'client_version': row['client_version']}
+                writer.writerow(row)
+            if not row_update:
+                row = {'shot': shot, 'client_version': str(default_client_version + 1)}
+                writer.writerow(row)
+
+    shutil.move(tempfile.name, csv_file)
+
+
+
+def get_latest_shot_version(item_data):
+    print(item_data)
+    pkg_dir = Path(item_data['pkg_dir'])
+    dept = item_data['discipline']
+    job_dir = pkg_dir.parents[1]
+    csv_path = PurePath(job_dir, ".package", 'to_client.csv')
+    shot = item_data['shot']
+
+    default_client_version = 1
+    fields = ['shot', 'client_version']
+
+    csv_file = Path(csv_path)
+    csv_file.parents[0].parents[0].mkdir(parents=True, exist_ok=True)
+    csv_file.touch(exist_ok=True)
+    with open(csv_file, 'r') as csvfile:
+        reader = csv.DictReader(fix_nulls(csvfile), fieldnames=fields)
+        for row in reader:
+            if row['shot'] == shot:
+                return int(row['client_version'])
+    return default_client_version
+
+
+t = {'discipline': 'paint', 'files': [{'source_path': '/mnt/mpcparis/LABETE/io/from_client/PKG-20230404-mpc-labete-v0005/20230404-mpc-labete-v0005/shot-003_010-prep-master01-mpc-v001/element/003_010-src-master01-v002-aces-exr/003_010-src-master01-v002-aces.991-1431#.exr', 'ext': 'exr', 'shot_version_num': '001', 'shot_version_prefix': 'v', 'shot': '001air_0030', 'pkg_dir_type': 'seq_filepath', 'filename': '003_010-src-master01-v002-aces.991-1431#.exr', 'pkg_version': '1', 'pkg_type': 'shot', 'job': 'sitw', 'discipline': 'paint', 'date': '2023_04_19', 'vendor': 'dasein', 'show': 'sitw', 'pkg_version_prefix': 'send', 'pkg_version_num': '01', 'pkg_dir': '/mnt/sitw/io/to-sitw', 'pkg_for': 'client', 'vendor_name': 'UNKNOWN', 'destination_path': '/mnt/sitw/io/to-sitw/2023_04_19/SITW_dasein_2023_04_19_send_01/001air_0030/4448 x 3096/001air_0030_v001.991-1431@.exr'}], 'date': '2023_04_19', 'vendor': 'dasein', 'show': 'sitw', 'pkg_version_prefix': 'send', 'pkg_version_num': '01', 'pkg_dir': '/mnt/sitw/io/to-sitw', 'pkg_for': 'client', 'vendor_name': 'UNKNOWN', 'pkg_type': 'shot', 'update_sitw_db': {'info': '', 'return_data': {}}}
+
+# update_shot_version(t)
+
+
+p = '/mnt/sitw/io/to-sitw'
+
+print(get_latest_pkg_version(p))

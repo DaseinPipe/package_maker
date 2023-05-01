@@ -19,6 +19,12 @@ def internal_config_data():
         job=dict(
             LABETE=dict(
                 dir_path=f'/mnt/mpcparis/LABETE',
+            ),
+            PED=dict(
+                dir_path=f'/mnt/pb6/Primary/PED',
+            ),
+            sitw = dict(
+                dir_path=f'/mnt/sitw',
             )
         ),
     )

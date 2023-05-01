@@ -9,6 +9,10 @@ VENDOR_LIST = [
     'Amolesh'
 ]
 
+CLIENT_LIST = [
+    'mpc',
+]
+
 def vendor_config_data(vendor):
     vendor = vendor.lower()
     vendor_global_config = dict(
@@ -53,6 +57,10 @@ def vendor_config_data(vendor):
                     ),
                     LGO=dict(
                         dir_path=f'/mnt/mpcparis/LGO/io/to_{vendor}/packages',
+                        title='DASEIN PACKAGE FOR LGO.',
+                    ),
+                    PED=dict(
+                        dir_path=f'/mnt/pb6/Primary/PED/io/to_{vendor}/packages',
                         title='DASEIN PACKAGE FOR LGO.',
                     ),
                     test=dict(

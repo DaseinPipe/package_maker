@@ -149,9 +149,13 @@ def update_shot_version(item_data):
 
 
 def get_latest_shot_version(item_data):
+    print(item_data)
     pkg_dir = Path(item_data['pkg_dir'])
     dept = item_data['discipline']
-    job_dir = pkg_dir.parents[2]
+    if 'sitw' in str(pkg_dir):
+        job_dir = pkg_dir.parents[1]
+    else:
+        job_dir = pkg_dir.parents[2]
     csv_path = PurePath(job_dir, ".package", 'to_client', f"{dept}.csv")
     shot = item_data['shot']
 
@@ -171,7 +175,10 @@ def get_latest_shot_version(item_data):
 
 def get_custom_element_descs(item_data):
     pkg_dir = Path(item_data['pkg_dir'])
-    job_dir = pkg_dir.parents[2]
+    if 'sitw' in str(pkg_dir):
+        job_dir = pkg_dir.parents[1]
+    else:
+        job_dir = pkg_dir.parents[2]
     csv_path = PurePath(job_dir, ".package", "shot_list.csv")
     dept = item_data['discipline']
     shot = item_data['shot']
@@ -192,7 +199,10 @@ def get_custom_element_descs(item_data):
 
 def get_shots(item_data):
     pkg_dir = Path(item_data['pkg_dir'])
-    job_dir = pkg_dir.parents[2]
+    if 'sitw' in str(pkg_dir):
+        job_dir = pkg_dir.parents[1]
+    else:
+        job_dir = pkg_dir.parents[2]
     csv_path = PurePath(job_dir, ".package", "shot_list.csv")
     if not os.path.exists(os.path.dirname(csv_path)):
         os.makedirs(os.path.dirname(csv_path))
@@ -209,6 +219,10 @@ def get_shots(item_data):
                 shot_list.append(row['Shot Code'])
 
     return shot_list
+
+
+
+
 
 
 def assume_shot(item_data):
@@ -294,5 +308,22 @@ if __name__ == '__main__':
 
     # item_data = {'pkg_dir': '/mnt/mpcparis/NOTRE_DAME/io/To_Client/packages', 'shot': '1039b_0010', 'discipline': 'prep'}
 
-    item_data = {'pkg_dir': '/mnt/mpcparis/DOGMAN/io/to_client/packages', 'shot': '025_010', 'discipline': 'prep'}
-    print(get_shots(item_data))
+    # item_data = {'pkg_dir': '/mnt/mpcparis/DOGMAN/io/to_client/packages', 'shot': '025_010', 'discipline': 'prep'}
+    # print(get_shots(item_data))
+    #
+    # import sys
+    # sys.path.append(r'/mnt/mpcparis/IO_Stuff/PKG_TOOL/package_maker_testing/shotgun/shotgun-python-api/')
+    import shotgun_api3
+
+    # #shotgun_api3.Shotgun.NO_SSL_VALIDATION = True
+    # sg = shotgun_api3.Shotgun("https://dasein.shotgunstudio.com",
+    #                           login="data@daseinvfx.com",
+    #                           password="whenDolphin@9752")
+    #
+    # projList = sg.find('Project', [], ['name'])
+    #
+    # for i in projList:
+    #     print('id:' + str(i['id']) + ' ' + i['name'])
+
+    data = {'pkg_dir': '/mnt/sitw/io/to-sitw', 'shot': '', 'discipline': ''}
+    get_shots(data)

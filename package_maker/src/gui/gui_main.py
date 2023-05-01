@@ -197,12 +197,15 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
     @property
     def global_pkg_name(self):
         template = get_path(self.job.lower(), 'GLOBAL_PKG_NAME')
+        print(self.global_pkg_data)
+        print(template.format(self.global_pkg_data))
         return template.format(self.global_pkg_data)
 
     def make_pkg_dirs(self):
         main_pkg_dir = get_path(self.job.lower(), 'main_pkg_dir')
         main_pkg_dir_path = main_pkg_dir.format(self.global_pkg_data)
-        os.makedirs(main_pkg_dir_path)
+        if not os.path.exists(main_pkg_dir_path):
+            os.makedirs(main_pkg_dir_path)
 
     def populate_page2(self):
         self.asset_pushButton.setEnabled(False)
@@ -243,7 +246,7 @@ class PackageMakerDlg(resource_main.Ui_Package_Maker, QDialog):
 
     def add_shot(self):
         list_item = QListWidgetItem()
-
+        print(self.global_pkg_data)
         item_widget = shot_widget_selector.get_shot_widget(
             job=self.job,
             parent_item=list_item,

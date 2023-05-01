@@ -5,6 +5,7 @@ from package_maker.src.utils.general_utils import make_relative_file
 __name = 'make seq symbolic link'
 
 def run(**data):
+    print(data)
     for file_data in data['files']:
         source_path = file_data['source_path']
         ext = os.path.splitext(source_path)[-1][1:]
@@ -20,6 +21,7 @@ def run(**data):
             destination_framepath = destination_seq.frame(frame)
             if not os.path.exists(os.path.dirname(destination_framepath)):
                 os.makedirs(os.path.dirname(destination_framepath))
+            print(source_framepath, destination_framepath)
             make_relative_file(source_framepath, destination_framepath)
 
 
@@ -30,8 +32,7 @@ def run(**data):
 
 
 if __name__ == '__main__':
-    data = {'shot': '080_020', 'discipline': 'prep', 'plate_version_num': '01', 'shot_version_num': '0002', 'plate_version_prefix': 'master', 'shot_version_prefix': 'v', 'files': [{'source_path': '/mnt/mpcparis/DOGMAN/io/from_rotomaker/20221117/080_220-src-master01-v001-linear_paint_v001/080_220-src-master01-v001-linear.993-1043#.exr', 'pkg_dir_type': 'element', 'custom_name': '', 'ext': 'exr', 'pkg_type': 'shot', 'job': 'dogman', 'shot': '080_020', 'discipline': 'prep', 'plate_version_num': '01', 'shot_version_num': '0002', 'plate_version_prefix': 'master', 'shot_version_prefix': 'v', 'date': '20221121', 'vendor': 'dasein', 'show': 'dogman', 'pkg_version_prefix': 'v', 'pkg_version_num': '0004', 'pkg_dir': '/mnt/mpcparis/DOGMAN/io/to_client/packages/', 'destination_path': '/mnt/mpcparis/DOGMAN/io/to_client/packages//PKG-20221121-dasein-dogman-v0004-package/20221121-dasein-dogman-v0004/shot-080_020-prep-master01-dasein-v0002/element/080_020-prep-master01-aces_prep_v0002/080_020-prep-master01-aces_prep_v0002.993-1043@.exr'}], 'date': '20221121', 'vendor': 'dasein', 'show': 'dogman', 'pkg_version_prefix': 'v', 'pkg_version_num': '0004', 'pkg_dir': '/mnt/mpcparis/DOGMAN/io/to_client/packages/', 'pkg_type': 'shot'}
-
+    data = {'source_path': '/mnt/pb6/Primary/PED/io/from_client/20230407/EXRs/05_0340_V01/05_0340_V01.394007-394060##.exr', 'pkg_dir_type': 'element', 'custom_name': '', 'ext': 'exr', 'filename': '05_0340_V01.394007-394060##.exr', 'pkg_type': 'shot', 'job': 'ped', 'shot': 'test', 'discipline': 'prep', 'plate_version_num': '01', 'shot_version_num': '0001', 'plate_version_prefix': 'master', 'shot_version_prefix': 'v', 'date': '20230407', 'vendor': 'dasein', 'show': 'ped', 'pkg_version_prefix': 'v', 'pkg_version_num': '0001', 'pkg_dir': '/mnt/pb6/Primary/PED/io/to_client/packages', 'pkg_for': 'client', 'vendor_name': 'UNKNOWN', 'destination_path': '/mnt/pb6/Primary/PED/io/to_client/packages/PKG-20230407-dasein-ped-v0001-package/20230407-dasein-ped-v0001/shot-test-prep-master01-dasein-v0001/element/test-prep-master01-aces_UNKNOWN_v0001/test-src-master01-aces_UNKNOWN_v0001.394007-394060@.exr'}
     run(**data)
 
 
