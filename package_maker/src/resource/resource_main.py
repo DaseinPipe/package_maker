@@ -17,7 +17,7 @@ class Ui_Package_Maker(object):
     def setupUi(self, Package_Maker):
         if not Package_Maker.objectName():
             Package_Maker.setObjectName(u"Package_Maker")
-        Package_Maker.resize(381, 291)
+        Package_Maker.resize(373, 299)
         self.gridLayout_6 = QGridLayout(Package_Maker)
         self.gridLayout_6.setObjectName(u"gridLayout_6")
         self.stackedWidget = QStackedWidget(Package_Maker)
@@ -73,30 +73,22 @@ class Ui_Package_Maker(object):
         font1.setPointSize(9)
         self.label_2.setFont(font1)
 
-        self.gridLayout.addWidget(self.label_2, 2, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_2, 0, 0, 1, 1)
 
         self.destination_comboBox = QComboBox(self.frame)
+        self.destination_comboBox.addItem("")
         self.destination_comboBox.setObjectName(u"destination_comboBox")
 
-        self.gridLayout.addWidget(self.destination_comboBox, 2, 2, 1, 1)
-
-        self.pkg_version_label = QLabel(self.frame)
-        self.pkg_version_label.setObjectName(u"pkg_version_label")
-
-        self.gridLayout.addWidget(self.pkg_version_label, 4, 0, 1, 1)
-
-        self.pkg_version_comboBox = QComboBox(self.frame)
-        self.pkg_version_comboBox.setObjectName(u"pkg_version_comboBox")
-
-        self.gridLayout.addWidget(self.pkg_version_comboBox, 4, 2, 1, 1)
+        self.gridLayout.addWidget(self.destination_comboBox, 0, 1, 1, 1)
 
         self.label_3 = QLabel(self.frame)
         self.label_3.setObjectName(u"label_3")
         self.label_3.setFont(font1)
 
-        self.gridLayout.addWidget(self.label_3, 3, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_3, 1, 0, 1, 1)
 
         self.job_comboBox = QComboBox(self.frame)
+        self.job_comboBox.addItem("")
         self.job_comboBox.setObjectName(u"job_comboBox")
         sizePolicy1 = QSizePolicy(QSizePolicy.MinimumExpanding, QSizePolicy.Fixed)
         sizePolicy1.setHorizontalStretch(0)
@@ -104,7 +96,34 @@ class Ui_Package_Maker(object):
         sizePolicy1.setHeightForWidth(self.job_comboBox.sizePolicy().hasHeightForWidth())
         self.job_comboBox.setSizePolicy(sizePolicy1)
 
-        self.gridLayout.addWidget(self.job_comboBox, 3, 2, 1, 1)
+        self.gridLayout.addWidget(self.job_comboBox, 1, 1, 1, 1)
+
+        self.pkg_type_label = QLabel(self.frame)
+        self.pkg_type_label.setObjectName(u"pkg_type_label")
+        self.pkg_type_label.setFont(font1)
+
+        self.gridLayout.addWidget(self.pkg_type_label, 2, 0, 1, 1)
+
+        self.pkg_type_comboBox = QComboBox(self.frame)
+        self.pkg_type_comboBox.addItem("")
+        self.pkg_type_comboBox.addItem("")
+        self.pkg_type_comboBox.addItem("")
+        self.pkg_type_comboBox.addItem("")
+        self.pkg_type_comboBox.setObjectName(u"pkg_type_comboBox")
+
+        self.gridLayout.addWidget(self.pkg_type_comboBox, 2, 1, 1, 1)
+
+        self.vendor_name_label = QLabel(self.frame)
+        self.vendor_name_label.setObjectName(u"vendor_name_label")
+        self.vendor_name_label.setFont(font1)
+
+        self.gridLayout.addWidget(self.vendor_name_label, 3, 0, 1, 1)
+
+        self.vendor_name_comboBox = QComboBox(self.frame)
+        self.vendor_name_comboBox.addItem("")
+        self.vendor_name_comboBox.setObjectName(u"vendor_name_comboBox")
+
+        self.gridLayout.addWidget(self.vendor_name_comboBox, 3, 1, 1, 1)
 
 
         self.gridLayout_2.addWidget(self.frame, 1, 0, 1, 1)
@@ -384,7 +403,7 @@ class Ui_Package_Maker(object):
 
         self.retranslateUi(Package_Maker)
 
-        self.stackedWidget.setCurrentIndex(3)
+        self.stackedWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(Package_Maker)
@@ -394,12 +413,24 @@ class Ui_Package_Maker(object):
         Package_Maker.setWindowTitle(QCoreApplication.translate("Package_Maker", u"Dialog", None))
         self.label.setText(QCoreApplication.translate("Package_Maker", u"PACKAGE MAKER", None))
         self.label_2.setText(QCoreApplication.translate("Package_Maker", u"Destination:- ", None))
-        self.pkg_version_label.setText(QCoreApplication.translate("Package_Maker", u"Version:-", None))
+        self.destination_comboBox.setItemText(0, QCoreApplication.translate("Package_Maker", u"Select", None))
+
         self.label_3.setText(QCoreApplication.translate("Package_Maker", u" Job :- ", None))
+        self.job_comboBox.setItemText(0, QCoreApplication.translate("Package_Maker", u"Select", None))
+
+        self.pkg_type_label.setText(QCoreApplication.translate("Package_Maker", u"Package Type:", None))
+        self.pkg_type_comboBox.setItemText(0, QCoreApplication.translate("Package_Maker", u"Select", None))
+        self.pkg_type_comboBox.setItemText(1, QCoreApplication.translate("Package_Maker", u"client", None))
+        self.pkg_type_comboBox.setItemText(2, QCoreApplication.translate("Package_Maker", u"vendor", None))
+        self.pkg_type_comboBox.setItemText(3, QCoreApplication.translate("Package_Maker", u"local", None))
+
+        self.vendor_name_label.setText(QCoreApplication.translate("Package_Maker", u"vendor name", None))
+        self.vendor_name_comboBox.setItemText(0, QCoreApplication.translate("Package_Maker", u"Select", None))
+
         self.selected_info_textEdit.setHtml(QCoreApplication.translate("Package_Maker", u"<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
 "p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'Cantarell'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
+"</style></head><body style=\" font-family:'Ubuntu'; font-size:11pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px; font-family:'MS Shell Dlg 2'; font-size:7.8pt;\"><br /></p></body></html>", None))
         self.title_label_header.setText(QCoreApplication.translate("Package_Maker", u"Title:- ", None))
         self.title_label.setText("")

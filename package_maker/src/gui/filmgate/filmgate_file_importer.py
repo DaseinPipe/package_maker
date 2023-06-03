@@ -166,9 +166,9 @@ class FilmgateFileImporter(FileImporterWidget, object):
     def shot_dropdown_widget(self):
 
         row_comboBox = QComboBox(self.fi_tableWidget)
-        print(self.item_data)
+        # print(self.item_data)
         shot_list = general_utils.get_shots(self.item_data)
-        print(shot_list)
+        # print(shot_list)
         shot_list.insert(0, 'select')
         row_comboBox.addItems(shot_list)
         setattr(row_comboBox, "allItems", lambda: [row_comboBox.itemText(i) for i in range(row_comboBox.count())])

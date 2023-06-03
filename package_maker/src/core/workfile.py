@@ -1,6 +1,6 @@
 import fileseq
 import re
-from package_maker.src.config.config_main import *
+from package_maker.src.config.config_client import *
 from package_maker.src.utils import general_utils
 
 
@@ -77,7 +77,7 @@ if __name__ == '__main__':
     base_data1 = {'source_path': 'C:/mnt/mpcparis/NOTRE_DAME/IO/From_Rotomaker/20220530_MM/A/3035_0140-src-tracking-master01_v1001/3035_0140-src-master01-aces_nukeLD_v1001.nk', 'pkg_dir_type': 'workfile', 'custom_name': '', 'ext': 'nk', 'shot': '080_bb_0375', 'discipline': 'matchmove', 'plate_version_num': '01', 'shot_version_num': '001', 'plate_version_prefix': 'master', 'shot_version_prefix': 'v', 'date': '20221005', 'vendor': 'dasein', 'show': 'asterix', 'pkg_version_prefix': 'v', 'pkg_version_num': '0001', 'pkg_dir': '/mnt/mpcparis/A5/io/To_Client/packages', 'pkg_type': 'shot'}
     t = Workfile(base_data=base_data1)
     r = t.path_data
-    print(r)
+    # print(r)
 
-    # print(t.template.parse(r))
+    # # print(t.template.parse(r))
 

@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from package_maker.src.config.config_main import get_show_data, get_path
+from package_maker.src.config.config_client import get_show_data, get_path
 from package_maker.src.utils.general_utils import find_patten as _find_patten
 import re
 import logging

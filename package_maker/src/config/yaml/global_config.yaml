@@ -2,34 +2,58 @@ destination:
   MPC_Paris:
     job:
       DOGMAN:
-        dir_path: /mnt/mpcparis/DOGMAN/io/to_client/packages
+        dir_path: /mnt/mpcparis/DOGMAN/io/to_client/
         title: MPC PARIS PACKAGE FOR DOGMAN.
       ECODLAIR:
-        dir_path: /mnt/mpcparis/ECODLAIR/IO/To_Client/packages/
+        dir_path: /mnt/mpcparis/ECODLAIR/io/to_client/packages
         title: MPC PARIS PACKAGE FOR ECODLAIR.
       Greek_Salad:
         dir_path: /mnt/mpcparis/Greek_Salad/io/to_client/packages
         title: MPC PARIS PACKAGE FOR Greek_Salad.
+      LABETE:
+        dir_path: /mnt/mpcparis/LABETE/io/to_client/packages
+        title: MPC PARIS PACKAGE FOR LABETE.
       LATRESSE:
-        dir_path: /mnt/mpcparis/LATRESSE/IO/To_Client/packages/
+        dir_path: /mnt/mpcparis/LATRESSE/io/to_client/packages
         title: MPC PARIS PACKAGE FOR LATRESSE.
+      LGO:
+        dir_path: /mnt/mpcparis/LGO/io/to_client/packages
+        title: MPC PARIS PACKAGE FOR LGO.
+      LRDO:
+        dir_path: /mnt/mpcparis/LRDO/io/to_client/packages
+        title: MPC PARIS PACKAGE FOR LRDO.
       MARINET:
         dir_path: /mnt/mpcparis/MARINET/io//to_client/packages
         title: MPC PARIS PACKAGE FOR MARINET.
       NOTRE_DAME:
-        dir_path: /mnt/mpcparis/NOTRE_DAME/io/To_Client/packages
+        dir_path: /mnt/mpcparis/NOTRE_DAME/io/to_client/packages
         title: MPC PARIS PACKAGE FOR NOTRE_DAME.
+      PAF:
+        dir_path: /mnt/mpcparis/PAF/io/to_client/packages
+        title: MPC PARIS PACKAGE FOR PAF.
+      PED:
+        dir_path: /mnt/pb6/Primary/PED/io/to_client/packages
+        title: MPC PARIS PACKAGE FOR PED.
       WONDERMAN:
         dir_path: /mnt/mpcparis/WONDERMAN/io//to_client/packages
         title: MPC PARIS PACKAGE FOR WONDERMAN.
       asterix:
-        dir_path: /mnt/mpcparis/A5/io/To_Client/packages
+        dir_path: /mnt/mpcparis/A5/io/to_client/packages
         title: MPC PARIS PACKAGE FOR A5.
       test:
-        dir_path: /mnt/mpcparis/tesr/io/To_Client/packages
+        dir_path: /mnt/mpcparis/tesr/io/to_client/packages
         title: MPC PARIS PACKAGE FOR NOTRE_DAME.
     pkg_version_padding: 4
     pkg_version_prefix: v
+    vendor: dasein
+  Sitw:
+    job:
+      sitw:
+        dir_path: /mnt/sitw/io/to_client
+        root_path: /mnt/sitw
+        title: CLIENT PACKAGE FOR SITW.
+    pkg_version_padding: 2
+    pkg_version_prefix: send_
     vendor: dasein
   filmgate:
     job:

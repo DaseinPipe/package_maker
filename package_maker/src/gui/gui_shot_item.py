@@ -5,7 +5,7 @@ from PySide2.QtCore import Qt
 from PySide2.QtGui import QColor
 from PySide2.QtWidgets import QApplication, QDialog, QToolButton, QTableWidgetItem, QComboBox, QHeaderView
 
-from package_maker.src.config.config_main import *
+from package_maker.src.config.config_client import *
 from package_maker.src.gui import gui_file_importer, gui_edit_cell
 from package_maker.src.resource import shot_widget_item
 from package_maker.src.utils import general_utils, package_dir_utiles
@@ -29,6 +29,8 @@ class ShotItemWidget(shot_widget_item.Ui_swi_Frame, QDialog):
         self.pkg_type = pkg_type
         self.global_pkg_data = _global_pkg_data
         self.pkg_dir = self.global_pkg_data.get('pkg_dir')
+        self.pkg_for = self.global_pkg_data.get('pkg_for')
+        self.vendor_name = self.global_pkg_data.get('vendor_name')
         self.job = _global_pkg_data.get('show', os.environ.get('show'))
         self.show_data = show_data or get_show_data(self.job)
         self.base_data = None
@@ -44,7 +46,7 @@ class ShotItemWidget(shot_widget_item.Ui_swi_Frame, QDialog):
 
     def populate(self):
         self.swi_container_widget.setHidden(True)
-        # self.swi_status_lineEdit.setHidden(True)
+        self.swi_status_lineEdit.setHidden(True)
         horizontalHeader = self.swi_tableWidget.horizontalHeader()
         horizontalHeader.resizeSection(0, 30)
         horizontalHeader.setSectionResizeMode(1, QHeaderView.Stretch)
@@ -121,7 +123,7 @@ class ShotItemWidget(shot_widget_item.Ui_swi_Frame, QDialog):
         self.parent_item.setSizeHint(self.swi_container_widget.sizeHint())
 
     def get_fi_data(self):
-        fi_widget = gui_file_importer.FileImporterWidget(self.pkg_dir)
+        fi_widget = gui_file_importer.FileImporterWidget(self.pkg_dir, self.pkg_for)
 
         if self.import_data:
             if self.from_add_btn:
@@ -164,6 +166,17 @@ class ShotItemWidget(shot_widget_item.Ui_swi_Frame, QDialog):
                     source_item.setBackgroundColor(rbg_color)
                     dup_store_colors[package_path] = rbg_color
 
+    @property
+    def pkg_name(self):
+        if self.pkg_for == 'client':
+            LOCAL_PKG_NAME = get_nomenclature(self.job, 'LOCAL_PKG_NAME')
+            return LOCAL_PKG_NAME.format(self.base_data)
+        elif self.pkg_for == 'vendor':
+            return 'temp_nanme'
+        return UNKNOWN
+
+
+
     def add_exec(self, from_btn=False):
         self.from_add_btn = from_btn
         self.base_data = self.get_fi_data()
@@ -175,9 +188,8 @@ class ShotItemWidget(shot_widget_item.Ui_swi_Frame, QDialog):
 
         if not from_btn:
             self.base_data['pkg_type'] = self.pkg_type
-            LOCAL_PKG_NAME = get_nomenclature(self.job, 'LOCAL_PKG_NAME')
-            pkg_name = LOCAL_PKG_NAME.format(self.base_data)
-            self.swi_lineEdit.setText(pkg_name)
+
+            self.swi_lineEdit.setText(self.pkg_name)
         for file_data in self.base_data.get('files'):
             file_data['pkg_type'] = self.pkg_type
             file_data['job'] = self.job
@@ -197,13 +209,14 @@ class ShotItemWidget(shot_widget_item.Ui_swi_Frame, QDialog):
 
     def add_source_row(self, file_data, current_row_count):
         source_path = file_data.get('source_path')
-        source_item = QTableWidgetItem(source_path)
+        source_item = QTableWidgetItem(str(source_path))
         cell_editable(source_item, False)
         self.swi_tableWidget.setItem(current_row_count, 1, source_item)
 
     def add_destination_row(self, file_data, current_row_count):
         destination_path = file_data.get('destination_path')
-        destination_item = QTableWidgetItem(destination_path)
+        # print(destination_path)
+        destination_item = QTableWidgetItem(str(destination_path))
         cell_editable(destination_item, False)
         self.swi_tableWidget.setItem(current_row_count, 2, destination_item)
 
@@ -295,12 +308,6 @@ class ShotItemWidget(shot_widget_item.Ui_swi_Frame, QDialog):
         if add_row_config.get('add_pkg_type_row'):
             self.add_pkg_type_row(file_data, current_row_count)
 
-        # has_error = general_utils.is_name_matched(destination_path, [UNKNOWN])
-        # if has_error:
-        #     source_item.setBackgroundColor(QColor('#993300'))
-        #     destination_item.setText('')
-        #     pkg_type_row_dropdown.setCurrentText('select')
-
     @property
     def item_data(self):
         return {
@@ -350,8 +357,6 @@ class ShotItemWidget(shot_widget_item.Ui_swi_Frame, QDialog):
             has_error = general_utils.is_name_matched(destination_path, [UNKNOWN])
             if has_error:
                 source_cell_item.setBackgroundColor(QColor('#993300'))
-                destination_cell_item.setText('')
-                _dropdown_widget.setCurrentText('select')
 
             if not destination_path:
                 source_cell_item.setBackgroundColor(QColor('#993300'))
@@ -378,8 +383,8 @@ class ShotItemWidget(shot_widget_item.Ui_swi_Frame, QDialog):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
-    global_pkg_data = {'date': '20221016', 'vendor': 'dasein', 'show': 'notre_dame', 'pkg_version_prefix': 'v',
-                       'pkg_version_num': '0008', 'pkg_dir': '/mnt/mpcparis/NOTRE_DAME/io/To_Client/packages'}
+    global_pkg_data = {'date': '20221016', 'vendor': 'dasein', 'show': 'dogman', 'pkg_version_prefix': 'v',
+                       'pkg_version_num': '0008', 'pkg_dir': '/mnt/mpcparis/DOGMAN/io/To_Client/packages'}
     w = ShotItemWidget(_global_pkg_data=global_pkg_data)
     w.show()
     app.exec_()

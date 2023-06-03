@@ -1,4 +1,4 @@
-from package_maker.src.config.config_main import *
+from package_maker.src.config.config_client import *
 
 
 
@@ -62,7 +62,7 @@ if __name__ == '__main__':
     base_data1 = {'job': 'asterix', 'source_path': 'C:/mnt/mpcparis/A5/io/From_Pixstone/20220705B/082_em_0325/082_em_0325_roto_v005.sfx', 'pkg_dir_type': 'workfile', 'custom_name': '', 'ext': 'sfx', 'shot': '080_bb_0375', 'discipline': 'roto', 'plate_version_num': '01', 'shot_version_num': '001', 'plate_version_prefix': 'master', 'shot_version_prefix': 'v', 'date': '20221005', 'vendor': 'dasein', 'show': 'asterix', 'pkg_version_prefix': 'v', 'pkg_version_num': '0001', 'pkg_dir': '/mnt/mpcparis/A5/io/To_Client/packages', 'pkg_type': 'shot'}
     t = Camera(base_data=base_data1)
     r = t.destination_path
-    print(r)
+    # print(r)
 
-    # print(t.template.parse(r))
+    # # print(t.template.parse(r))
 

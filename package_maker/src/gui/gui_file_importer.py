@@ -1,26 +1,30 @@
 import sys
 from collections.abc import Iterable
+from typing import List, Any
+
 from PySide2.QtWidgets import QApplication, QDialog, QToolButton, QLineEdit, QTableWidgetItem, QComboBox, QHeaderView, \
-    QMessageBox
+    QMessageBox, QFileDialog
 from PySide2.QtCore import Qt
 from PySide2.QtGui import QColor
 from package_maker.src.resource import custom_file_dailog, file_importer, message_box
 from package_maker.src.utils import exr_utils, general_utils
-from package_maker.src.config.config_main import *
+from package_maker.src.config.config_client import *
+import pathlib
 
 
 class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
 
-    def __init__(self, current_pkg_dir, show_data=None):
+    def __init__(self, current_pkg_dir, pkg_for, show_data=None):
         super().__init__()
         self.shot_version_num = None
         self.show_data = show_data or get_show_data(os.environ.get('show'))
+        print(self.show_data, '>>>>>>>>>>1111')
         self.setupUi(self)
         self.pkg_dir = current_pkg_dir
+        self.pkg_for = pkg_for
         # self.setModal(True)
         self.populate()
         self.connection()
-        self.set_shot_version()
         self.import_data = None
         horizontal_header = self.fi_tableWidget.horizontalHeader()
         horizontal_header.resizeSection(0, 30)
@@ -31,20 +35,33 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
         self.fi_tableWidget.setColumnHidden(3, True)
 
     def populate(self):
+        self.hide_widgets()
+        if self.pkg_for in ['vendor', 'local']:
+            self.fi_tableWidget.setColumnHidden(4, True)
         self.fi_shot_version_label.setHidden(True)
         self.fi_shot_version_comboBox.setHidden(True)
-        shot_line_edit = QLineEdit(self)
-        shot_line_edit.setFrame(False)
-        shot_line_edit.resize(self.fi_shot_comboBox.sizeHint())
-        self.fi_shot_comboBox.setLineEdit(shot_line_edit)
         self.fi_shot_comboBox.clear()
         self.fi_discipline_comboBox.clear()
         self.fi_plate_version_comboBox.clear()
         self.fi_shot_version_comboBox.clear()
-        discipline_list = self.show_data.get('discipline', global_discipline)
-        shot_list = general_utils.get_shots(self.item_data)
-        self.fi_discipline_comboBox.addItems(discipline_list)
-        self.fi_shot_comboBox.addItems(shot_list)
+        shot_list = []
+        discipline_list: list[Any] = []
+
+        if self.pkg_for == 'local':
+            discipline_list = ['scans']  # this should come from config
+        elif self.pkg_for == 'client':
+            shot_list = general_utils.get_shots(self.item_data)
+            discipline_list = self.show_data.get('discipline', global_discipline)
+            shot_line_edit = QLineEdit(self)
+            shot_line_edit.setFrame(False)
+            shot_line_edit.resize(self.fi_shot_comboBox.sizeHint())
+            self.fi_shot_comboBox.setLineEdit(shot_line_edit)
+            self.fi_shot_comboBox.addItems(shot_list)
+            self.set_shot_version()
+
+        if discipline_list:
+            self.fi_discipline_comboBox.addItems(discipline_list)
+
         plate_padding = int(self.show_data.get("plate_version_padding", "2"))
         shot_padding = int(self.show_data.get("shot_version_padding", "3"))
         self.fi_shot_version_comboBox.addItems(
@@ -53,6 +70,26 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
         self.fi_plate_version_comboBox.addItems(
             [str(each).zfill(plate_padding) for each in range(1, 10)]
         )
+
+    def hide_widgets(self):
+        hide_widget_list = [
+            dict(
+                widgets=[
+                    self.fi_shot_comboBox, self.fi_shot_label,
+                    self.fi_plate_version_label, self.fi_plate_version_comboBox
+                ],
+                pkg_for=['local', 'vendor']
+            ),
+            dict(
+                widgets=[self.fi_discipline_comboBox, self.fi_discipline_label],
+                pkg_for=['vendor']
+            ),
+        ]
+
+        for hide_widget_data in hide_widget_list:
+            if self.pkg_for in hide_widget_data['pkg_for']:
+                for each_widget in hide_widget_data['widgets']:
+                    each_widget.setHidden(True)
 
     def connection(self):
         self.fi_shot_comboBox.currentTextChanged.connect(self.set_shot_version)
@@ -92,6 +129,8 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
             filename_item.setBackgroundColor(QColor('#aaaaaa'))
 
     def refresh_all(self):
+        if self.pkg_for == 'local':
+            return
         self.set_shot_version()
         all_rows = self.fi_tableWidget.rowCount()
         has_custom_pkg_type = False
@@ -112,7 +151,7 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
             'discipline': self.fi_discipline_comboBox.currentText(),
         }
 
-    def set_shot_version(self, item_data=None):
+    def set_shot_version(self, state=None, item_data=None):
         if not item_data:
             item_data = self.item_data
         _shot_version_num = general_utils.get_latest_shot_version(item_data)
@@ -164,7 +203,7 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
                 return self.remove_select_rows()
         return
 
-    def fi_apply(self):
+    def client_fi_apply(self):
         if not self.validate_pkg_type():
             msg_widget = message_box.pop_up(
                 messType='quest',
@@ -189,7 +228,8 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
                     'source_path': filepath,
                     'pkg_dir_type': pkg_dir_type,
                     'custom_name': self.fi_tableWidget.cellWidget(row, 3).currentText(),
-                    'ext': os.path.splitext(filepath)[-1].replace('.', '')
+                    'ext': os.path.splitext(filepath)[-1].replace('.', ''),
+                    'filename': filename
                 }
             )
         plate_prefix = self.show_data.get("plate_version_prefix", "master")
@@ -203,6 +243,36 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
             'shot_version_prefix': shot_prefix,
             'files': filelist
         }
+
+    def vendor_fi_apply(self):
+        allRows = self.fi_tableWidget.rowCount()
+        filelist = []
+        for row in range(0, allRows):
+            source_dir_path = self.fi_tableWidget.item(row, 1).text()
+            source_name = self.fi_tableWidget.item(row, 2).text()
+            source_path = pathlib.PurePath(source_dir_path, source_name)
+            filelist.append(
+                {
+                    'source_path': str(source_path)
+                }
+            )
+        self.import_data = {
+            'shot': self.fi_shot_comboBox.currentText(),
+            'files': filelist
+        }
+
+    def local_fi_apply(self):
+        self.vendor_fi_apply()
+        self.import_data['discipline'] = self.fi_discipline_comboBox.currentText()
+
+    def fi_apply(self):
+        # print(self.pkg_for)
+        if self.pkg_for == 'client':
+            self.client_fi_apply()
+        elif self.pkg_for == 'vendor':
+            self.vendor_fi_apply()
+        else:
+            self.local_fi_apply()
         self.close()
 
     def set_assumed_custom_name(self, row_no):
@@ -216,13 +286,7 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
             custom_name = ''
         custom_name_item.setCurrentText(custom_name)
 
-    def fi_import(self, do_dropdown_process=True):
-        custom_fileDailog = custom_file_dailog.FileDialog()
-        custom_fileDailog.show()
-        custom_fileDailog.exec_()
-        files = custom_fileDailog.filesSelected()
-        if not isinstance(files, Iterable):
-            return
+    def client_import(self, files, do_dropdown_process):
         extended_files = []
         for file in files:
             if os.path.isdir(file):
@@ -255,6 +319,38 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
                     'current_row_count': current_row_count,
                 }
                 self.dropdown_process(**Kargs)
+
+    def vendor_import(self, files):
+        for folder_path in files:
+            folder_path = pathlib.Path(folder_path)
+            current_row_count = self.fi_tableWidget.rowCount()
+            folder_path_item = QTableWidgetItem(str(folder_path.parent))
+            folder_name_item = QTableWidgetItem(folder_path.name)
+            self.fi_tableWidget.insertRow(current_row_count)
+            self.fi_tableWidget.setCellWidget(current_row_count, 0, self.row_cancel_widget())
+            self.fi_tableWidget.setItem(current_row_count, 1, folder_path_item)
+            self.fi_tableWidget.setItem(current_row_count, 2, folder_name_item)
+
+    def local_import(self, files):
+        self.vendor_import(files)
+
+    def fi_import(self, do_dropdown_process=True):
+        # print('>>>>>>>>>>>>>>>>>>>')
+        print(self.show_data, '>>>>>>>>>>>>', self.show_data.get('root_dir'))
+        custom_fileDailog = custom_file_dailog.FileDialog()
+        if self.show_data.get('root_dir'):
+            custom_fileDailog.setDirectory(self.show_data.get('root_dir'))
+        custom_fileDailog.show()
+        custom_fileDailog.exec_()
+        files = custom_fileDailog.filesSelected()
+        if not isinstance(files, Iterable):
+            return
+        if self.pkg_for == 'client':
+            self.client_import(files, do_dropdown_process)
+        elif self.pkg_for == 'vendor':
+            self.vendor_import(files)
+        else:
+            self.local_import(files)
 
     def dropdown_process(self, **Kargs):
         discipline = self.fi_discipline_comboBox.currentText()
@@ -293,8 +389,8 @@ class FileImporterWidget(file_importer.Ui_File_Importer, QDialog):
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     # pkg_dir = r'/mnt/mpcparis/NOTRE_DAME/io/To_Client/packages'
-
+    os.environ['show'] = 'sitw'
     pkg_dir = r'/mnt/mpcparis/A5/io/To_Client/packages'
-    w = FileImporterWidget(current_pkg_dir=pkg_dir)
+    w = FileImporterWidget(current_pkg_dir=pkg_dir, pkg_for='client')
     w.show()
     app.exec_()
