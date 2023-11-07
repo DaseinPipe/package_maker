@@ -1,6 +1,6 @@
 import fileseq
 import os
-from package_maker.src.config.config_main import *
+from package_maker.src.config.config_client import *
 
 
 def get_frame_range(file):
@@ -45,7 +45,7 @@ if __name__ == '__main__':
 
     r = fileseq.FileSequence(
         'C:\\mnt\\mpcparis\\A5\\io\\From_Pixstone\\20220705D\\080_bb_0375\\080_bb_0375_roto_v4@@@.nk')
-    print(r.format())
-    print(r.to_dict())
+    # print(r.format())
+    # print(r.to_dict())
 
-    print(extend_files(t))
+    # print(extend_files(t))

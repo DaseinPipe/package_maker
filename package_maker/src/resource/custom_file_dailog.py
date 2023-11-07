@@ -29,4 +29,4 @@ if __name__ == '__main__':
     w = FileDialog()
     w.show()
     w.exec_()
-    print(w.filesSelected())
+    # print(w.filesSelected())

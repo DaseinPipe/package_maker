@@ -1,0 +1,11 @@
+discipline:
+- paint
+- comp
+plate_version_padding: 2
+plate_version_prefix: master
+root_dir: /mnt/sitw
+seq_ext:
+- mov
+- exr
+shot_version_padding: 3
+shot_version_prefix: v

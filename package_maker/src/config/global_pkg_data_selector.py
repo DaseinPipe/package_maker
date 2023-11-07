@@ -1,13 +1,16 @@
-from package_maker.src.utils import mpc_utils, filmgate_utils
+from package_maker.src.utils import mpc_utils, filmgate_utils, sitw_utils
 
 
-def get_global_pkg_data(job, destination, pkg_dir):
+def get_global_pkg_data(job, destination, pkg_dir, pkk_for, vendor_name):
     return dict(
-        asterix=mpc_utils.global_pkg_data(job, destination, pkg_dir),
-        trm=filmgate_utils.global_pkg_data(job, destination, pkg_dir),
-        kill=filmgate_utils.global_pkg_data(job, destination, pkg_dir),
-        boderland=filmgate_utils.global_pkg_data(job, destination, pkg_dir)
+        asterix=mpc_utils.global_pkg_data(job, destination, pkg_dir, pkk_for, vendor_name),
+        trm=filmgate_utils.global_pkg_data(job, destination, pkg_dir, pkk_for, vendor_name),
+        kill=filmgate_utils.global_pkg_data(job, destination, pkg_dir, pkk_for, vendor_name),
+        boderland=filmgate_utils.global_pkg_data(job, destination, pkg_dir, pkk_for, vendor_name),
+        sitw=sitw_utils.global_pkg_data(job, destination, pkg_dir, pkk_for, vendor_name)
     ).get(
         job,
-        mpc_utils.global_pkg_data(job, destination, pkg_dir)
+        mpc_utils.global_pkg_data(job, destination, pkg_dir, pkk_for, vendor_name)
     )
+
+

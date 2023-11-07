@@ -68,8 +68,8 @@ Can't find process list for {} project's {} dept and {} app
                 continue
             ret_status, ret_data = process_name.run(**self.kwargs)
             self.kwargs.update({each_process: ret_data})
-            print('ret_status:', ret_status)
-            print('process_name:', process_name.__getattribute__('__name'))
+            # print('ret_status:', ret_status)
+            # print('process_name:', process_name.__getattribute__('__name'))
             if ret_status:
                 raise RuntimeError("""
 ----------------------------------------------------------------------------------
@@ -89,7 +89,7 @@ if __name__ == "__main__":
     '''
     arg_names = ['temp', 'data', 'project_name', 'processor', 'process', 'app', 'ignore_processes']
     args = dict(zip(arg_names, sys.argv))
-    print(args)
+    # print(args)
 
     p = ProcessRunner(
         args.get('project_name'),

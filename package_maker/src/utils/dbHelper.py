@@ -27,5 +27,5 @@ if __name__ == '__main__':
 
 
     tr = tt.fetchone()
-    print(tr, type(tr[0]))
+    # print(tr, type(tr[0]))
 

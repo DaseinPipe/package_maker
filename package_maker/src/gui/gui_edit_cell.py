@@ -4,7 +4,7 @@ from PySide2.QtCore import Qt
 
 from package_maker.src.resource import edit_cell
 from package_maker.src.utils import package_dir_utiles
-from package_maker.src.config.config_main import *
+from package_maker.src.config.config_client import *
 
 
 class EditCellWidget(edit_cell.Ui_Frame, QDialog):

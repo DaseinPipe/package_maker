@@ -28,6 +28,6 @@ if __name__ == "__main__":
         messText='testing_popup',
         defaultButton=QMessageBox.No
     )
-    print(ret == QMessageBox.Yes)
+    # print(ret == QMessageBox.Yes)
 
     

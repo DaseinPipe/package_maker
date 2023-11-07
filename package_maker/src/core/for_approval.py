@@ -1,6 +1,6 @@
 import fileseq
 import re
-from package_maker.src.config.config_main import *
+from package_maker.src.config.config_client import *
 from package_maker.src.utils import general_utils
 
 
@@ -93,9 +93,9 @@ if __name__ == '__main__':
     t= ForApproval(base_data=base_data)
     r = 'temp_dir/20221002-dasein-asterix-v0005-package/20221002-dasein-asterix-v0005/shot-080_bb_0375-roto-master01-dasein-v001/for_approval/080_bb_0375-roto-master01-aces_UNKNOWN_v001/080_bb_0375-roto-master01-aces_UNKNOWN_v001.0-99.exr'
     r = t.destination_path
-    print(r)
+    # print(r)
 
-    # print(t.template.parse(r))
+    # # print(t.template.parse(r))
 
 
 

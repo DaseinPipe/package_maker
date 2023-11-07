@@ -19,6 +19,8 @@ SEQ_FILE_NAME = lucidity.Template('seq_file_name',
 VENDOR_SHOT_PKG_NAME = lucidity.Template('vendor_shot_pkg_name',
                                     'trm_{shot}')
 
+WORKFILE_NAME = lucidity.Template('workfile_name',
+                                  '{filename}')
 
 
 
